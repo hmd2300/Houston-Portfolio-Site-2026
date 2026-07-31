@@ -1689,7 +1689,10 @@ let lastPct = -1, loaded = false, ready = false, shown = 0;
 const firstSlide = document.querySelector('.slide');
 const firstBg = firstSlide && firstSlide.dataset.bg;
 if (firstBg){
-  const src = firstBg;
+  /* runs before heroSrc is defined, so the swap is inlined here */
+  const src = innerWidth < 760
+    ? firstBg.replace('/IMAGE-VARIANTS/VIEW/Home/','/IMAGE-VARIANTS/HERO/')
+    : firstBg;
   const fi = new Image();
   const paint = u => {
     loaded = true;
@@ -1697,14 +1700,7 @@ if (firstBg){
     firstSlide.dataset.got = '1';
   };
   fi.onload = () => paint(src);
-  fi.onerror = () => {                      /* never leave the header empty */
-    const orig = src.replace(/\/IMAGE-VARIANTS\/(VIEW|THUMBS)\//, '/PAGES/');
-    if (orig === src) { loaded = true; return; }
-    const fb = new Image();
-    fb.onload = () => paint(orig);
-    fb.onerror = () => { loaded = true; };
-    fb.src = orig;
-  };
+  fi.onerror = () => chainFallback(src, firstBg, paint, () => { loaded = true; });
   fi.src = src;
 } else addEventListener('load', () => loaded = true);
 setTimeout(() => loaded = true, 2500);
@@ -2050,7 +2046,20 @@ let slideIdx = 0, heroInView = true;
 /* Phones were pulling five 1800px slides at once for a 390px screen. Now the
    tier matches the device, the first slide loads immediately, and the rest
    wait until the browser is idle so they never compete with first paint. */
-const heroSrc = u => u;   /* full tier everywhere: see note above */
+const PORTRAIT_HERO = u => u.replace('/IMAGE-VARIANTS/VIEW/Home/','/IMAGE-VARIANTS/HERO/');
+const heroSrc = u => (innerWidth < 760 ? PORTRAIT_HERO(u) : u);
+/* try each fallback in turn; the header must never end up empty */
+function chainFallback(tried, full, paint, done){
+  const chain = [full, full.replace(/\/IMAGE-VARIANTS\/(VIEW|THUMBS|HERO)\//, '/PAGES/')]
+                  .filter(u => u && u !== tried);
+  (function next(i){
+    if (i >= chain.length){ if (done) done(); return; }
+    const im = new Image();
+    im.onload  = () => paint(chain[i]);
+    im.onerror = () => next(i + 1);
+    im.src = chain[i];
+  })(0);
+}
 function loadSlide(s){
   const bg = s.dataset.bg;
   if (!bg || s.dataset.got) return;
@@ -2058,13 +2067,7 @@ function loadSlide(s){
   const src = heroSrc(bg);
   const im = new Image();
   im.onload = () => s.style.backgroundImage = `url('${src}')`;
-  im.onerror = () => {                      /* variant missing: use the original */
-    const orig = bg.replace(/\/IMAGE-VARIANTS\/(VIEW|THUMBS)\//, '/PAGES/');
-    if (orig === bg) return;
-    const fb = new Image();
-    fb.onload = () => s.style.backgroundImage = `url('${orig}')`;
-    fb.src = orig;
-  };
+  im.onerror = () => chainFallback(src, bg, u => s.style.backgroundImage = `url('${u}')`);
   im.src = src;
 }
 function lazySlides(){
