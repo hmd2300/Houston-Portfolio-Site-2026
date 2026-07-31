@@ -1,0 +1,18 @@
+# ── Old Squarespace URLs ──────────────────────────────────────────────
+# /design /photo /video /case-studies /contact keep their paths, so they
+# need no rules at all: the SPA rewrite at the bottom serves them.
+
+/overview            /                     301
+/about               /                     301
+/config              /                     301
+/cart                /                     301
+
+# The wedding page is not on this build. It carried real search intent, so
+# rather than 404 it sends visitors somewhere they can still hire you.
+# Change the target when the new wedding site exists.
+/wedding             /contact              301
+
+# ── Client-side routing ───────────────────────────────────────────────
+# Everything else is served by index.html so deep links like
+# /case-studies/namm-2026 work on a hard refresh. Must stay last.
+/*                   /index.html           200
