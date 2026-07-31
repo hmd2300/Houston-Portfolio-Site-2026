@@ -1692,10 +1692,18 @@ const firstBg = firstSlide && firstSlide.dataset.bg;
 if (firstBg){
   const src = innerWidth < 760 ? firstBg.replace('/IMAGE-VARIANTS/VIEW/','/IMAGE-VARIANTS/THUMBS/') : firstBg;
   const fi = new Image();
-  fi.onload = fi.onerror = () => {
+  const paint = u => {
     loaded = true;
-    firstSlide.style.backgroundImage = `url('${src}')`;
+    firstSlide.style.backgroundImage = `url('${u}')`;
     firstSlide.dataset.got = '1';
+  };
+  fi.onload = () => paint(src);
+  fi.onerror = () => {                      /* never leave the header empty */
+    if (src === firstBg) { loaded = true; return; }
+    const fb = new Image();
+    fb.onload = () => paint(firstBg);
+    fb.onerror = () => { loaded = true; };
+    fb.src = firstBg;
   };
   fi.src = src;
 } else addEventListener('load', () => loaded = true);
@@ -2051,6 +2059,12 @@ function loadSlide(s){
   const src = heroSrc(bg);
   const im = new Image();
   im.onload = () => s.style.backgroundImage = `url('${src}')`;
+  im.onerror = () => {                      /* variant missing: use the full size */
+    if (src === bg) return;
+    const fb = new Image();
+    fb.onload = () => s.style.backgroundImage = `url('${bg}')`;
+    fb.src = bg;
+  };
   im.src = src;
 }
 function lazySlides(){
