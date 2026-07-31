@@ -244,14 +244,19 @@ body.ready .hero-frame{opacity:1}
    which is unaffected by transformed ancestors. */
 .hero-veil{
   position:absolute;inset:0;z-index:3;opacity:var(--vo,1);
-  background-size:cover;background-position:center;
-  filter:blur(16px) saturate(.85) brightness(.86);
-  will-change:filter;
   -webkit-mask-image:radial-gradient(circle var(--vr,0px) at var(--vx,50%) var(--vy,50%),transparent 0%,transparent 42%,rgba(0,0,0,.85) 78%,#000 100%);
   mask-image:radial-gradient(circle var(--vr,0px) at var(--vx,50%) var(--vy,50%),transparent 0%,transparent 42%,rgba(0,0,0,.85) 78%,#000 100%);
 }
-.hero-veil::after{content:"";position:absolute;inset:0;background:var(--veil-tint)}
-.hero-veil.off{visibility:hidden}
+/* The blur lives on this child and never changes, so it rasterises once. The
+   cursor mask and the fade animate on the PARENT, which is a cheap composite.
+   Blurring the parent meant a full-screen blur re-rendered every frame. */
+.hero-veil i{
+  position:absolute;inset:0;display:block;
+  background-size:cover;background-position:center;
+  filter:blur(16px) saturate(.85) brightness(.86);
+}
+.hero-veil i::after{content:"";position:absolute;inset:0;background:var(--veil-tint)}
+.hero-veil.off{display:none}
 /* phones: backdrop-filter is unreliable, so drop the veil entirely rather
    than ship a grey rectangle over the hero */
 @media (max-width:759px),(pointer:coarse){
@@ -638,35 +643,33 @@ footer{
 .cs-lede{max-width:70ch;margin:0 auto clamp(26px,3.4vw,44px);text-align:center;color:var(--ink-dim);font-size:clamp(15px,1.6vw,17px);line-height:1.66}
 
 /* previz vs built comparison */
-/* previz to floor: one card per pair, two panes with a rule and a step marker */
-.cs-compare{display:grid;gap:clamp(14px,2vw,22px)}
+/* previz to floor: each pair reads downward, mockup -> BUILT -> floor,
+   matching the original case study. Two pairs sit side by side on desktop. */
+.cs-compare{display:grid;grid-template-columns:1fr;gap:clamp(18px,2.6vw,32px)}
+@media (min-width:760px){.cs-compare{grid-template-columns:repeat(2,1fr)}}
 .cs-pair{
   position:relative;z-index:63;
   border:1px solid var(--line);background:var(--bg);
-  display:grid;grid-template-columns:1fr;overflow:hidden;
+  padding:clamp(14px,1.6vw,20px);
+  display:flex;flex-direction:column;
 }
-@media (min-width:760px){.cs-pair{grid-template-columns:1fr 1fr}}
-.cs-pane{position:relative;padding:clamp(14px,1.6vw,18px)}
-.cs-pane+.cs-pane{border-top:1px solid var(--line)}
-@media (min-width:760px){.cs-pane+.cs-pane{border-top:0;border-left:1px solid var(--line)}}
-.cs-pane .tagrow{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:12px}
-.cs-pane .step{
-  font-family:var(--font-mono);font-size:9px;letter-spacing:.14em;text-transform:uppercase;
-  padding:4px 9px;background:var(--sec,var(--chart));color:var(--sec-ink,var(--black));font-weight:700;
+.cs-pane{margin:0}
+.cs-pane .shot{aspect-ratio:4/5;overflow:hidden;border-radius:2px;background:var(--bg-2)}
+.cs-pane .shot img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .8s var(--settle)}
+.cs-pair:hover .cs-pane .shot img{transform:scale(1.03)}
+.cs-cap{
+  margin-top:12px;padding-top:12px;border-top:1px solid var(--line);
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-dim);
 }
-.cs-pane.after .step{background:transparent;color:var(--sec-tx,var(--chart));border:1px solid var(--sec-tx,var(--chart))}
-.cs-pane .lbl{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
-.cs-pane img{width:100%;height:auto;display:block;border-radius:2px}
-.cs-pair .seam{
-  position:absolute;z-index:3;left:50%;top:50%;transform:translate(-50%,-50%);
-  width:34px;height:34px;border-radius:50%;
-  background:var(--sec,var(--chart));color:var(--sec-ink,var(--black));
-  display:none;align-items:center;justify-content:center;
+.cs-cap b{color:var(--sec-tx,var(--chart));font-weight:400}
+.cs-built{
+  display:flex;align-items:center;gap:10px;padding:16px 0 14px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;
+  text-transform:uppercase;color:var(--sec-tx,var(--chart));
 }
-@media (min-width:760px){.cs-pair .seam{display:flex}}
-.cs-pair .seam svg{width:15px;height:15px}
+.cs-built::after{content:"";flex:1;height:1px;background:var(--line)}
 
-/* duo, steps, people, reel */
 /* storyboards run edge to edge at full size, not as grid thumbnails */
 .cs-boards{
   position:relative;z-index:63;width:100vw;margin-left:calc(50% - 50vw);
@@ -994,7 +997,7 @@ footer{
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/fender-studio-pro-nyc-lifestyle-9.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/PreSonus%20Quantum%20Launch%20Mad%20Keys%20Lifestyle%20Image.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/quantum_lt_lifestyle_4.webp"></div>
-          <div class="hero-veil" id="heroVeil"></div>
+          <div class="hero-veil" id="heroVeil"><i></i></div>
           </div>
         </div>
       </div>
@@ -1604,15 +1607,17 @@ Object.entries(STUDY_PAGES).forEach(([key, st]) => {
             : `<div class="cs-vcard">${inner}</div>`;
         }).join('') + `</div>`;
     } else if (b.t === 'compare'){
-      out += `<div class="cs-compare">` + b.pairs.map((p, n) =>
+      const cap = t => { const i = t.indexOf(' · ');
+        return i < 0 ? esc(t) : `<b>${esc(t.slice(0,i))}</b> · ${esc(t.slice(i+3))}`; };
+      out += `<div class="cs-compare">` + b.pairs.map(p =>
         `<div class="cs-pair">` +
-          `<div class="cs-pane"><div class="tagrow"><span class="step">Previz</span>` +
-            `<span class="lbl">${esc(p.aCap)}</span></div>` +
-            `<img loading="lazy" decoding="async" src="${VIEW(p.a)}" onerror="${FALLBACK(p.a)}" alt="${esc(p.aAlt)}"></div>` +
-          `<span class="seam"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M13 5l7 7-7 7"/></svg></span>` +
-          `<div class="cs-pane after"><div class="tagrow"><span class="step">Built</span>` +
-            `<span class="lbl">${esc(p.bCap)}</span></div>` +
-            `<img loading="lazy" decoding="async" src="${VIEW(p.b)}" onerror="${FALLBACK(p.b)}" alt="${esc(p.bAlt)}"></div>` +
+          `<figure class="cs-pane"><div class="shot">` +
+            `<img loading="lazy" decoding="async" src="${VIEW(p.a)}" onerror="${FALLBACK(p.a)}" alt="${esc(p.aAlt)}">` +
+          `</div><figcaption class="cs-cap">${cap(p.aCap)}</figcaption></figure>` +
+          `<div class="cs-built">Built &#8595;</div>` +
+          `<figure class="cs-pane"><div class="shot">` +
+            `<img loading="lazy" decoding="async" src="${VIEW(p.b)}" onerror="${FALLBACK(p.b)}" alt="${esc(p.bAlt)}">` +
+          `</div><figcaption class="cs-cap">${cap(p.bCap)}</figcaption></figure>` +
         `</div>`).join('') + `</div>`;
     } else if (b.t === 'duo'){
       out += `<div class="cs-duo">` + b.items.map(([src,alt,cap]) =>
@@ -2010,7 +2015,10 @@ function stepMorph(dt){
 const slides = [...document.querySelectorAll('.slide')];
 const slideURL = s => s.dataset.bg || ((s.getAttribute('style')||'').match(/url\(['"]?([^'")]+)/) || [])[1] || '';
 const SLIDE_SRC = slides.map(slideURL);
-function syncVeil(i){ if (SLIDE_SRC[i]) veilEl.style.backgroundImage = `url('${SLIDE_SRC[i]}')`; }
+/* blur source is the 800px tier: a blurred image needs no resolution, and
+   blurring the 1800px original cost several times more per raster */
+const veilImg = veilEl.querySelector('i');
+function syncVeil(i){ if (SLIDE_SRC[i]) veilImg.style.backgroundImage = `url('${THUMB(SLIDE_SRC[i])}')`; }
 syncVeil(0);   /* the blurred copy is in place before the preloader clears */
 let slideIdx = 0, heroInView = true;
 function lazySlides(){
@@ -2131,18 +2139,27 @@ function sizePins(){
     if (!pinnable()){ p.style.height = ''; track.style.transform = ''; return; }
     p.style.height = (innerHeight + Math.max(0, track.scrollWidth - innerWidth)) + 'px';
   });
+  cachePins();
+}
+/* Geometry is cached. Reading offsetTop/offsetHeight/scrollWidth inside the
+   frame loop forced a synchronous layout 60 times a second, on every view,
+   even where there are no pinned reels at all. */
+let PINS = [];
+function cachePins(){
+  PINS = !pinnable() ? [] :
+    [...document.querySelectorAll('.view.on [data-pin]')].map(p => {
+      const track = p.querySelector('.cs-pin-track');
+      if (!track) return null;
+      return { track, top: p.offsetTop, dist: p.offsetHeight - innerHeight,
+               over: Math.max(0, track.scrollWidth - innerWidth), last: null };
+    }).filter(o => o && o.dist > 0 && o.over > 0);
 }
 function stepPins(sy){
-  if (!pinnable()) return;
-  document.querySelectorAll('.view.on [data-pin]').forEach(p => {
-    const track = p.querySelector('.cs-pin-track');
-    if (!track) return;
-    const dist = p.offsetHeight - innerHeight;
-    if (dist <= 0) return;
-    const prog = clamp((sy - p.offsetTop) / dist, 0, 1);
-    const over = Math.max(0, track.scrollWidth - innerWidth);
-    track.style.transform = `translate3d(${(-over * prog).toFixed(1)}px,0,0)`;
-  });
+  if (!PINS.length) return;
+  for (const o of PINS){
+    const v = (-o.over * clamp((sy - o.top) / o.dist, 0, 1)).toFixed(1);
+    if (v !== o.last){ o.last = v; o.track.style.transform = `translate3d(${v}px,0,0)`; }
+  }
 }
 let pinT;
 addEventListener('resize', () => { clearTimeout(pinT); pinT = setTimeout(sizePins, 140); });
@@ -2341,8 +2358,10 @@ function frame(now){
       heroVrT = Math.min(vw,vh) * .45;
     }
     heroVr = lerp(heroVr, reduced ? 0 : heroVrT, heroVrT > heroVr ? .14 : .05);
-    veilEl.style.setProperty('--vo', (1 - easeIO(clamp((t-.72)/.24, 0, 1))).toFixed(3));
-    veilEl.classList.toggle('off', t > .96);
+    /* lift the blur early, then stop drawing it entirely: keeping a full-screen
+       blur alive through the frame animation is what made the scroll chug */
+    veilEl.style.setProperty('--vo', (1 - easeIO(clamp(t/.18, 0, 1))).toFixed(3));
+    veilEl.classList.toggle('off', t > .19);
     veilEl.style.setProperty('--vx', heroVx + '%');
     veilEl.style.setProperty('--vy', heroVy + '%');
     veilEl.style.setProperty('--vr', heroVr.toFixed(1) + 'px');
