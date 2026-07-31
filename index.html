@@ -27,8 +27,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp" media="(min-width:760px)">
-<link rel="preload" as="image" href="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Home/Fender+Motion+Elevated-1-3000px.webp" media="(max-width:759px)">
+<link rel="preload" as="image" href="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp">
 <style>
 /* ============================================================
    HOUSTON DRAGNA · PORTFOLIO
@@ -1690,7 +1689,7 @@ let lastPct = -1, loaded = false, ready = false, shown = 0;
 const firstSlide = document.querySelector('.slide');
 const firstBg = firstSlide && firstSlide.dataset.bg;
 if (firstBg){
-  const src = innerWidth < 760 ? firstBg.replace('/IMAGE-VARIANTS/VIEW/','/IMAGE-VARIANTS/THUMBS/') : firstBg;
+  const src = firstBg;
   const fi = new Image();
   const paint = u => {
     loaded = true;
@@ -1699,11 +1698,12 @@ if (firstBg){
   };
   fi.onload = () => paint(src);
   fi.onerror = () => {                      /* never leave the header empty */
-    if (src === firstBg) { loaded = true; return; }
+    const orig = src.replace(/\/IMAGE-VARIANTS\/(VIEW|THUMBS)\//, '/PAGES/');
+    if (orig === src) { loaded = true; return; }
     const fb = new Image();
-    fb.onload = () => paint(firstBg);
+    fb.onload = () => paint(orig);
     fb.onerror = () => { loaded = true; };
-    fb.src = firstBg;
+    fb.src = orig;
   };
   fi.src = src;
 } else addEventListener('load', () => loaded = true);
@@ -2050,8 +2050,7 @@ let slideIdx = 0, heroInView = true;
 /* Phones were pulling five 1800px slides at once for a 390px screen. Now the
    tier matches the device, the first slide loads immediately, and the rest
    wait until the browser is idle so they never compete with first paint. */
-const SMALL = u => u.replace('/IMAGE-VARIANTS/VIEW/','/IMAGE-VARIANTS/THUMBS/');
-const heroSrc = u => (innerWidth < 760 ? SMALL(u) : u);
+const heroSrc = u => u;   /* full tier everywhere: see note above */
 function loadSlide(s){
   const bg = s.dataset.bg;
   if (!bg || s.dataset.got) return;
@@ -2059,11 +2058,12 @@ function loadSlide(s){
   const src = heroSrc(bg);
   const im = new Image();
   im.onload = () => s.style.backgroundImage = `url('${src}')`;
-  im.onerror = () => {                      /* variant missing: use the full size */
-    if (src === bg) return;
+  im.onerror = () => {                      /* variant missing: use the original */
+    const orig = bg.replace(/\/IMAGE-VARIANTS\/(VIEW|THUMBS)\//, '/PAGES/');
+    if (orig === bg) return;
     const fb = new Image();
-    fb.onload = () => s.style.backgroundImage = `url('${bg}')`;
-    fb.src = bg;
+    fb.onload = () => s.style.backgroundImage = `url('${orig}')`;
+    fb.src = orig;
   };
   im.src = src;
 }
