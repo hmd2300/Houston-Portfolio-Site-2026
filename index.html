@@ -6,6 +6,9 @@
 <title>HOUSTON DRAGNA | Design, Branding, Photo, Video</title>
 <meta name="description" content="Houston Dragna, brand designer, photographer, and video director in Baton Rouge. Brand systems, campaign key art, and global launch creative for Fender.">
 <meta name="color-scheme" content="dark">
+<link rel="icon" type="image/png" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20FAVICON.png">
+<link rel="apple-touch-icon" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20FAVICON.png">
+<meta name="theme-color" content="#06070D">
 <link rel="canonical" href="https://www.houstondragna.com/">
 <meta property="og:url" content="https://www.houstondragna.com/">
 <meta property="og:type" content="website">
@@ -13,8 +16,9 @@
 <meta property="og:title" content="HOUSTON DRAGNA | Design, Branding, Photo, Video">
 <meta property="og:description" content="Brand designer, photographer, and video director in Baton Rouge. Brand systems, campaign key art, and global launch creative for Fender.">
 <meta property="og:image" content="/ASSETS/Social%20Share/Houston%20Dragna%202026%20Portfolio%20Social%20Share%20Image.jpg">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image:width" content="1920">
+<meta property="og:image:height" content="1080">
+<meta property="og:image:alt" content="Houston Dragna 2026 portfolio">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="HOUSTON DRAGNA | Design, Branding, Photo, Video">
 <meta name="twitter:description" content="Brand designer, photographer, and video director in Baton Rouge.">
@@ -23,7 +27,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp">
+<link rel="preload" as="image" href="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp" media="(min-width:760px)">
+<link rel="preload" as="image" href="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Home/Fender+Motion+Elevated-1-3000px.webp" media="(max-width:759px)">
 <style>
 /* ============================================================
    HOUSTON DRAGNA · PORTFOLIO
@@ -992,7 +997,7 @@ footer{
       <div class="hero-stage">
         <div class="hero-frame" id="heroFrame">
           <div class="hero-inner">
-          <div class="slide active" style="background-image:url('/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp')"></div>
+          <div class="slide active" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Chad+Smith+Portrait+BW.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/fender-studio-pro-nyc-lifestyle-9.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/PreSonus%20Quantum%20Launch%20Mad%20Keys%20Lifestyle%20Image.webp"></div>
@@ -1680,11 +1685,24 @@ const pre = document.getElementById('preloader');
 const prePct = document.getElementById('prePct');
 const preRule = document.getElementById('preRule');
 let lastPct = -1, loaded = false, ready = false, shown = 0;
-addEventListener('load', () => loaded = true);
-setTimeout(() => loaded = true, 4000);
+/* the gate is the first slide, not the whole page: waiting on window.load
+   held the preloader up for seconds on a phone */
+const firstSlide = document.querySelector('.slide');
+const firstBg = firstSlide && firstSlide.dataset.bg;
+if (firstBg){
+  const src = innerWidth < 760 ? firstBg.replace('/IMAGE-VARIANTS/VIEW/','/IMAGE-VARIANTS/THUMBS/') : firstBg;
+  const fi = new Image();
+  fi.onload = fi.onerror = () => {
+    loaded = true;
+    firstSlide.style.backgroundImage = `url('${src}')`;
+    firstSlide.dataset.got = '1';
+  };
+  fi.src = src;
+} else addEventListener('load', () => loaded = true);
+setTimeout(() => loaded = true, 2500);
 const preT0 = performance.now();
 const preTimer = setInterval(() => {
-  const cap = (loaded && performance.now() - preT0 > 1400) ? 100 : 92;
+  const cap = (loaded && performance.now() - preT0 > 600) ? 100 : 92;
   shown = Math.min(cap, shown + (cap - shown) * 0.08 + 0.4);
   const pct = Math.floor(shown);
   if (pct !== lastPct){
@@ -2021,15 +2039,28 @@ const veilImg = veilEl.querySelector('i');
 function syncVeil(i){ if (SLIDE_SRC[i]) veilImg.style.backgroundImage = `url('${THUMB(SLIDE_SRC[i])}')`; }
 syncVeil(0);   /* the blurred copy is in place before the preloader clears */
 let slideIdx = 0, heroInView = true;
+/* Phones were pulling five 1800px slides at once for a 390px screen. Now the
+   tier matches the device, the first slide loads immediately, and the rest
+   wait until the browser is idle so they never compete with first paint. */
+const SMALL = u => u.replace('/IMAGE-VARIANTS/VIEW/','/IMAGE-VARIANTS/THUMBS/');
+const heroSrc = u => (innerWidth < 760 ? SMALL(u) : u);
+function loadSlide(s){
+  const bg = s.dataset.bg;
+  if (!bg || s.dataset.got) return;
+  s.dataset.got = '1';
+  const src = heroSrc(bg);
+  const im = new Image();
+  im.onload = () => s.style.backgroundImage = `url('${src}')`;
+  im.src = src;
+}
 function lazySlides(){
   syncVeil(slideIdx);
-  slides.forEach(s => {
-    const bg = s.dataset.bg;
-    if (!bg) return;
-    const im = new Image();
-    im.onload = () => s.style.backgroundImage = `url('${bg}')`;
-    im.src = bg;
-  });
+  loadSlide(slides[0]);
+  const rest = slides.slice(1);
+  const kick = () => rest.forEach((s, i) => setTimeout(() => loadSlide(s), i * 350));
+  /* typeof, not `in`: some browsers expose the name without a callable */
+  if (typeof requestIdleCallback === 'function') requestIdleCallback(kick, { timeout: 2200 });
+  else setTimeout(kick, 1100);
 }
 new IntersectionObserver(en => heroInView = en[0].isIntersecting).observe(hero);
 setInterval(() => {
