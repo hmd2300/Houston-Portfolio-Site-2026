@@ -9,6 +9,14 @@
 <link rel="icon" type="image/png" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20FAVICON.png">
 <link rel="apple-touch-icon" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20FAVICON.png">
 <meta name="theme-color" content="#06070D">
+<!-- Privacy-friendly analytics by Plausible. Cookieless, so no consent banner.
+     autoCapturePageviews is off because this is a single page app: the router
+     fires each pageview instead, otherwise every visit would report as "/". -->
+<script async src="https://plausible.io/js/pa-T4VLRxDwVDjITEg492mrp.js"></script>
+<script>
+  window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
+  plausible.init({ autoCapturePageviews: false })
+</script>
 <link rel="canonical" href="https://www.houstondragna.com/">
 <meta property="og:url" content="https://www.houstondragna.com/">
 <meta property="og:type" content="website">
@@ -1080,10 +1088,10 @@ footer{
 
   <section class="section contact" id="contact">
     <span class="sec-eyebrow mono reveal"><span class="badge">05</span>Get in touch</span>
-    <h2 class="big display reveal" style="--d:.05s"><a href="mailto:houston.dragna@gmail.com">Let's talk</a></h2>
+    <h2 class="big display reveal" style="--d:.05s"><a href="mailto:houston.dragna@gmail.com" data-goal="Email Click" data-goal-source="Headline">Let's talk</a></h2>
     <div class="contact-links reveal" style="--d:.1s">
-      <a class="chip" href="mailto:houston.dragna@gmail.com">Email · houston.dragna@gmail.com</a>
-      <a class="chip" href="http://instagram.com/thehoustondragna" target="_blank" rel="noopener">Instagram · @thehoustondragna</a>
+      <a class="chip" href="mailto:houston.dragna@gmail.com" data-goal="Email Click" data-goal-source="Chip">Email · houston.dragna@gmail.com</a>
+      <a class="chip" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram · @thehoustondragna</a>
     </div>
   </section>
 
@@ -1772,7 +1780,36 @@ const PATHS = {
   'cs-se':'/case-studies/studiolive-se'
 };
 const BY_PATH = Object.fromEntries(Object.entries(PATHS).map(([v,p]) => [p, v]));
+const META = {
+  'home':         ['HOUSTON DRAGNA | Design, Branding, Photo, Video',
+                   'Houston Dragna, brand designer, photographer, and video director in Baton Rouge.'],
+  'design':       ['Design | Houston Dragna',
+                   'Brand identity, design systems, campaign key art, and launch creative across Fender and PreSonus.'],
+  'photo':        ['Photography | Houston Dragna',
+                   'Product, campaign, and lifestyle photography for pro audio and music brands.'],
+  'video':        ['Video | Houston Dragna',
+                   'Launch films, brand video, and short-form content produced and directed by Houston Dragna.'],
+  'case-studies': ['Case Studies | Houston Dragna',
+                   'Global launch work for Fender Studio Pro, the NAMM 2026 brand debut, and StudioLive Series III SE.'],
+  'cs-fender':    ['Fender Studio Pro Launch | Houston Dragna',
+                   'Repositioning an icon of the stage as a powerhouse of the studio: the global launch of Fender Studio Pro and Quantum LT.'],
+  'cs-namm':      ['NAMM 2026 Brand Debut | Houston Dragna',
+                   'The physical debut of the Fender Studio identity on the floor in Anaheim: previz, LED, print, and photography.'],
+  'cs-se':        ['StudioLive Series III SE Launch | Houston Dragna',
+                   'An end to end global product launch, run from pitch to delivery as a trial for Art Director.']
+};
 const hrefFor = v => FILE_MODE ? (v === 'home' ? '#/' : '#/' + v) : PATHS[v];
+/* Campaign tags arrive on the landing URL only. Because navigation is client
+   side, pushState would drop them on the first click and every later pageview
+   would look like direct traffic. They are preserved on the URL instead. */
+const CAMPAIGN = (() => {
+  const q = new URLSearchParams(location.search);
+  const keep = new URLSearchParams();
+  ['utm_source','utm_medium','utm_campaign','utm_content','utm_term','ref']
+    .forEach(k => { if (q.get(k)) keep.set(k, q.get(k)); });
+  const str = keep.toString();
+  return str ? '?' + str : '';
+})();
 function routeNow(){
   if (FILE_MODE) return location.hash.replace('#/','') || 'home';
   const p = location.pathname.replace(/\/+$/,'') || '/';
@@ -1786,7 +1823,7 @@ function syncHrefs(){
   });
 }
 let current = 'home';
-function show(name, fromHash){
+let show = function(name, fromHash){
   if (!VIEWS.includes(name)) name = 'home';
   current = name;
   VIEWS.forEach(v => document.getElementById('view-' + v).classList.toggle('on', v === name));
@@ -1799,6 +1836,12 @@ function show(name, fromHash){
   mountVideos();
   refreshReveals();
   requestAnimationFrame(layoutMosaics);
+  const meta = META[name];
+  if (meta){
+    document.title = meta[0];
+    const dsc = document.querySelector('meta[name="description"]');
+    if (dsc) dsc.setAttribute('content', meta[1]);
+  }
   if (!fromHash){
     const h = hrefFor(name);
     if (FILE_MODE){
@@ -1807,7 +1850,7 @@ function show(name, fromHash){
       if (location.hash !== h) location.hash = h;
     } else {
       const at = location.pathname.replace(/\/+$/,'') || '/';
-      if (at !== h) history.pushState(null, '', h);
+      if (at !== h) history.pushState(null, '', h + CAMPAIGN);
     }
   }
 }
@@ -1830,6 +1873,23 @@ document.addEventListener('click', e => {
   };
   if (current !== 'home'){ show('home'); setTimeout(go, 60); } else go();
 });
+/* a route change is a pageview here: the page never reloads, so the default
+   script would report every visit as "/" and the case studies would look unread */
+function track(){
+  if (FILE_MODE || typeof plausible !== 'function') return;
+  plausible('pageview');
+}
+/* named goals, fired explicitly so this does not depend on which script
+   extensions happen to be enabled */
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-goal]');
+  if (!a || FILE_MODE || typeof plausible !== 'function') return;
+  const props = { source: a.dataset.goalSource || 'Contact' };
+  plausible(a.dataset.goal, { props });
+});
+const _show = show;
+show = function(name, fromHash){ _show(name, fromHash); track(); };
+
 addEventListener('popstate', () => show(routeNow(), true));
 if (FILE_MODE) addEventListener('hashchange', () => {
   const v = routeNow();
