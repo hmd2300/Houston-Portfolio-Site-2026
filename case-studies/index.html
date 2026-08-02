@@ -1284,6 +1284,7 @@ footer{
       <a class="m-item" style="--i:4" href="#/case-studies" data-view="case-studies">Case Studies</a>
       <a class="m-item" style="--i:5" href="#about" data-scroll>About</a>
       <a class="m-item" style="--i:6" href="#contact" data-scroll>Contact</a>
+      <a class="m-item" style="--i:7" href="#faq" data-scroll>FAQ</a>
     </div>
   </div>
 </nav>
@@ -1847,11 +1848,11 @@ function hardTop(){
    server to rewrite, so it falls back to hash routing for local testing. */
 const brandEl = document.querySelector('.brand');
 const VIEWS = ['home','design','photo','video','case-studies','cs-fender','cs-namm','cs-se'];
-const SCROLL_ROUTES = { 'contact': 'contact' };   /* land on home, then scroll */
+const SCROLL_ROUTES = { 'contact': 'contact', 'faq': 'faq' };   /* land on home, then scroll */
 const FILE_MODE = location.protocol === 'file:';
 const PATHS = {
   'home':'/', 'design':'/design', 'photo':'/photo', 'video':'/video',
-  'case-studies':'/case-studies', 'contact':'/contact',
+  'case-studies':'/case-studies', 'contact':'/contact', 'faq':'/faq',
   'cs-fender':'/case-studies/fender-studio',
   'cs-namm':'/case-studies/namm-2026',
   'cs-se':'/case-studies/studiolive-se'
