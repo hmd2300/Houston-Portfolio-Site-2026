@@ -903,6 +903,14 @@ footer{
 .reveal.in .cs-h,.reveal.in .cs-lede{opacity:1;transform:none}
 .grid .tile img{opacity:0;transform:translateY(18px) scale(1.03)}
 .grid.in .tile img{opacity:1;transform:none;transition:opacity .7s var(--ease-out),transform .95s var(--settle)}
+.grid .tile:nth-child(8n+1) img{transition-delay:0s}
+.grid .tile:nth-child(8n+2) img{transition-delay:.05s}
+.grid .tile:nth-child(8n+3) img{transition-delay:.10s}
+.grid .tile:nth-child(8n+4) img{transition-delay:.15s}
+.grid .tile:nth-child(8n+5) img{transition-delay:.20s}
+.grid .tile:nth-child(8n+6) img{transition-delay:.25s}
+.grid .tile:nth-child(8n+7) img{transition-delay:.30s}
+.grid .tile:nth-child(8n+8) img{transition-delay:.35s}
 
 /* ---------- floating nav, top right ---------- */
 .fmenu{position:fixed;top:12px;right:var(--pad);z-index:90}
@@ -910,7 +918,10 @@ footer{
   position:relative;overflow:hidden;
   width:152px;height:48px;border-radius:60px;cursor:pointer;
   box-shadow:0 12px 40px -12px rgba(0,0,0,.7);
-  transition:width .75s var(--ease-out),height .75s var(--ease-out),border-radius .75s var(--ease-out),transform .25s var(--ease-out);
+  /* width/height animate LAYOUT, so this is the one expensive transition on
+     the site. Keeping it short matters more than easing it far. */
+  transition:width .38s var(--ease-out),height .38s var(--ease-out),border-radius .38s var(--ease-out),transform .2s var(--ease-out);
+  contain:layout paint;
 }
 .fmenu-box:hover{transform:scale(1.04)}
 .fmenu.open .fmenu-box{width:300px;height:442px;border-radius:28px;cursor:default}
@@ -941,17 +952,17 @@ footer{
 .fmenu-items{
   position:absolute;left:0;right:0;top:48px;bottom:0;z-index:2;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:19px;
-  opacity:0;pointer-events:none;transition:opacity .3s ease;
+  opacity:0;pointer-events:none;transition:opacity .2s ease;
 }
-.fmenu.open .fmenu-items{opacity:1;pointer-events:auto;transition-delay:.25s}
+.fmenu.open .fmenu-items{opacity:1;pointer-events:auto;transition-delay:.1s}
 .m-item{
   font-family:var(--font-display);font-weight:900;font-stretch:105%;
   font-size:23px;text-transform:uppercase;letter-spacing:-.01em;
   color:var(--snow);line-height:1;
   opacity:0;transform:translateY(-8px);
-  transition:opacity .4s ease,transform .5s var(--ease-out);
+  transition:opacity .22s ease,transform .28s var(--ease-out);
 }
-.fmenu.open .m-item{opacity:1;transform:none;transition-delay:calc(.35s + var(--i)*.06s)}
+.fmenu.open .m-item{opacity:1;transform:none;transition-delay:calc(.14s + var(--i)*.028s)}
 .m-item.here{color:var(--chart)}
 .m-item .ch{display:inline-block;height:1em;overflow:hidden;vertical-align:top}
 .m-item .stk{display:flex;flex-direction:column;transform:translateY(0);transition:transform 0ms cubic-bezier(.22,1,.36,1)}
@@ -1001,10 +1012,13 @@ footer{
    small, so phones render everything and scroll stays continuous. The 72px
    section floor also read as dead space. */
 @media (max-width:759px),(pointer:coarse){
-  .grid .tile,.grid.mosaic .tile,.cs-band,.vcard .thumb{
+  /* mosaic tiles keep content-visibility because layoutMosaic now writes an
+     exact contain-intrinsic-size for each one. The others still opt out. */
+  .grid .tile,.cs-band,.vcard .thumb{
     content-visibility:visible;
     contain-intrinsic-size:auto;
   }
+  .grid.mosaic .tile{content-visibility:auto}
   /* static full-bleed hero: a radius reads as a bad seam at the edges */
   .hero-frame{border-radius:0}
   .section{padding:52px var(--pad)}
@@ -1654,11 +1668,17 @@ const shuffle = a => { const b = a.slice(); for (let i=b.length-1;i>0;i--){ cons
 const GALLERIES = new Map();
 function fillGrid(el, data){
   GALLERIES.set(el, data);
+  /* mobile shows 2 across, desktop 3, so nine covers the first three rows
+     either way. These load eagerly at high priority; the rest stay lazy. */
+  const EAGER = 9;
   el.innerHTML = data.map(([src, alt], i) =>
     `<figure class="tile" tabindex="0" role="button" aria-label="View ${alt}${isSpec(src) ? ', spec work' : ''}">` +
     (() => { const d = dimOf(THUMB(src));
       const wh = d ? ` width="${d.split('x')[0]}" height="${d.split('x')[1]}"` : '';
-      return `<img loading="lazy" decoding="async"${wh} src="${THUMB(src)}" onerror="${FALLBACK(src)}" alt="${alt}">`; })() +
+      const pri = i < EAGER
+        ? ' loading="eager" fetchpriority="high"'
+        : ' loading="lazy" fetchpriority="low"';
+      return `<img${pri} decoding="async"${wh} src="${THUMB(src)}" onerror="${FALLBACK(src)}" alt="${alt}">`; })() +
     (isSpec(src) ? `<span class="spec-tag">Spec</span>` : '') +
     `<span class="idx">${String(i+1).padStart(2,'0')}</span></figure>`).join('');
   /* lock each tile to its image's true ratio once known, so the masonry
@@ -2021,7 +2041,6 @@ let show = function(name, fromHash){
   hardTop();
   mountVideos();
   refreshReveals();
-  requestAnimationFrame(layoutMosaics);
   if (anchor) requestAnimationFrame(() => {
     const el = document.getElementById(anchor);
     if (el) jump(el.getBoundingClientRect().top + scrollY);
@@ -2470,24 +2489,52 @@ function layoutMosaic(grid){
   if (!colW || !isFinite(colW)) return false;      /* hidden view: try again later */
   const pad = parseFloat(cs.getPropertyValue('--mpad')) || 0;
   const inner = colW - pad * 2;
+  /* One pass, batched: read nothing from layout inside the loop. The exact
+     pixel height also feeds contain-intrinsic-size, which lets the browser skip
+     rendering offscreen tiles with no size guess to get wrong. The earlier
+     attempt at content-visibility failed precisely because the estimate was
+     hardcoded and wrong. */
   grid.querySelectorAll('.tile').forEach(t => {
     const img = t.querySelector('img');
     if (!img) return;
     const w = +img.getAttribute('width'), h = +img.getAttribute('height');
     const ratio = (w && h) ? h / w : (img.naturalWidth ? img.naturalHeight / img.naturalWidth : 1.25);
-    t.style.gridRowEnd = 'span ' + Math.ceil(inner * ratio + pad * 2);
+    const px = Math.ceil(inner * ratio + pad * 2);
+    t.style.gridRowEnd = 'span ' + px;
+    t.style.containIntrinsicSize = 'auto ' + px + 'px';
   });
   return true;
 }
+let mosaicQueued = false;
 function layoutMosaics(){
   document.querySelectorAll('.view.on .grid.mosaic').forEach(layoutMosaic);
 }
+/* show() and refreshReveals() both asked for a relayout on the same frame */
+function queueMosaics(){
+  if (mosaicQueued) return;
+  mosaicQueued = true;
+  requestAnimationFrame(() => { mosaicQueued = false; layoutMosaics(); });
+}
 let mosaicT;
 addEventListener('resize', () => { clearTimeout(mosaicT); mosaicT = setTimeout(layoutMosaics, 120); });
+/* Images with intrinsic dimensions need no relayout on load. Attaching a
+   listener to all of them meant a pre-rendered 50-tile page ran fifty full
+   mosaic layouts as the images streamed in. */
 document.querySelectorAll('.grid.mosaic img').forEach(img => {
-  const relayout = () => layoutMosaic(img.closest('.grid.mosaic'));
-  img.complete && img.naturalWidth ? relayout() : img.addEventListener('load', relayout, { once:true });
+  if (img.getAttribute('width') && img.getAttribute('height')) return;
+  img.addEventListener('load', () => layoutMosaic(img.closest('.grid.mosaic')), { once:true });
 });
+
+/* Warm the first rows of the two grid pages once the home page is settled, so
+   opening them finds the images already cached rather than starting cold. */
+function warmGrids(){
+  const first = arr => arr.slice(0, 9).map(([src]) => THUMB(src));
+  [...first(DESIGN), ...first(PHOTO)].forEach((u, i) => {
+    setTimeout(() => { const im = new Image(); im.decoding = 'async'; im.src = u; }, i * 90);
+  });
+}
+if (typeof requestIdleCallback === 'function') requestIdleCallback(warmGrids, { timeout: 4000 });
+else setTimeout(warmGrids, 2600);
 
 /* ---------- pinned horizontal reels ---------- */
 const pinnable = () => innerWidth >= 760 && matchMedia('(pointer: fine)').matches;
@@ -2537,14 +2584,12 @@ const gio = new IntersectionObserver(es => es.forEach(en => {
   if (en.isIntersecting){ en.target.classList.add('in'); gio.unobserve(en.target); }
 }), { threshold:.04 });
 function refreshReveals(){
-  requestAnimationFrame(layoutMosaics);
+  queueMosaics();
   requestAnimationFrame(sizePins);
   document.querySelectorAll('.view.on .reveal:not(.in)').forEach(el => rio.observe(el));
   document.querySelectorAll('.view.on [data-grid]:not(.in)').forEach(el => gio.observe(el));
-  document.querySelectorAll('.view.on .grid .tile').forEach((t, i) => {
-    const img = t.querySelector('img');
-    if (img) img.style.transitionDelay = (i % 8) * .05 + 's';
-  });
+  /* the stagger used to be written inline onto every tile on every nav,
+     which is 50 style invalidations for something CSS can express once */
 }
 
 /* ---------- neon hover cycling ---------- */
