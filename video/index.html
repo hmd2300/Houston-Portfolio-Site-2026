@@ -434,6 +434,16 @@ a.sec-title:hover,.sec-title a:hover{color:var(--ht,var(--sec,var(--chart)))}
 
 /* ---------- video ---------- */
 .video-wrap{aspect-ratio:16/9;border-radius:8px;overflow:hidden}
+/* full bleed: step outside the section gutter to the viewport edges. The
+   100vw/50% pairing is immune to the gutter changing at any breakpoint, and
+   margin-bottom pulls the section's own padding back under it. */
+.video-wrap.bleed{
+  width:100vw;max-width:100vw;
+  margin-left:calc(50% - 50vw);margin-right:calc(50% - 50vw);
+  border-radius:0;
+}
+/* the label would otherwise sit against the very edge of the screen */
+.video-wrap.bleed .video-open{padding:clamp(16px,3vw,32px) var(--pad)}
 .video-wrap img,.video-wrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0;object-fit:cover}
 .video-wrap iframe{pointer-events:none}
 .video-open{
@@ -1129,7 +1139,7 @@ footer{
       <a class="see-more" href="/video" data-view="video">All film work
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
     </div>
-    <figure class="tile video-wrap reveal" data-yt="XpN54Uh0eEo">
+    <figure class="tile video-wrap bleed reveal" data-yt="XpN54Uh0eEo">
       <img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/XpN54Uh0eEo/maxresdefault.jpg" alt="StudioLive Series III SE launch hero film still">
       <a class="video-open" href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">
         <span class="lbl">Watch with sound
