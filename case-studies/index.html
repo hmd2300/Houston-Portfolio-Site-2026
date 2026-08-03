@@ -327,6 +327,16 @@ body.ready .morph{opacity:1}
 /* fixed min-width so the chip does not jump when the label swaps to Copied */
 .copy-label{min-width:9ch;text-align:left}
 
+/* Character roll on the hero morph, same mechanism as the nav items.
+   The SVG threshold filter exists to fuse the two blurred layers into a gooey
+   morph. There is no blur here, so it is dropped: an SVG filter on a
+   viewport-width element is expensive and was running the whole time. */
+.morph.roll{filter:none}
+.morph.roll #morph2{position:static;display:flex;white-space:pre}
+.morph.roll .ch{display:block;height:1em;overflow:hidden}
+.morph.roll .stk{display:flex;flex-direction:column;will-change:transform}
+.morph.roll .stk span{display:block;height:1em;line-height:1em;white-space:pre}
+
 /* ---------- FAQ ---------- */
 .faq-cta{
   display:inline-flex;align-items:center;gap:10px;margin-top:20px;
@@ -2283,40 +2293,56 @@ paint();
    work left, so it was the whole sluggishness. Touch devices get a plain
    opacity crossfade driven by CSS transitions on a timer, which the compositor
    handles for free and lets the animation loop idle completely. */
-/* Touch keeps the dissolve, but the browser drives it.
-   The desktop version writes a fresh blur radius from JS every frame, and that
-   radius spikes past 70px early in the morph, so the whole text layer
-   re-rasterises 60 times a second. Here a CSS transition interpolates a small
-   fixed radius instead: two style writes per word change rather than 120 a
-   second, and a 4px blur is a fraction of the work of a 70px one.
-   [TUNE] MOB_BLUR 0 turns the blur off and leaves a clean fade. */
+/* Touch uses the same character roll as the nav items: each letter sits in an
+   overflow-hidden box over a two-deep stack, and the stack slides up to reveal
+   the next word's letter, staggered across the line. It is transform-only, so
+   the compositor does all of it, and it costs a handful of style writes per
+   word instead of the 120 a second the blur version needed.
+   [TUNE] ROLL_STEP is the per-letter stagger, ROLL_MS the slide duration. */
 const LIGHT_MORPH = !fine || reduced;
-const MOB_BLUR = reduced ? 0 : 4;
+const ROLL_MS = 620, ROLL_STEP = 34;
 if (LIGHT_MORPH){
-  const OUT = 240, IN = 340;
-  m1.style.opacity = '0';
-  m2.style.opacity = '1';
-  m2.style.filter = 'blur(0px)';
-  m2.style.willChange = 'opacity, filter, transform';
-  const setT = ms => m2.style.transition =
-    `opacity ${ms}ms ease, filter ${ms}ms ease, transform ${ms}ms var(--ease-out)`;
-  setT(IN);
+  m1.style.display = 'none';
+  m2.textContent = '';
+  document.getElementById('morphWrap').classList.add('roll');
+  const WIDEST = WORDS.reduce((a,w) => Math.max(a, w.length), 0);
+  const cells = [];
+  for (let i = 0; i < WIDEST; i++){
+    const ch  = document.createElement('span'); ch.className = 'ch';
+    const stk = document.createElement('span'); stk.className = 'stk';
+    const a = document.createElement('span'), b = document.createElement('span');
+    b.setAttribute('aria-hidden','true');
+    stk.append(a,b); ch.append(stk); m2.append(ch);
+    cells.push({ ch, stk, a, b });
+  }
+  const glyph = (w, i) => w[i] || '\u00A0';
+  const render = w => cells.forEach((c,i) => {
+    c.a.textContent = glyph(w,i);
+    c.ch.style.display = (i < w.length) ? '' : 'none';
+  });
+  render(WORDS[wIdx % WORDS.length]);
+  m2.setAttribute('aria-label', WORDS[wIdx % WORDS.length]);
+
   setInterval(() => {
     if (current !== 'home' || document.hidden) return;
-    setT(OUT);
-    m2.style.opacity = '0';
-    m2.style.filter = `blur(${MOB_BLUR}px)`;
-    m2.style.transform = 'scale(1.04)';
+    const next = WORDS[(wIdx + 1) % WORDS.length];
+    const nextColor = COLORS[(wIdx + 1) % COLORS.length];
+    cells.forEach((c,i) => {
+      c.b.textContent = glyph(next,i);
+      c.b.style.color = nextColor;
+      c.ch.style.display = (i < Math.max(next.length, WORDS[wIdx % WORDS.length].length)) ? '' : 'none';
+      c.stk.style.transition = `transform ${ROLL_MS}ms cubic-bezier(.22,1,.36,1) ${i*ROLL_STEP}ms`;
+      c.stk.style.transform  = 'translateY(-50%)';
+    });
     setTimeout(() => {
       wIdx++;
-      m2.textContent = WORDS[wIdx % WORDS.length];
-      paint();
-      setT(IN);
-      m2.style.opacity = '1';
-      m2.style.filter = 'blur(0px)';
-      m2.style.transform = 'scale(1)';
-    }, OUT);
-  }, Math.round((MORPH_T + COOL_T) * 1000));
+      const w = WORDS[wIdx % WORDS.length];
+      cells.forEach(c => { c.stk.style.transition = 'none'; c.stk.style.transform = 'translateY(0)'; });
+      m2.style.color = nextColor;
+      render(w);
+      m2.setAttribute('aria-label', w);
+    }, ROLL_MS + WIDEST * ROLL_STEP + 40);
+  }, Math.round((MORPH_T + COOL_T) * 1000) + WIDEST * ROLL_STEP);
 }
 function stepMorph(dt){
   if (LIGHT_MORPH) return;
