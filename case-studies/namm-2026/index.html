@@ -105,8 +105,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .xfield{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
 .xfield .x{
   position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;
-  opacity:.21;will-change:transform;
+  opacity:.21;
 }
+/* will-change promotes each cross to its own compositor layer. That is worth
+   it only where they actually move: on touch they are static decoration, and
+   eighty-odd needless GPU layers is a real cost on a phone. */
+@media (pointer:fine){ .xfield .x{will-change:transform} }
 .xfield .x::before,.xfield .x::after{
   content:"";position:absolute;background:var(--chart);
 }
@@ -2081,7 +2085,8 @@ const xf = document.getElementById('xfield');
 const X_R = 300;
 let crosses = [], mx = -9999, my = -9999, X_MAX = 30;
 function buildField(){
-  const sp = innerWidth < 640 ? 104 : 152;
+  /* wider spacing on phones: a third fewer elements, same visual texture */
+  const sp = innerWidth < 640 ? 128 : 152;
   X_MAX = sp * 0.2;                              /* never travel past 20% of a cell */
   const cols = Math.ceil(innerWidth / sp) + 3;
   const rows = Math.ceil(innerHeight / sp) + 3;
@@ -2243,7 +2248,25 @@ function paint(){
   m2.style.color = COLORS[wIdx % COLORS.length];
 }
 paint();
+/* Animating filter:blur() on two viewport-width text layers is the most
+   expensive thing on the site, and on mobile home it was the ONLY per-frame
+   work left, so it was the whole sluggishness. Touch devices get a plain
+   opacity crossfade driven by CSS transitions on a timer, which the compositor
+   handles for free and lets the animation loop idle completely. */
+const LIGHT_MORPH = !fine || reduced;
+if (LIGHT_MORPH){
+  m1.style.transition = m2.style.transition = 'opacity .42s ease';
+  m1.style.filter = m2.style.filter = 'none';
+  m1.style.opacity = '0'; m2.style.opacity = '1';
+  setInterval(() => {
+    if (current !== 'home' || document.hidden) return;
+    wIdx++;
+    m2.textContent = WORDS[wIdx % WORDS.length];
+    paint();
+  }, Math.round((MORPH_T + COOL_T) * 1000));
+}
 function stepMorph(dt){
+  if (LIGHT_MORPH) return;
   if (reduced){
     cool -= dt;
     if (cool <= 0){ cool = 2.4; wIdx++; m2.textContent = WORDS[wIdx%WORDS.length]; paint(); }
@@ -2722,7 +2745,7 @@ function frame(now){
   }
 
   /* the morph still runs on touch; only the scroll-driven frame work is skipped */
-  if (ready && current === 'home') stepMorph(dt);
+  if (ready && current === 'home' && !LIGHT_MORPH) stepMorph(dt);
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
