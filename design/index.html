@@ -307,11 +307,12 @@ body.ready .hero-name{opacity:1}
   font-family:var(--font-display);font-weight:900;font-stretch:118%;
   text-transform:uppercase;font-size:var(--mfs,var(--hfs));
   letter-spacing:-.015em;line-height:.94;
-  filter:url(#threshold);
+  /* the threshold filter fused the two blurred layers of the old morph; with
+     the roll there is nothing to fuse and an SVG filter on a viewport-width
+     element is expensive on every device */
   opacity:0;transition:opacity 1s ease .5s;
 }
 body.ready .morph{opacity:1}
-.morph span{position:absolute;left:0;top:0;display:block;white-space:nowrap;user-select:none}
 
 .hero-meta{
   position:absolute;z-index:10;left:var(--pad);right:var(--pad);
@@ -327,15 +328,12 @@ body.ready .morph{opacity:1}
 /* fixed min-width so the chip does not jump when the label swaps to Copied */
 .copy-label{min-width:9ch;text-align:left}
 
-/* Character roll on the hero morph, same mechanism as the nav items.
-   The SVG threshold filter exists to fuse the two blurred layers into a gooey
-   morph. There is no blur here, so it is dropped: an SVG filter on a
-   viewport-width element is expensive and was running the whole time. */
-.morph.roll{filter:none}
-.morph.roll #morph2{position:static;display:flex;white-space:pre}
-.morph.roll .ch{display:block;height:1em;overflow:hidden}
-.morph.roll .stk{display:flex;flex-direction:column;will-change:transform}
-.morph.roll .stk span{display:block;height:1em;line-height:1em;white-space:pre}
+/* Character roll on the hero word, the same mechanism as the nav items.
+   Transform-only, so the compositor does all of it on every device. */
+.morph #morph2{position:static;display:flex;white-space:pre}
+.morph .ch{display:block;height:1em;overflow:hidden}
+.morph .stk{display:flex;flex-direction:column;will-change:transform}
+.morph .stk span{display:block;height:1em;line-height:1em;white-space:pre}
 
 /* ---------- FAQ ---------- */
 .faq-cta{
@@ -1043,13 +1041,6 @@ footer{
 </head>
 <body class="locked" id="top">
 
-<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
-  <filter id="threshold">
-    <feColorMatrix in="SourceGraphic" type="matrix"
-      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/>
-  </filter>
-</defs></svg>
-
 <div class="xfield" id="xfield" aria-hidden="true"></div>
 
 <div id="preloader" aria-hidden="true">
@@ -1100,7 +1091,7 @@ footer{
       <div class="hero-copy" id="heroCopy">
         <div role="heading" aria-level="1" class="hero-name display" id="heroName"><span>Houston</span><span>Dragna</span></div>
         <div class="morph" id="morphWrap" aria-label="Design, branding, photo, video">
-          <span id="morph1">DESIGN</span><span id="morph2">BRANDING</span>
+          <span id="morph2">DESIGN</span>
         </div>
       </div>
 
@@ -1197,7 +1188,7 @@ footer{
     <h1 class="page-title display">Design<span class="count-tag" data-count="design"></span></h1>
     <p class="page-lede">Brand identity, design systems, campaign key art, and launch creative. Eleven years of graphic design across Fender, PreSonus, and independent clients, working on global launches and available for travel. The work spans logo and identity systems, album art, packaging, social and campaign graphics, trade show environmental design, YouTube packaging, and e-commerce merchandising for global product launches.</p>
   </header>
-  <section class="section" data-c="chart"><div class="grid grid-design mosaic" data-grid data-bare><figure class="tile" tabindex="0" role="button" aria-label="View YouTube thumbnail for the Live from NAMM 2026 keynote with DJ Jazzy Jeff"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/NAMM%202026%20LIVE%20FROM%20NAMM%20Keynote%20with%20DJ%20Jazzy%20Jeff%20Thumb.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/NAMM%202026%20LIVE%20FROM%20NAMM%20Keynote%20with%20DJ%20Jazzy%20Jeff%20Thumb.webp'" alt="YouTube thumbnail for the Live from NAMM 2026 keynote with DJ Jazzy Jeff"><span class="idx">01</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio campaign key art in 16x9 format"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Fender+Studio+Key+Art+A+-+16x9.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Fender+Studio+Key+Art+A+-+16x9.webp'" alt="Fender Studio campaign key art in 16x9 format"><span class="idx">02</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Studio One Pro 7.2 social carousel card with feature callouts"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="672" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/SOP+7.2+Social+Carousel+card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/SOP+7.2+Social+Carousel+card.webp'" alt="Studio One Pro 7.2 social carousel card with feature callouts"><span class="idx">03</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Key art for the Studio One Pro 7 launch featuring DJ Jazzy Jeff"><img loading="eager" fetchpriority="high" decoding="async" width="640" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/DJ%20Jazzy%20Jeff%20Studio%20One%20Pro%207%20Key%20Hero%20Image.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/DJ%20Jazzy%20Jeff%20Studio%20One%20Pro%207%20Key%20Hero%20Image.webp'" alt="Key art for the Studio One Pro 7 launch featuring DJ Jazzy Jeff"><span class="idx">04</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio hero key art composition with layered background artwork"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="533" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/FS+Hero+with+BG.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/FS+Hero+with+BG.webp'" alt="Fender Studio hero key art composition with layered background artwork"><span class="idx">05</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio Pro 16x9 hero key art for the global launch"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/FSP-Hero_16x9.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/FSP-Hero_16x9.webp'" alt="Fender Studio Pro 16x9 hero key art for the global launch"><span class="idx">06</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Dad Casual brand identity card showing logo and colour palette"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Dad+Casual+Brand+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Dad+Casual+Brand+Card.webp'" alt="Dad Casual brand identity card showing logo and colour palette"><span class="idx">07</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus Sphere social graphic stack showing layered campaign layouts"><img loading="eager" fetchpriority="high" decoding="async" width="703" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+Sphere+Social+Graphic+Stack.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+Sphere+Social+Graphic+Stack.webp'" alt="PreSonus Sphere social graphic stack showing layered campaign layouts"><span class="idx">08</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Quantum LT social carousel card with product and feature typography"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="524" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Fender+Quantum+LT+Social+Carousel+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Fender+Quantum+LT+Social+Carousel+Card.webp'" alt="Fender Quantum LT social carousel card with product and feature typography"><span class="idx">09</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Speculative PreSonus rebrand concept board with logo and identity system"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+Rebrand+Spec+Option+-+Houston+Dragna.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+Rebrand+Spec+Option+-+Houston+Dragna.webp'" alt="Speculative PreSonus rebrand concept board with logo and identity system"><span class="idx">10</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus AudioBox GO social graphic set with product and typography"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="567" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+AudioBox+GO+Social+Graphics.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+AudioBox+GO+Social+Graphics.webp'" alt="PreSonus AudioBox GO social graphic set with product and typography"><span class="idx">11</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Kota The Friend-She's Gone-Album Art-Houston Dragna"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Kota+The+Friend-She%27s+Gone-Album+Art-Houston+Dragna.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Kota+The+Friend-She%27s+Gone-Album+Art-Houston+Dragna.webp'" alt="Kota The Friend-She's Gone-Album Art-Houston Dragna"><span class="idx">12</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus Studio 24c interface graphic with a motion swish treatment"><img loading="lazy" fetchpriority="low" decoding="async" width="640" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus%20Studio+24c+Swish+4x5.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus%20Studio+24c+Swish+4x5.webp'" alt="PreSonus Studio 24c interface graphic with a motion swish treatment"><span class="idx">13</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Jamie Benn hockey spec sports graphic with bold display type"><img loading="lazy" fetchpriority="low" decoding="async" width="640" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Jamie+Benn+Graphic+Spec.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Jamie+Benn+Graphic+Spec.webp'" alt="Jamie Benn hockey spec sports graphic with bold display type"><span class="idx">14</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View TuneCore YouTube thumbnail featuring Kota the Friend"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Tunecore-Kota-RMB-Thumbnail-YT.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Tunecore-Kota-RMB-Thumbnail-YT.webp'" alt="TuneCore YouTube thumbnail featuring Kota the Friend"><span class="idx">15</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Back to Your Heart album art for Novum Records, live recording setup with serif title lockup"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Back%20To%20Your%20Heart%20Album%20Art%20Design%20-%20Novum%20Records.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Back%20To%20Your%20Heart%20Album%20Art%20Design%20-%20Novum%20Records.webp'" alt="Back to Your Heart album art for Novum Records, live recording setup with serif title lockup"><span class="idx">16</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Wildfire Made brand card in 16x9 format showing identity system"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Wildfire+16x9+Brand+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Wildfire+16x9+Brand+Card.webp'" alt="Wildfire Made brand card in 16x9 format showing identity system"><span class="idx">17</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View StudioLive Series III SE dealer infographic card explaining console features"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="556" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+StudioLive+SE+Infogrphics+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+StudioLive+SE+Infogrphics+Card.webp'" alt="StudioLive Series III SE dealer infographic card explaining console features"><span class="idx">18</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus Eris speaker Amazon listing card with feature callouts"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="494" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Eris+Accent+Amazon+Listing+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Eris+Accent+Amazon+Listing+Card.webp'" alt="PreSonus Eris speaker Amazon listing card with feature callouts"><span class="idx">19</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Shoe podcast brand identity card with logo and type system"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Shoe+Podcast+Brand+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Shoe+Podcast+Brand+Card.webp'" alt="Shoe podcast brand identity card with logo and type system"><span class="idx">20</span></figure></div></section>
+  <section class="section" data-c="chart"><div class="grid grid-design mosaic" data-grid data-bare><figure class="tile" tabindex="0" role="button" aria-label="View Speculative PreSonus rebrand concept board with logo and identity system"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+Rebrand+Spec+Option+-+Houston+Dragna.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+Rebrand+Spec+Option+-+Houston+Dragna.webp'" alt="Speculative PreSonus rebrand concept board with logo and identity system"><span class="idx">01</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio hero key art composition with layered background artwork"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="533" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/FS+Hero+with+BG.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/FS+Hero+with+BG.webp'" alt="Fender Studio hero key art composition with layered background artwork"><span class="idx">02</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus Eris speaker Amazon listing card with feature callouts"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="494" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Eris+Accent+Amazon+Listing+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Eris+Accent+Amazon+Listing+Card.webp'" alt="PreSonus Eris speaker Amazon listing card with feature callouts"><span class="idx">03</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View TuneCore YouTube thumbnail featuring Kota the Friend"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Tunecore-Kota-RMB-Thumbnail-YT.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Tunecore-Kota-RMB-Thumbnail-YT.webp'" alt="TuneCore YouTube thumbnail featuring Kota the Friend"><span class="idx">04</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Jamie Benn hockey spec sports graphic with bold display type"><img loading="eager" fetchpriority="high" decoding="async" width="640" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Jamie+Benn+Graphic+Spec.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Jamie+Benn+Graphic+Spec.webp'" alt="Jamie Benn hockey spec sports graphic with bold display type"><span class="idx">05</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus Sphere social graphic stack showing layered campaign layouts"><img loading="eager" fetchpriority="high" decoding="async" width="703" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+Sphere+Social+Graphic+Stack.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+Sphere+Social+Graphic+Stack.webp'" alt="PreSonus Sphere social graphic stack showing layered campaign layouts"><span class="idx">06</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Dad Casual brand identity card showing logo and colour palette"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Dad+Casual+Brand+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Dad+Casual+Brand+Card.webp'" alt="Dad Casual brand identity card showing logo and colour palette"><span class="idx">07</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View StudioLive Series III SE dealer infographic card explaining console features"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="556" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+StudioLive+SE+Infogrphics+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+StudioLive+SE+Infogrphics+Card.webp'" alt="StudioLive Series III SE dealer infographic card explaining console features"><span class="idx">08</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio campaign key art in 16x9 format"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Fender+Studio+Key+Art+A+-+16x9.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Fender+Studio+Key+Art+A+-+16x9.webp'" alt="Fender Studio campaign key art in 16x9 format"><span class="idx">09</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus Studio 24c interface graphic with a motion swish treatment"><img loading="lazy" fetchpriority="low" decoding="async" width="640" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus%20Studio+24c+Swish+4x5.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus%20Studio+24c+Swish+4x5.webp'" alt="PreSonus Studio 24c interface graphic with a motion swish treatment"><span class="idx">10</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus AudioBox GO social graphic set with product and typography"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="567" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+AudioBox+GO+Social+Graphics.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+AudioBox+GO+Social+Graphics.webp'" alt="PreSonus AudioBox GO social graphic set with product and typography"><span class="idx">11</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Studio One Pro 7.2 social carousel card with feature callouts"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="672" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/SOP+7.2+Social+Carousel+card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/SOP+7.2+Social+Carousel+card.webp'" alt="Studio One Pro 7.2 social carousel card with feature callouts"><span class="idx">12</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Back to Your Heart album art for Novum Records, live recording setup with serif title lockup"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Back%20To%20Your%20Heart%20Album%20Art%20Design%20-%20Novum%20Records.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Back%20To%20Your%20Heart%20Album%20Art%20Design%20-%20Novum%20Records.webp'" alt="Back to Your Heart album art for Novum Records, live recording setup with serif title lockup"><span class="idx">13</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Shoe podcast brand identity card with logo and type system"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Shoe+Podcast+Brand+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Shoe+Podcast+Brand+Card.webp'" alt="Shoe podcast brand identity card with logo and type system"><span class="idx">14</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Wildfire Made brand card in 16x9 format showing identity system"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Wildfire+16x9+Brand+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Wildfire+16x9+Brand+Card.webp'" alt="Wildfire Made brand card in 16x9 format showing identity system"><span class="idx">15</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Quantum LT social carousel card with product and feature typography"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="524" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Fender+Quantum+LT+Social+Carousel+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Fender+Quantum+LT+Social+Carousel+Card.webp'" alt="Fender Quantum LT social carousel card with product and feature typography"><span class="idx">16</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio Pro 16x9 hero key art for the global launch"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/FSP-Hero_16x9.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/FSP-Hero_16x9.webp'" alt="Fender Studio Pro 16x9 hero key art for the global launch"><span class="idx">17</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Key art for the Studio One Pro 7 launch featuring DJ Jazzy Jeff"><img loading="lazy" fetchpriority="low" decoding="async" width="640" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/DJ%20Jazzy%20Jeff%20Studio%20One%20Pro%207%20Key%20Hero%20Image.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/DJ%20Jazzy%20Jeff%20Studio%20One%20Pro%207%20Key%20Hero%20Image.webp'" alt="Key art for the Studio One Pro 7 launch featuring DJ Jazzy Jeff"><span class="idx">18</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View YouTube thumbnail for the Live from NAMM 2026 keynote with DJ Jazzy Jeff"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/NAMM%202026%20LIVE%20FROM%20NAMM%20Keynote%20with%20DJ%20Jazzy%20Jeff%20Thumb.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/NAMM%202026%20LIVE%20FROM%20NAMM%20Keynote%20with%20DJ%20Jazzy%20Jeff%20Thumb.webp'" alt="YouTube thumbnail for the Live from NAMM 2026 keynote with DJ Jazzy Jeff"><span class="idx">19</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Kota The Friend-She's Gone-Album Art-Houston Dragna"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Kota+The+Friend-She%27s+Gone-Album+Art-Houston+Dragna.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Kota+The+Friend-She%27s+Gone-Album+Art-Houston+Dragna.webp'" alt="Kota The Friend-She's Gone-Album Art-Houston Dragna"><span class="idx">20</span></figure></div></section>
   <footer class="mono"><span>© <span data-year>2026</span> Houston Dragna</span><span>Baton Rouge, LA</span></footer>
 </div>
 
@@ -2245,18 +2236,17 @@ function fitHero(){
 }
 
 /* ---------- liquid morph ---------- */
-const m1 = document.getElementById('morph1'), m2 = document.getElementById('morph2');
+/* morph1 was the outgoing layer for the old blur crossfade; the character roll
+   carries both words inside one element, so it is no longer needed. */
+const m2 = document.getElementById('morph2');
 const WORDS = ['DESIGN','BRANDING','PHOTO','VIDEO'];
 /* off white, chartreuse, fuchsia, true blue. No lifted blue, no black. */
 const COLORS = ['#E9F500','#FF1245','#F7F9FA','#0015FF'];
-const MORPH_T = 0.55, COOL_T = 0.78;     /* cycle 1.33s, was 1.82s */
-let wIdx = 0, morph = 0, cool = COOL_T;
-m1.textContent = WORDS[WORDS.length-1];
+/* [TUNE] how long each word holds before it rolls to the next */
+const WORD_HOLD = 1.33;
+let wIdx = 0;
 m2.textContent = WORDS[0];
-function paint(){
-  m1.style.color = COLORS[((wIdx-1) % COLORS.length + COLORS.length) % COLORS.length];
-  m2.style.color = COLORS[wIdx % COLORS.length];
-}
+function paint(){ m2.style.color = COLORS[wIdx % COLORS.length]; }
 paint();
 /* Animating filter:blur() on two viewport-width text layers is the most
    expensive thing on the site, and on mobile home it was the ONLY per-frame
@@ -2269,12 +2259,10 @@ paint();
    the compositor does all of it, and it costs a handful of style writes per
    word instead of the 120 a second the blur version needed.
    [TUNE] ROLL_STEP is the per-letter stagger, ROLL_MS the slide duration. */
-const LIGHT_MORPH = !fine || reduced;
 const ROLL_MS = 620, ROLL_STEP = 34;
-if (LIGHT_MORPH){
-  m1.style.display = 'none';
+{
   m2.textContent = '';
-  document.getElementById('morphWrap').classList.add('roll');
+
   const WIDEST = WORDS.reduce((a,w) => Math.max(a, w.length), 0);
   const cells = [];
   for (let i = 0; i < WIDEST; i++){
@@ -2312,38 +2300,8 @@ if (LIGHT_MORPH){
       render(w);
       m2.setAttribute('aria-label', w);
     }, ROLL_MS + WIDEST * ROLL_STEP + 40);
-  }, Math.round((MORPH_T + COOL_T) * 1000) + WIDEST * ROLL_STEP);
+  }, Math.round(WORD_HOLD * 1000) + WIDEST * ROLL_STEP);
 }
-function stepMorph(dt){
-  if (LIGHT_MORPH) return;
-  if (reduced){
-    cool -= dt;
-    if (cool <= 0){ cool = 2.4; wIdx++; m2.textContent = WORDS[wIdx%WORDS.length]; paint(); }
-    m1.style.opacity = '0'; m2.style.opacity = '1';
-    return;
-  }
-  if (cool > 0){
-    cool -= dt;
-    if (cool > 0){
-      m2.style.filter=''; m2.style.opacity='1';
-      m1.style.filter=''; m1.style.opacity='0';
-      return;
-    }
-    wIdx++;
-    m1.textContent = WORDS[(wIdx-1)%WORDS.length];
-    m2.textContent = WORDS[wIdx%WORDS.length];
-    morph = 0; paint();
-  }
-  morph += dt;
-  const f = Math.min(morph/MORPH_T, 1);
-  if (f === 1) cool = COOL_T;
-  m2.style.filter = `blur(${Math.min(8/f - 8, 100)}px)`;
-  m2.style.opacity = String(Math.pow(f, .4));
-  const inv = 1 - f;
-  m1.style.filter = `blur(${Math.min(8/inv - 8, 100)}px)`;
-  m1.style.opacity = String(Math.pow(inv, .4));
-}
-
 /* ---------- slideshow ---------- */
 const slides = [...document.querySelectorAll('.slide')];
 const slideURL = s => s.dataset.bg || ((s.getAttribute('style')||'').match(/url\(['"]?([^'")]+)/) || [])[1] || '';
@@ -2794,7 +2752,7 @@ function frame(now){
   }
 
   /* the morph still runs on touch; only the scroll-driven frame work is skipped */
-  if (ready && current === 'home' && !LIGHT_MORPH) stepMorph(dt);
+
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);

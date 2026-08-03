@@ -307,11 +307,12 @@ body.ready .hero-name{opacity:1}
   font-family:var(--font-display);font-weight:900;font-stretch:118%;
   text-transform:uppercase;font-size:var(--mfs,var(--hfs));
   letter-spacing:-.015em;line-height:.94;
-  filter:url(#threshold);
+  /* the threshold filter fused the two blurred layers of the old morph; with
+     the roll there is nothing to fuse and an SVG filter on a viewport-width
+     element is expensive on every device */
   opacity:0;transition:opacity 1s ease .5s;
 }
 body.ready .morph{opacity:1}
-.morph span{position:absolute;left:0;top:0;display:block;white-space:nowrap;user-select:none}
 
 .hero-meta{
   position:absolute;z-index:10;left:var(--pad);right:var(--pad);
@@ -327,15 +328,12 @@ body.ready .morph{opacity:1}
 /* fixed min-width so the chip does not jump when the label swaps to Copied */
 .copy-label{min-width:9ch;text-align:left}
 
-/* Character roll on the hero morph, same mechanism as the nav items.
-   The SVG threshold filter exists to fuse the two blurred layers into a gooey
-   morph. There is no blur here, so it is dropped: an SVG filter on a
-   viewport-width element is expensive and was running the whole time. */
-.morph.roll{filter:none}
-.morph.roll #morph2{position:static;display:flex;white-space:pre}
-.morph.roll .ch{display:block;height:1em;overflow:hidden}
-.morph.roll .stk{display:flex;flex-direction:column;will-change:transform}
-.morph.roll .stk span{display:block;height:1em;line-height:1em;white-space:pre}
+/* Character roll on the hero word, the same mechanism as the nav items.
+   Transform-only, so the compositor does all of it on every device. */
+.morph #morph2{position:static;display:flex;white-space:pre}
+.morph .ch{display:block;height:1em;overflow:hidden}
+.morph .stk{display:flex;flex-direction:column;will-change:transform}
+.morph .stk span{display:block;height:1em;line-height:1em;white-space:pre}
 
 /* ---------- FAQ ---------- */
 .faq-cta{
@@ -1043,13 +1041,6 @@ footer{
 </head>
 <body class="locked" id="top">
 
-<svg style="position:absolute;width:0;height:0" aria-hidden="true"><defs>
-  <filter id="threshold">
-    <feColorMatrix in="SourceGraphic" type="matrix"
-      values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 255 -140"/>
-  </filter>
-</defs></svg>
-
 <div class="xfield" id="xfield" aria-hidden="true"></div>
 
 <div id="preloader" aria-hidden="true">
@@ -1100,7 +1091,7 @@ footer{
       <div class="hero-copy" id="heroCopy">
         <div role="heading" aria-level="1" class="hero-name display" id="heroName"><span>Houston</span><span>Dragna</span></div>
         <div class="morph" id="morphWrap" aria-label="Design, branding, photo, video">
-          <span id="morph1">DESIGN</span><span id="morph2">BRANDING</span>
+          <span id="morph2">DESIGN</span>
         </div>
       </div>
 
@@ -2275,18 +2266,17 @@ function fitHero(){
 }
 
 /* ---------- liquid morph ---------- */
-const m1 = document.getElementById('morph1'), m2 = document.getElementById('morph2');
+/* morph1 was the outgoing layer for the old blur crossfade; the character roll
+   carries both words inside one element, so it is no longer needed. */
+const m2 = document.getElementById('morph2');
 const WORDS = ['DESIGN','BRANDING','PHOTO','VIDEO'];
 /* off white, chartreuse, fuchsia, true blue. No lifted blue, no black. */
 const COLORS = ['#E9F500','#FF1245','#F7F9FA','#0015FF'];
-const MORPH_T = 0.55, COOL_T = 0.78;     /* cycle 1.33s, was 1.82s */
-let wIdx = 0, morph = 0, cool = COOL_T;
-m1.textContent = WORDS[WORDS.length-1];
+/* [TUNE] how long each word holds before it rolls to the next */
+const WORD_HOLD = 1.33;
+let wIdx = 0;
 m2.textContent = WORDS[0];
-function paint(){
-  m1.style.color = COLORS[((wIdx-1) % COLORS.length + COLORS.length) % COLORS.length];
-  m2.style.color = COLORS[wIdx % COLORS.length];
-}
+function paint(){ m2.style.color = COLORS[wIdx % COLORS.length]; }
 paint();
 /* Animating filter:blur() on two viewport-width text layers is the most
    expensive thing on the site, and on mobile home it was the ONLY per-frame
@@ -2299,12 +2289,10 @@ paint();
    the compositor does all of it, and it costs a handful of style writes per
    word instead of the 120 a second the blur version needed.
    [TUNE] ROLL_STEP is the per-letter stagger, ROLL_MS the slide duration. */
-const LIGHT_MORPH = !fine || reduced;
 const ROLL_MS = 620, ROLL_STEP = 34;
-if (LIGHT_MORPH){
-  m1.style.display = 'none';
+{
   m2.textContent = '';
-  document.getElementById('morphWrap').classList.add('roll');
+
   const WIDEST = WORDS.reduce((a,w) => Math.max(a, w.length), 0);
   const cells = [];
   for (let i = 0; i < WIDEST; i++){
@@ -2342,38 +2330,8 @@ if (LIGHT_MORPH){
       render(w);
       m2.setAttribute('aria-label', w);
     }, ROLL_MS + WIDEST * ROLL_STEP + 40);
-  }, Math.round((MORPH_T + COOL_T) * 1000) + WIDEST * ROLL_STEP);
+  }, Math.round(WORD_HOLD * 1000) + WIDEST * ROLL_STEP);
 }
-function stepMorph(dt){
-  if (LIGHT_MORPH) return;
-  if (reduced){
-    cool -= dt;
-    if (cool <= 0){ cool = 2.4; wIdx++; m2.textContent = WORDS[wIdx%WORDS.length]; paint(); }
-    m1.style.opacity = '0'; m2.style.opacity = '1';
-    return;
-  }
-  if (cool > 0){
-    cool -= dt;
-    if (cool > 0){
-      m2.style.filter=''; m2.style.opacity='1';
-      m1.style.filter=''; m1.style.opacity='0';
-      return;
-    }
-    wIdx++;
-    m1.textContent = WORDS[(wIdx-1)%WORDS.length];
-    m2.textContent = WORDS[wIdx%WORDS.length];
-    morph = 0; paint();
-  }
-  morph += dt;
-  const f = Math.min(morph/MORPH_T, 1);
-  if (f === 1) cool = COOL_T;
-  m2.style.filter = `blur(${Math.min(8/f - 8, 100)}px)`;
-  m2.style.opacity = String(Math.pow(f, .4));
-  const inv = 1 - f;
-  m1.style.filter = `blur(${Math.min(8/inv - 8, 100)}px)`;
-  m1.style.opacity = String(Math.pow(inv, .4));
-}
-
 /* ---------- slideshow ---------- */
 const slides = [...document.querySelectorAll('.slide')];
 const slideURL = s => s.dataset.bg || ((s.getAttribute('style')||'').match(/url\(['"]?([^'")]+)/) || [])[1] || '';
@@ -2824,7 +2782,7 @@ function frame(now){
   }
 
   /* the morph still runs on touch; only the scroll-driven frame work is skipped */
-  if (ready && current === 'home' && !LIGHT_MORPH) stepMorph(dt);
+
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
