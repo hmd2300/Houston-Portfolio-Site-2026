@@ -331,7 +331,7 @@ body.ready .morph{opacity:1}
 /* Character roll on the hero word, the same mechanism as the nav items.
    Transform-only, so the compositor does all of it on every device. */
 .morph #morph2{position:static;display:flex;white-space:pre}
-.morph .ch{display:block;height:1em;overflow:hidden}
+.morph .ch{display:block;height:1em;overflow:hidden;flex:0 0 auto}
 .morph .stk{display:flex;flex-direction:column;will-change:transform}
 .morph .stk span{display:block;height:1em;line-height:1em;white-space:pre}
 
@@ -2317,7 +2317,42 @@ paint();
    [TUNE] ROLL_STEP is the per-letter stagger, ROLL_MS the slide duration. */
 const ROLL_MS = 620, ROLL_STEP = 34;
 {
+  /* The nav version works because both layers hold the SAME glyph, so a cell
+     never changes width. Rolling to a different word breaks that: each cell
+     sizes to whichever letter is wider and the whole line re-spaces as it goes,
+     then snaps when the roll ends. Fix: measure each word's natural
+     per-character advance once, give every cell an explicit width, and glide
+     that width alongside the roll. At rest the spacing is exactly normal text. */
   m2.textContent = '';
+
+  const probe = document.createElement('span');
+  probe.setAttribute('aria-hidden','true');
+  probe.style.cssText = 'position:absolute;left:-99999px;top:0;visibility:hidden;white-space:pre';
+  document.body.appendChild(probe);
+
+  const advCache = new Map();
+  function advances(w){
+    const cs = getComputedStyle(m2);
+    const key = w + '|' + cs.fontSize + '|' + cs.letterSpacing;
+    if (advCache.has(key)) return advCache.get(key);
+    probe.style.fontFamily    = cs.fontFamily;
+    probe.style.fontSize      = cs.fontSize;
+    probe.style.fontWeight    = cs.fontWeight;
+    probe.style.fontStretch   = cs.fontStretch;
+    probe.style.letterSpacing = cs.letterSpacing;
+    probe.style.textTransform = cs.textTransform;
+    probe.textContent = '';
+    const spans = [...w].map(ch => {
+      const sp = document.createElement('span');
+      sp.style.display = 'inline-block';
+      sp.textContent = ch;
+      probe.appendChild(sp);
+      return sp;
+    });
+    const out = spans.map(sp => sp.getBoundingClientRect().width || 0);
+    advCache.set(key, out);
+    return out;
+  }
 
   const WIDEST = WORDS.reduce((a,w) => Math.max(a, w.length), 0);
   const cells = [];
@@ -2330,12 +2365,27 @@ const ROLL_MS = 620, ROLL_STEP = 34;
     cells.push({ ch, stk, a, b });
   }
   const glyph = (w, i) => w[i] || '\u00A0';
-  const render = w => cells.forEach((c,i) => {
-    c.a.textContent = glyph(w,i);
-    c.ch.style.display = (i < w.length) ? '' : 'none';
-  });
-  render(WORDS[wIdx % WORDS.length]);
-  m2.setAttribute('aria-label', WORDS[wIdx % WORDS.length]);
+
+  function apply(w, animate){
+    const adv = advances(w);
+    cells.forEach((c,i) => {
+      const on = i < w.length;
+      c.ch.style.transition = animate
+        ? 'width ' + ROLL_MS + 'ms cubic-bezier(.22,1,.36,1) ' + (i*ROLL_STEP) + 'ms'
+        : 'none';
+      c.ch.style.width = on ? (adv[i] || 0).toFixed(2) + 'px' : '0px';
+    });
+  }
+  const setFace = w => cells.forEach((c,i) => { c.a.textContent = glyph(w,i); });
+
+  let word = WORDS[wIdx % WORDS.length];
+  setFace(word);
+  apply(word, false);
+  m2.setAttribute('aria-label', word);
+  /* the hero type is fitted to the viewport, so advances change on rotate */
+  addEventListener('resize', () => { advCache.clear(); apply(word, false); });
+  if (document.fonts && document.fonts.ready)
+    document.fonts.ready.then(() => { advCache.clear(); apply(word, false); });
 
   setInterval(() => {
     if (current !== 'home' || document.hidden) return;
@@ -2344,20 +2394,22 @@ const ROLL_MS = 620, ROLL_STEP = 34;
     cells.forEach((c,i) => {
       c.b.textContent = glyph(next,i);
       c.b.style.color = nextColor;
-      c.ch.style.display = (i < Math.max(next.length, WORDS[wIdx % WORDS.length].length)) ? '' : 'none';
-      c.stk.style.transition = `transform ${ROLL_MS}ms cubic-bezier(.22,1,.36,1) ${i*ROLL_STEP}ms`;
+      c.stk.style.transition = 'transform ' + ROLL_MS + 'ms cubic-bezier(.22,1,.36,1) ' + (i*ROLL_STEP) + 'ms';
       c.stk.style.transform  = 'translateY(-50%)';
     });
+    apply(next, true);                      /* widths glide with the roll */
     setTimeout(() => {
       wIdx++;
-      const w = WORDS[wIdx % WORDS.length];
+      word = WORDS[wIdx % WORDS.length];
       cells.forEach(c => { c.stk.style.transition = 'none'; c.stk.style.transform = 'translateY(0)'; });
       m2.style.color = nextColor;
-      render(w);
-      m2.setAttribute('aria-label', w);
+      setFace(word);
+      apply(word, false);                   /* already at the right width */
+      m2.setAttribute('aria-label', word);
     }, ROLL_MS + WIDEST * ROLL_STEP + 40);
   }, Math.round(WORD_HOLD * 1000) + WIDEST * ROLL_STEP);
 }
+
 /* ---------- slideshow ---------- */
 const slides = [...document.querySelectorAll('.slide')];
 const slideURL = s => s.dataset.bg || ((s.getAttribute('style')||'').match(/url\(['"]?([^'")]+)/) || [])[1] || '';
