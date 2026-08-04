@@ -580,6 +580,11 @@ footer{
 .vcard.live:hover .thumb img{transform:scale(1.04)}
 .vcard .thumb::after{content:"";position:absolute;inset:0;border:2px solid transparent;border-radius:inherit;transition:border-color .25s ease;pointer-events:none}
 .vcard.live:hover .thumb::after{border-color:var(--sec,var(--blue))}
+.video-wrap > .flag{
+  position:absolute;top:0;left:0;z-index:4;padding:8px 14px;
+  background:var(--sec,var(--blue));color:var(--sec-ink,var(--snow));
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;
+}
 .vcard .thumb .flag{
   position:absolute;top:0;left:0;z-index:3;padding:6px 10px;
   background:var(--sec,var(--blue));color:var(--sec-ink,var(--snow));
@@ -1316,15 +1321,16 @@ footer{
     <p class="page-lede">Brand film and campaign video, directed and produced in house from concept through final grade. Launch films, artist features, short-form social content, and technical demo work, including LED volume wall virtual production, traditional soundstage shoots, and documentary capture on location.</p>
   </header>
   <section class="section" data-c="blue">
-    <figure class="tile video-wrap reveal" data-yt="XpN54Uh0eEo">
-      <img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/XpN54Uh0eEo/maxresdefault.jpg" alt="StudioLive Series III SE launch hero film still">
-      <a class="video-open" href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">
+    <figure class="tile video-wrap reveal" data-yt="lA7f6GV6NAo">
+      <span class="flag">Most recent</span>
+      <img loading="lazy" decoding="async" src="/ASSETS/IMAGES/PAGES/Video/Fender%20Motion%20Launch%20Hero%20YT%20Thumb.webp" alt="Fender Motion controllers launch hero film key art">
+      <a class="video-open" href="https://www.youtube.com/watch?v=lA7f6GV6NAo" target="_blank" rel="noopener">
         <span class="lbl">Watch with sound
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
     </figure>
     <div class="hero-film-cap reveal">
-      <h3><a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">PreSonus StudioLive Series III SE Digital Mixers - Launch Hero</a></h3>
-      <div class="roles"><span class="role">Director</span><span class="role">Producer</span><span class="role">Lighting Designer</span><span class="role">Photographer</span><span class="role">Audio Mixer</span><span class="role">Talent</span></div>
+      <h3><a href="https://www.youtube.com/watch?v=lA7f6GV6NAo" target="_blank" rel="noopener">Fender Motion Controllers &#8211; Launch Hero</a></h3>
+      <div class="roles"><span class="role">Lighting Design</span><span class="role">Set Design</span><span class="role">Producer</span><span class="role">Photographer</span><span class="role">Key Art</span></div>
     </div>
 
     <div class="sub-head reveal">
@@ -1564,9 +1570,8 @@ const HOME_PHOTO = [
 
 /* Films: titles, roles and YouTube ids pulled from houstondragna.com/video. */
 const FILMS = [
-  { yt:'lA7f6GV6NAo', title:'Fender Motion Controllers \u2013 Launch Hero',
-    thumb:'/ASSETS/IMAGES/PAGES/Video/Fender%20Motion%20Launch%20Hero%20YT%20Thumb.webp', flag:'Most recent',
-    roles:['Lighting Design','Set Design','Producer','Photographer','Key Art'] },
+  { yt:'XpN54Uh0eEo', title:'PreSonus StudioLive Series III SE Digital Mixers - Launch Hero',
+    roles:['Director','Producer','Lighting Designer','Photographer','Audio Mixer','Talent'] },
   { yt:'N2W3E1ThYuw', title:'Introducing The New Quantum LT Audio Interfaces | Fender Studio',
     roles:['Gaffer / Lighting Designer','Photographer','Producer','Audio Mix Engineer','AC','Set Design'] },
   { yt:'5ccqyo4J3KA', title:'Introducing Fender Studio Pro with Alissia & Nile Rodgers - Creativity Amplified',
