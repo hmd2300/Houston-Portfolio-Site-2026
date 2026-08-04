@@ -61,7 +61,6 @@
   --line:rgba(247,249,250,.15);
   --accent:var(--chart);
   --accent-ink:var(--black);
-  --veil-tint:rgba(6,7,13,.42);
 
   --font-display:'Archivo',Impact,sans-serif;
   --font-body:'Instrument Sans',system-ui,sans-serif;
@@ -257,31 +256,6 @@ body.ready .hero-frame{opacity:1}
   opacity:0;transition:opacity 1.4s ease;
 }
 .slide.active{opacity:1}
-/* The reveal used backdrop-filter, which stopped sampling anything once the
-   frame and its inner wrapper both became transformed compositing layers.
-   A blurred COPY of the active slide does the same job with plain filter,
-   which is unaffected by transformed ancestors. */
-.hero-veil{
-  position:absolute;inset:0;z-index:3;opacity:var(--vo,1);
-  -webkit-mask-image:radial-gradient(circle var(--vr,0px) at var(--vx,50%) var(--vy,50%),transparent 0%,transparent 42%,rgba(0,0,0,.85) 78%,#000 100%);
-  mask-image:radial-gradient(circle var(--vr,0px) at var(--vx,50%) var(--vy,50%),transparent 0%,transparent 42%,rgba(0,0,0,.85) 78%,#000 100%);
-}
-/* The blur lives on this child and never changes, so it rasterises once. The
-   cursor mask and the fade animate on the PARENT, which is a cheap composite.
-   Blurring the parent meant a full-screen blur re-rendered every frame. */
-.hero-veil i{
-  position:absolute;inset:0;display:block;
-  background-size:cover;background-position:center;
-  filter:blur(16px) saturate(.85) brightness(.86);
-}
-.hero-veil i::after{content:"";position:absolute;inset:0;background:var(--veil-tint)}
-.hero-veil.off{display:none}
-/* phones: backdrop-filter is unreliable, so drop the veil entirely rather
-   than ship a grey rectangle over the hero */
-@media (max-width:759px),(pointer:coarse){
-  .hero-veil{display:none}
-}
-
 /* hero copy: one type size, left justified, pinned bottom left */
 .hero-copy{
   position:absolute;z-index:10;
@@ -521,8 +495,9 @@ footer{
 /* ---------- lightbox ---------- */
 #lb{
   position:fixed;inset:0;z-index:150;display:none;
-  background:color-mix(in srgb,var(--bg) 92%,transparent);
-  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  /* a plain scrim rather than a backdrop blur: cheaper, and nothing behind it
+     is meant to be read through anyway */
+  background:color-mix(in srgb,var(--bg) 97%,transparent);
 }
 #lb.on{display:flex;flex-direction:column}
 #lb .lb-bar{
@@ -1098,7 +1073,6 @@ footer{
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/fender-studio-pro-nyc-lifestyle-9.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/PreSonus%20Quantum%20Launch%20Mad%20Keys%20Lifestyle%20Image.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/quantum_lt_lifestyle_4.webp"></div>
-          <div class="hero-veil" id="heroVeil"><i></i></div>
           </div>
         </div>
       </div>
@@ -2188,7 +2162,6 @@ const stage = document.querySelector('.hero-stage');
 const morphWrap = document.getElementById('morphWrap');
 const heroCopy = document.getElementById('heroCopy');
 const heroMeta = document.getElementById('heroMeta');
-const veilEl = document.getElementById('heroVeil');
 let ix0, iy0;
 let heroDist = 1;
 function measure(){
@@ -2211,11 +2184,9 @@ addEventListener('resize', () => {
 });
 
 let px = .5, py = .5, cRx = 0, cRy = 0, cTx = 0, cTy = 0, lastMove = -1e9;
-let heroVr = 0, heroVrT = 0, heroVx = 50, heroVy = 50;
 if (fine){
   addEventListener('pointermove', e => {
-    px = e.clientX/vw; py = e.clientY/vh;
-    heroVx = px*100; heroVy = py*100;
+    px = e.clientX/vw; py = e.clientY/vh;   /* drives the frame tilt */
     lastMove = performance.now();
   }, { passive:true });
 }
@@ -2274,11 +2245,6 @@ let wIdx = 0;
 m2.textContent = WORDS[0];
 function paint(){ m2.style.color = COLORS[wIdx % COLORS.length]; }
 paint();
-/* Animating filter:blur() on two viewport-width text layers is the most
-   expensive thing on the site, and on mobile home it was the ONLY per-frame
-   work left, so it was the whole sluggishness. Touch devices get a plain
-   opacity crossfade driven by CSS transitions on a timer, which the compositor
-   handles for free and lets the animation loop idle completely. */
 /* Touch uses the same character roll as the nav items: each letter sits in an
    overflow-hidden box over a two-deep stack, and the stack slides up to reveal
    the next word's letter, staggered across the line. It is transform-only, so
@@ -2395,11 +2361,6 @@ const ROLL_MS = 620, ROLL_STEP = 34;
 const slides = [...document.querySelectorAll('.slide')];
 const slideURL = s => s.dataset.bg || ((s.getAttribute('style')||'').match(/url\(['"]?([^'")]+)/) || [])[1] || '';
 const SLIDE_SRC = slides.map(slideURL);
-/* blur source is the 800px tier: a blurred image needs no resolution, and
-   blurring the 1800px original cost several times more per raster */
-const veilImg = veilEl.querySelector('i');
-function syncVeil(i){ if (SLIDE_SRC[i]) veilImg.style.backgroundImage = `url('${THUMB(SLIDE_SRC[i])}')`; }
-syncVeil(0);   /* the blurred copy is in place before the preloader clears */
 let slideIdx = 0, heroInView = true;
 /* Phones were pulling five 1800px slides at once for a 390px screen. Now the
    tier matches the device, the first slide loads immediately, and the rest
@@ -2429,7 +2390,6 @@ function loadSlide(s){
   im.src = src;
 }
 function lazySlides(){
-  syncVeil(slideIdx);
   loadSlide(slides[0]);
   const rest = slides.slice(1);
   const kick = () => rest.forEach((s, i) => setTimeout(() => loadSlide(s), i * 350));
@@ -2443,7 +2403,6 @@ setInterval(() => {
   slides[slideIdx].classList.remove('active');
   slideIdx = (slideIdx + 1) % slides.length;
   slides[slideIdx].classList.add('active');
-  syncVeil(slideIdx);
 }, 4600);
 
 /* ---------- YouTube: muted, looping, autoplay, lazy ---------- */
@@ -2816,22 +2775,6 @@ function frame(now){
     stage.style.setProperty('--ry', cRy.toFixed(3) + 'deg');
     stage.style.setProperty('--tx', cTx.toFixed(2) + 'px');
     stage.style.setProperty('--ty', cTy.toFixed(2) + 'px');
-
-    /* veil: 2.5x radius, ~2s linger, fully gone once full bleed */
-    if (fine)          heroVrT = (now - lastMove < 2200) ? Math.min(vw,vh) * .75 : 0;
-    else if (!reduced){
-      heroVx = 50 + 27*Math.sin(now*.00023);
-      heroVy = 44 + 21*Math.cos(now*.00031);
-      heroVrT = Math.min(vw,vh) * .45;
-    }
-    heroVr = lerp(heroVr, reduced ? 0 : heroVrT, heroVrT > heroVr ? .14 : .05);
-    /* lift the blur early, then stop drawing it entirely: keeping a full-screen
-       blur alive through the frame animation is what made the scroll chug */
-    veilEl.style.setProperty('--vo', (1 - easeIO(clamp(t/.18, 0, 1))).toFixed(3));
-    veilEl.classList.toggle('off', t > .19);
-    veilEl.style.setProperty('--vx', heroVx + '%');
-    veilEl.style.setProperty('--vy', heroVy + '%');
-    veilEl.style.setProperty('--vr', heroVr.toFixed(1) + 'px');
 
     const p2 = easeIO(clamp((p - .36)/.34, 0, 1));
     heroCopy.style.transform = `translateY(${(p2*vh*.24).toFixed(1)}px)`;
