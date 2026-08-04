@@ -1564,6 +1564,9 @@ const HOME_PHOTO = [
 
 /* Films: titles, roles and YouTube ids pulled from houstondragna.com/video. */
 const FILMS = [
+  { yt:'lA7f6GV6NAo', title:'Fender Motion Controllers \u2013 Launch Hero',
+    thumb:'/ASSETS/IMAGES/PAGES/Video/Fender%20Motion%20Launch%20Hero%20YT%20Thumb.webp', flag:'Most recent',
+    roles:['Lighting Design','Set Design','Producer','Photographer','Key Art'] },
   { yt:'N2W3E1ThYuw', title:'Introducing The New Quantum LT Audio Interfaces | Fender Studio',
     roles:['Gaffer / Lighting Designer','Photographer','Producer','Audio Mix Engineer','AC','Set Design'] },
   { yt:'5ccqyo4J3KA', title:'Introducing Fender Studio Pro with Alissia & Nile Rodgers - Creativity Amplified',
@@ -1709,8 +1712,9 @@ function buildFilms(){
   <article class="vcard live reveal">
     <a class="thumb" data-yt="${f.yt}" href="https://www.youtube.com/watch?v=${f.yt}"
        target="_blank" rel="noopener" aria-label="Watch ${f.title.replace(/"/g,'&quot;')}">
-      <img loading="lazy" decoding="async" src="${YT_THUMB(f.yt)}"
-           onerror="this.onerror=null;this.src='${YT_FALLBACK(f.yt)}'" alt="${f.title.replace(/"/g,'&quot;')}">
+      <img loading="lazy" decoding="async" src="${f.thumb ? THUMB(f.thumb) : YT_THUMB(f.yt)}"
+           onerror="this.onerror=null;this.src='${f.thumb ? f.thumb : YT_FALLBACK(f.yt)}'" alt="${f.title.replace(/"/g,'&quot;')}">
+      ${f.flag ? `<span class="flag">${f.flag}</span>` : ''}
     </a>
     <h3><a href="https://www.youtube.com/watch?v=${f.yt}" target="_blank" rel="noopener">${f.title}</a></h3>
     <div class="roles">${f.roles.map(r => `<span class="role">${r}</span>`).join('')}</div>
@@ -2279,7 +2283,14 @@ function fitHero(){
 /* morph1 was the outgoing layer for the old blur crossfade; the character roll
    carries both words inside one element, so it is no longer needed. */
 const m2 = document.getElementById('morph2');
+/* DESIGN always lands first so the hero reads the same on every arrival;
+   after that the order is random, never repeating the word on screen. */
 const WORDS = ['DESIGN','BRANDING','PHOTO','VIDEO'];
+const nextWordIdx = cur => {
+  let i;
+  do { i = Math.floor(Math.random() * WORDS.length); } while (i === cur && WORDS.length > 1);
+  return i;
+};
 /* off white, chartreuse, fuchsia, true blue. No lifted blue, no black. */
 const COLORS = ['#E9F500','#FF1245','#F7F9FA','#0015FF'];
 /* [TUNE] how long each word holds before it rolls to the next */
@@ -2371,10 +2382,11 @@ const ROLL_MS = 620, ROLL_STEP = 34;
   if (document.fonts && document.fonts.ready)
     document.fonts.ready.then(() => { advCache.clear(); apply(word, false); });
 
-  setInterval(() => {
-    if (current !== 'home' || document.hidden) return;
-    const next = WORDS[(wIdx + 1) % WORDS.length];
-    const nextColor = COLORS[(wIdx + 1) % COLORS.length];
+  function roll(){
+    if (!ready || current !== 'home' || document.hidden) return;
+    const nIdx = nextWordIdx(wIdx);
+    const next = WORDS[nIdx];
+    const nextColor = COLORS[nIdx % COLORS.length];
     cells.forEach((c,i) => {
       c.b.textContent = glyph(next,i);
       c.b.style.color = nextColor;
@@ -2383,15 +2395,25 @@ const ROLL_MS = 620, ROLL_STEP = 34;
     });
     apply(next, true);                      /* widths glide with the roll */
     setTimeout(() => {
-      wIdx++;
-      word = WORDS[wIdx % WORDS.length];
+      wIdx = nIdx;
+      word = WORDS[wIdx];
       cells.forEach(c => { c.stk.style.transition = 'none'; c.stk.style.transform = 'translateY(0)'; });
       m2.style.color = nextColor;
       setFace(word);
       apply(word, false);                   /* already at the right width */
       m2.setAttribute('aria-label', word);
     }, ROLL_MS + WIDEST * ROLL_STEP + 40);
-  }, Math.round(WORD_HOLD * 1000) + WIDEST * ROLL_STEP);
+  }
+
+  /* The opening word is DESIGN, but the timer used to start with the script
+     rather than with the reveal, so the first roll fired at ~1.6s while the
+     morph was still fading in and BRANDING was the first word actually seen.
+     Wait for the preloader to clear, then give DESIGN a full hold. */
+  const CYCLE = Math.round(WORD_HOLD * 1000) + WIDEST * ROLL_STEP;
+  (function waitForReveal(){
+    if (!ready) return setTimeout(waitForReveal, 100);
+    setTimeout(() => { roll(); setInterval(roll, CYCLE); }, CYCLE);
+  })();
 }
 
 /* ---------- slideshow ---------- */
