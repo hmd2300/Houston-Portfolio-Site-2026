@@ -93,11 +93,12 @@
   --line:rgba(6,7,15,.16);
   --blue-tx:#0011CC;             /* 9.86:1 on light */
   --blue-hv:#0015FF;
-  --accent-tx:#5A5E00;           /* chartreuse darkened: 6.34:1 */
-  --chart-tx:#5A5E00;
+  --accent-tx:#0011CC;           /* brand blue as accent text: 9.86:1. Darkened chartreuse read as olive, off brand */
+  --chart-tx:#0011CC;
   --fuch-tx:#B3002A;             /* fuchsia darkened:    6.52:1 */
   --shadow:rgba(6,7,15,.22);
   color-scheme:light;
+  --cross:var(--blue);
 }
 
 /* structural variables: theme independent, must apply in BOTH themes.
@@ -118,11 +119,13 @@
   /* anything in normal flow at the top of a page has to clear the fixed mark
      and nav, or the back link lands underneath them */
   --chrome-clear:calc(var(--chrome-top) + var(--chrome-h) + 22px);
+  --cross:var(--chart);          /* crosshair field colour; light mode overrides to brand blue */
 }
 
 /* ---------- base ---------- */
 *{box-sizing:border-box;margin:0;padding:0}
 html{-webkit-text-size-adjust:100%;scrollbar-color:var(--chart) transparent;scrollbar-width:thin}
+html[data-theme="light"]{scrollbar-color:var(--blue) transparent}
 body{
   background:var(--bg);
   color:var(--ink);
@@ -159,8 +162,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
    eighty-odd needless GPU layers is a real cost on a phone. */
 @media (pointer:fine){ .xfield .x{will-change:transform} }
 .xfield .x::before,.xfield .x::after{
-  content:"";position:absolute;background:var(--chart);
+  content:"";position:absolute;background:var(--cross);
 }
+[data-theme="light"] .xfield .x{opacity:.5}
 .xfield .x::before{left:0;right:0;top:50%;height:1px;margin-top:-.5px}
 .xfield .x::after{top:0;bottom:0;left:50%;width:1px;margin-left:-.5px}
 
@@ -187,16 +191,16 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .pre-inner{position:relative;display:flex;flex-direction:column;align-items:center;gap:clamp(20px,3.6vw,32px);padding:clamp(28px,5vw,48px)}
 .pre-pct{
   font-family:var(--font-mono);font-weight:700;
-  font-size:clamp(38px,10vw,76px);line-height:1;color:var(--snow);
+  font-size:clamp(38px,10vw,76px);line-height:1;color:var(--ink);
   font-variant-numeric:tabular-nums;
 }
-.pre-rule{width:min(78vw,420px);height:1px;background:rgba(247,249,250,.2);position:relative}
-.pre-rule i{position:absolute;inset:0;background:var(--snow);transform:scaleX(0);transform-origin:left}
+.pre-rule{width:min(78vw,420px);height:1px;background:var(--line);position:relative}
+.pre-rule i{position:absolute;inset:0;background:var(--ink);transform:scaleX(0);transform-origin:left}
 .pre-coords{
-  display:flex;gap:clamp(14px,4vw,34px);color:var(--snow);
+  display:flex;gap:clamp(14px,4vw,34px);color:var(--ink);
   justify-content:center;flex-wrap:wrap;
 }
-.pre-cap{color:var(--snow);text-align:center;max-width:34ch}
+.pre-cap{color:var(--ink);text-align:center;max-width:34ch}
 
 /* register marks around the loader block */
 .pcross{position:absolute;width:22px;height:22px;opacity:.55}
@@ -374,15 +378,16 @@ footer.mono:hover .foot-mark{opacity:1}
 .theme-switch{
   position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
   width:82px;height:34px;border-radius:99px;padding:0;
-  background:rgba(6,7,15,.14);border:1px solid rgba(6,7,15,.18);
+  background:var(--black);border:1px solid rgba(247,249,250,.3);
   cursor:pointer;display:flex;align-items:center;
   opacity:0;transition:opacity .22s ease .16s,background .3s ease;
 }
 .fmenu.open .theme-switch{opacity:1}
-.theme-switch:hover{background:rgba(6,7,15,.2)}
+.theme-switch:hover{background:#101120}
 .theme-knob{
   position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;
-  background:var(--black);
+  display:flex;align-items:center;justify-content:center;
+  background:var(--snow);
   transition:transform .45s var(--settle);
   will-change:transform;
 }
@@ -390,7 +395,7 @@ footer.mono:hover .foot-mark{opacity:1}
 .theme-ico{
   position:absolute;top:0;width:40px;height:32px;
   display:flex;align-items:center;justify-content:center;
-  color:var(--black);transition:opacity .3s ease,transform .45s var(--settle);
+  color:var(--snow);transition:opacity .3s ease,transform .45s var(--settle);
   pointer-events:none;
 }
 .theme-ico svg{width:15px;height:15px}
@@ -398,10 +403,16 @@ footer.mono:hover .foot-mark{opacity:1}
 .theme-ico.sun{right:1px}
 /* the icon under the knob dims, so the knob always reads as the active side */
 .theme-ico.moon{opacity:1}
-.theme-ico.sun{opacity:.42}
-:root[data-theme="light"] .theme-ico.moon{opacity:.42}
+.theme-ico.sun{opacity:.5}
+:root[data-theme="light"] .theme-ico.moon{opacity:.5}
 :root[data-theme="light"] .theme-ico.sun{opacity:1}
-.theme-switch:focus-visible{outline:2px solid var(--black);outline-offset:3px}
+.theme-switch:focus-visible{outline:2px solid var(--snow);outline-offset:3px}
+/* the knob previews the theme you would switch TO: the opposite logo rides
+   inside the circle. Both variants read on the snow knob. */
+.theme-knob .tk{width:15px;height:auto;display:block}
+.theme-knob .tk-d{display:none}
+:root[data-theme="light"] .theme-knob .tk-l{display:none}
+:root[data-theme="light"] .theme-knob .tk-d{display:block}
 @media (prefers-reduced-motion:reduce){.theme-knob,.theme-ico{transition:none}}
 
 /* ---------- CTA button ----------
@@ -484,9 +495,10 @@ footer.mono:hover .foot-mark{opacity:1}
 
 /* ---------- sections ---------- */
 .section{padding:clamp(72px,13vw,140px) var(--pad)}
-[data-c="chart"]{--sec:var(--chart);--sec-ink:var(--black);--sec-tx:var(--chart-tx)}
-[data-c="fuch"]{--sec:var(--fuch);--sec-ink:var(--snow);--sec-tx:var(--fuch-tx)}
-[data-c="blue"]{--sec:var(--blue);--sec-ink:var(--snow);--sec-tx:var(--blue-tx)}
+/* unified study accent: one set per theme across all three studies.
+   Chartreuse carries dark mode, brand blue carries light mode. */
+[data-c="chart"],[data-c="fuch"],[data-c="blue"]{--sec:var(--chart);--sec-ink:var(--black);--sec-tx:var(--chart-tx)}
+[data-theme="light"] [data-c="chart"],[data-theme="light"] [data-c="fuch"],[data-theme="light"] [data-c="blue"]{--sec:var(--blue);--sec-ink:var(--snow);--sec-tx:var(--blue-tx)}
 .sec-head{
   display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
   gap:14px;margin-bottom:clamp(28px,5vw,56px);
@@ -712,7 +724,7 @@ footer{
 }
 /* the title is a second way into the same film, so it reads as a link */
 .vcard h3 a,.hero-film-cap h3 a{
-  color:var(--chart);transition:color .25s ease;
+  color:var(--chart-tx);transition:color .25s ease;
   text-decoration:none;display:inline-block;
 }
 .vcard h3 a:hover,.vcard h3 a:focus-visible,
@@ -761,9 +773,21 @@ footer{
 /* ---------- case study pages ---------- */
 .cs-top{position:relative;z-index:63;overflow:hidden;min-height:min(88vh,860px);display:flex;align-items:flex-end}
 .cs-top img.cs-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
-.cs-top::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0,rgba(6,7,13,.9) 22%,rgba(6,7,13,.3) 60%,rgba(6,7,13,.6) 100%)}
+/* the hero band is dark-grounded in BOTH themes: it ends on literal ink
+   black, not var(--bg), so the standfirst and facts inside it never
+   straddle a light fade. In dark this is pixel-identical to before. */
+.cs-top::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#06070D 0,rgba(6,7,13,.9) 22%,rgba(6,7,13,.3) 60%,rgba(6,7,13,.6) 100%)}
 .cs-top-inner{position:relative;z-index:2;width:100%;padding:clamp(90px,12vw,140px) var(--pad) clamp(24px,3.4vw,40px)}
 .cs-kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sec-tx,var(--accent-tx));margin-bottom:14px;display:block}
+/* the hero sits on dark imagery in every study, so its text is an on-image
+   exception: snow and bright chartreuse in BOTH themes, never page ink */
+.cs-top{color:var(--snow)}
+.cs-top .cs-title{color:var(--snow)}
+.cs-top .cs-tag{color:var(--snow)}
+.cs-top .cs-facts dt{color:rgba(247,249,250,.6)}
+.cs-top .cs-kicker{color:var(--chart)}
+.cs-top .back{color:rgba(247,249,250,.72)}
+.cs-top .back:hover,.cs-top .back:focus-visible{color:var(--snow)}
 .cs-title{font-size:clamp(46px,11vw,150px);line-height:.86;letter-spacing:-.03em}
 .cs-tag{max-width:44ch;margin-top:clamp(16px,2.4vw,26px);font-size:clamp(15px,1.9vw,21px);line-height:1.5;color:var(--ink)}
 .cs-facts{display:grid;grid-template-columns:1fr;gap:14px;margin-top:clamp(22px,3vw,34px);border-top:1px solid rgba(247,249,250,.22);padding-top:18px}
@@ -1154,6 +1178,11 @@ footer{
   *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
 }
 
+/* theme logo swap: full colour mark in dark, knockout box in light */
+.lg-l{display:none}
+[data-theme="light"] .lg-l{display:inline-block}
+[data-theme="light"] .lg-d{display:none}
+
 /* ==== touch overrides: MUST stay last so they beat the base rules above ====
    content-visibility's placeholder estimates (340px for a ~172px tile) made
    the browser re-layout mid-scroll right at the fold, which read as a
@@ -1203,8 +1232,8 @@ footer{
   <div class="pre-cap mono">Design / Branding / Photo / Video</div>
 </div>
 
-<header class="topbar mono"><a class="brand" href="/" data-view="home" aria-label="Houston Dragna, back to home"><img class="brand-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Full%20Color.svg" alt="" width="30" height="23" decoding="async"><span>HD © 2026</span></a></header>
-<a class="corner" id="corner" href="/" data-view="home" aria-label="Back to home"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Full%20Color.svg" alt="" width="46" height="35" decoding="async"></a>
+<header class="topbar mono"><a class="brand" href="/" data-view="home" aria-label="Houston Dragna, back to home"><img class="lg-d brand-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" decoding="async"><img class="lg-l brand-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" decoding="async"><span>HD © 2026</span></a></header>
+<a class="corner" id="corner" href="/" data-view="home" aria-label="Back to home"><img class="lg-d" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" decoding="async"><img class="lg-l" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" decoding="async"></a>
 
 <div class="rail left" aria-hidden="true">Houston Dragna · Portfolio 2026</div>
 <div class="rail right" aria-hidden="true">30.4515° N / 91.1871° W · Baton Rouge, LA</div>
@@ -1316,7 +1345,7 @@ footer{
     <div class="faq-list reveal" style="--d:.1s"><details class="faq-item reveal"><summary><span>What do you do?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>I work across brand design, photography, and video direction. In practice that means brand identity and design systems, campaign key art, product and lifestyle photography, launch films, and the packaging around them: social, retail, and e-commerce. On the largest projects I have run all of it as one pipeline rather than handing pieces to different teams.</p></div></details><details class="faq-item reveal"><summary><span>Where do you work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Anywhere the work is. I am available for global travel and regularly shoot on location, having produced campaigns across multiple cities for international launches. Studio, soundstage, LED volume wall, live venue, or client site. I am based in the United States and travel for the majority of projects.</p></div></details><details class="faq-item reveal"><summary><span>Do you take on freelance and contract work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Yes. Alongside in-house work I run an independent creative practice, taking on project-based engagements and ongoing retainers. That covers a single shoot or deliverable through to a full campaign built and delivered end to end.</p></div></details><details class="faq-item reveal"><summary><span>What kinds of clients do you work with?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Most of my recent work has been with music gear and pro audio brands, where I have led global product launches end to end. The same approach carries into DTC, SaaS and software, and CPG: categories where a product has to be explained and made desirable at the same time. If it needs a coherent visual idea carried across film, photography, and design, it is in scope.</p></div></details><details class="faq-item reveal"><summary><span>Do you handle a project end to end, or one piece of it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Either. I have pitched a campaign, storyboarded it, directed the shoot, shot the stills, mixed the audio, and designed the collateral. I have also been brought in for a single lane, most often photography or direction. Whichever way a project is structured, I am comfortable owning one piece or the whole thing.</p></div></details><details class="faq-item reveal"><summary><span>What is your turnaround?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>It depends on scope, but I plan backwards from your launch date and agree milestones before anything starts. Smaller projects usually move in days rather than weeks. For a multi-phase campaign, the schedule is built into the production plan up front so nothing lands late in the rollout.</p></div></details><details class="faq-item reveal"><summary><span>How do we start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach.</p><a class="cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="FAQ" aria-label="Email me"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Email me</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a></div></details></div>
   </section>
 
-  <footer class="mono"><span class="foot-id"><img class="foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Snow.svg" alt="" width="28" height="21" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
 </div>
 
 <!-- ==================== DESIGN ==================== -->
@@ -1327,7 +1356,7 @@ footer{
     <p class="page-lede">Brand identity, design systems, campaign key art, and launch creative. Eleven years of graphic design across Fender, PreSonus, and independent clients, working on global launches and available for travel. The work spans logo and identity systems, album art, packaging, social and campaign graphics, trade show environmental design, YouTube packaging, and e-commerce merchandising for global product launches.</p>
   </header>
   <section class="section" data-c="chart"><div class="grid grid-design mosaic" data-grid data-bare></div></section>
-  <footer class="mono"><span class="foot-id"><img class="foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Snow.svg" alt="" width="28" height="21" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
 </div>
 
 <!-- ==================== PHOTO ==================== -->
@@ -1338,7 +1367,7 @@ footer{
     <p class="page-lede">Commercial, product, lifestyle, and portrait photography, shot and finished in house. US based and available worldwide, shooting from studio product tables to touring stages: campaign and lifestyle imagery, high-end transactional product shots, artist portraits, live music and event coverage, and on-location documentary work for national brands.</p>
   </header>
   <section class="section" data-c="fuch"><div class="grid grid-photo mosaic" data-grid data-bare></div></section>
-  <footer class="mono"><span class="foot-id"><img class="foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Snow.svg" alt="" width="28" height="21" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
 </div>
 
 <!-- ==================== CASE STUDIES ==================== -->
@@ -1352,7 +1381,7 @@ footer{
     <!-- Full studies are Houston's own deployed Netlify apps: cards link out. -->
     <div class="cs-grid" id="csGrid"></div>
   </section>
-  <footer class="mono"><span class="foot-id"><img class="foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Snow.svg" alt="" width="28" height="21" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
 </div>
 
 <div class="view" id="view-cs-fender" data-c="chart">
@@ -1369,7 +1398,7 @@ footer{
   </header>
   <div class="cs-body" data-study="cs-fender"><section class="cs-band" id="cs-cs-namm-brief"><div class="cs-inner"><div class="cs-head"><div class="cs-num">01 · The Brief</div><div><h2 class="cs-h">Introduce a<br>brand in person.</h2><div class="cs-p"><p>NAMM 2026 was the public debut of Fender Studio: the identity that carries PreSonus into the larger Fender organization.</p><p>The booth had one job. Launch broad brand awareness for that transition, and make the new identity's first physical impression land with the industry. Everything on the floor, from the buildout to the screens to the print, was in service of that debut.</p></div></div></div><h3 class="cs-sub">What I owned</h3><div class="owned-grid"><div class="owned-card"><b>Blender</b><b>Previz</b><p>A to-scale booth mockup built to visualize the buildout and pitch the direction to leadership.</p></div><div class="owned-card"><b>LED</b><b>Wall</b><p>Graphic assets, overlays, and layouts for the booth's largest surface.</p></div><div class="owned-card"><b>Booth</b><b>Photo</b><p>Photography on the floor across the run of the show.</p></div><div class="owned-card"><b>Social</b><b>Graphics</b><p>Pre-show awareness assets driving traffic to the debut.</p></div><div class="owned-card"><b>Print &amp;</b><b>Handouts</b><p>Handout and download-card layouts built for post-show retention.</p></div><div class="owned-card"><b>Large</b><b>Format</b><p>Environmental print packaged and coordinated through outside vendors.</p></div></div></div></section><section class="cs-band alt" id="cs-cs-namm-booth"><div class="cs-inner"><div class="cs-head"><div class="cs-num">02 · From Mockup to Floor</div><div><h2 class="cs-h">I previsualize.<br>Then it ships.</h2><div class="cs-p"><p>Before production, I built a to-scale rough mockup in Blender to visualize the buildout and pitch the direction to leadership. Below, the previz set beside the finished build. The pitch and the floor, side by side.</p></div></div></div><div class="cs-compare"><div class="cs-pair"><figure class="cs-pane"><div class="shot"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Blender%20Previz%20Wide.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Blender%20Previz%20Wide.webp'" alt="Blender previz of the Fender Studio NAMM booth, wide front angle"></div><figcaption class="cs-cap"><b>Mockup</b> · Blender previz</figcaption></figure><div class="cs-built">Built ↓</div><figure class="cs-pane"><div class="shot"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Booth%20Finished%20Wide.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Booth%20Finished%20Wide.webp'" alt="The finished Fender Studio booth on the NAMM floor, wide angle"></div><figcaption class="cs-cap"><b>Floor</b> · finished booth</figcaption></figure></div><div class="cs-pair"><figure class="cs-pane"><div class="shot"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Blender%20Previz%20Detail.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Blender%20Previz%20Detail.webp'" alt="Blender previz of the Fender Studio NAMM booth, detail angle"></div><figcaption class="cs-cap"><b>Mockup</b> · Blender previz</figcaption></figure><div class="cs-built">Built ↓</div><figure class="cs-pane"><div class="shot"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Booth%20Finished%20Detail.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Booth%20Finished%20Detail.webp'" alt="The finished Fender Studio booth on the NAMM floor, detail angle"></div><figcaption class="cs-cap"><b>Floor</b> · finished booth</figcaption></figure></div></div></div></section><figure class="cs-bleed withcopy"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%201-and-hero.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%201-and-hero.webp'" alt="Fender Studio booth at NAMM 2026"><div class="overlay"><span class="cs-kicker">The debut</span><h2 class="cs-h">Where the name<br>met the floor.</h2><p>A trade show floor is an unforgiving first impression. The identity had to read from across the hall, hold up at arm's length, and stay consistent from the screens to the signage to the card in someone's hand.</p></div></figure><section class="cs-band"><div class="cs-inner"></div></section><section class="cs-pin" data-pin=""><div class="cs-pin-label"><b>Selected Frames</b> · On the floor · <span class="d">keep scrolling</span><span class="m">swipe sideways</span></div><div class="cs-pin-stick"><div class="cs-pin-track"><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%202.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%202.webp'" alt="Fender Studio booth at NAMM 2026"><figcaption>Fender Studio booth at NAMM 2026</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%204.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%204.webp'" alt="Fender Studio booth at NAMM 2026"><figcaption>Fender Studio booth at NAMM 2026</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%206.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%206.webp'" alt="Fender Studio booth at NAMM 2026"><figcaption>Fender Studio booth at NAMM 2026</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%207.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%207.webp'" alt="Fender Studio booth at NAMM 2026"><figcaption>Fender Studio booth at NAMM 2026</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%208.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%208.webp'" alt="Fender Studio booth at NAMM 2026"><figcaption>Fender Studio booth at NAMM 2026</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%209.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%209.webp'" alt="Fender Studio booth at NAMM 2026"><figcaption>Fender Studio booth at NAMM 2026</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2010.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2010.webp'" alt="Fender Studio booth at NAMM 2026"><figcaption>Fender Studio booth at NAMM 2026</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2013.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2013.webp'" alt="Fender Studio booth at NAMM 2026"><figcaption>Fender Studio booth at NAMM 2026</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2015.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2015.webp'" alt="Fender Studio booth at NAMM 2026"><figcaption>Fender Studio booth at NAMM 2026</figcaption></figure></div></div></section><section class="cs-band alt"><div class="cs-inner"></div></section><section class="cs-band" id="cs-cs-namm-screens"><div class="cs-inner"><div class="cs-head"><div class="cs-num">03 · On-Screen Content</div><div><h2 class="cs-h">The wall, running<br>the new identity.</h2><div class="cs-p"><p>LED wall graphic assets, overlays, and layouts, built to carry the Fender Studio system across the booth's largest surface. The wall cycled brand moments, product features, and live content through the show.</p></div></div></div><div class="cs-duo"><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20LED%20Wall%20Brand.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20LED%20Wall%20Brand.webp'" alt="LED wall running Fender Studio brand content at NAMM 2026"><figcaption>LED wall · brand moment</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20LED%20Wall%20Product.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20LED%20Wall%20Product.webp'" alt="LED wall running Fender Studio product content at NAMM 2026"><figcaption>LED wall · product feature</figcaption></figure></div><h3 class="cs-sub">The booth in action</h3><p class="cs-lede">The wall did not just run graphics. We programmed the booth as a live stage and cut the sessions for distribution, so the debut kept working long after the doors closed in Anaheim.</p><div class="cs-vgrid"><a class="cs-vcard" href="https://www.youtube.com/watch?v=LG-ZFNe-_aM" target="_blank" rel="noopener"><div class="shot"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20YouTube%20Thumb-DJ%20Jazzy%20Jeff.webp" alt="DJ Jazzy Jeff"><span class="vplay"><span class="vring"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></span></div><h4>DJ Jazzy Jeff</h4><span class="sub">Live from NAMM</span><p>The headline draw. A keynote set from a hall-of-fame DJ, staged inside the booth and packaged for YouTube to pull the debut well past the floor.</p></a><a class="cs-vcard" href="https://www.youtube.com/watch?v=Yu7wcEzeWJk" target="_blank" rel="noopener"><div class="shot"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20YouTube%20Thumb-Joey%20Burcham.webp" alt="Joey Burcham"><span class="vplay"><span class="vring"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></span></div><h4>Joey Burcham</h4><span class="sub">Live from NAMM</span><p>Roo Studios owner and engineer, demonstrating the workflow to a room of dealers and working professionals. The credibility layer.</p></a><a class="cs-vcard" href="https://www.youtube.com/watch?v=FT6pmv6PCVA" target="_blank" rel="noopener"><div class="shot"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20YouTube%20Thumb-Josh%20Cumbee.webp" alt="Josh Cumbee"><span class="vplay"><span class="vring"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></span></div><h4>Josh Cumbee</h4><span class="sub">Live from NAMM</span><p>Producer and songwriter session, showing the software in the hands of a working writer rather than on a spec sheet.</p></a></div></div></section><section class="cs-band alt" id="cs-cs-namm-reach"><div class="cs-inner"><div class="cs-head"><div class="cs-num">04 · Reach &amp; Retention</div><div><h2 class="cs-h">Extending the booth<br>beyond the floor.</h2><div class="cs-p"><p>The floor is four days. The work around it runs longer: social graphics building awareness before the doors opened, and print that stayed in someone's hand after they walked away.</p></div></div></div><h3 class="cs-sub">Before the show · awareness</h3><p class="cs-lede" style="text-align:left;margin-left:0">Social graphics driving pre-show awareness for the launch.</p><div class="grid grid-design in" data-grid="0"><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio NAMM pre-show social graphic"><img loading="eager" fetchpriority="high" decoding="async" width="320" height="400" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Social%20Pre-Show%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Social%20Pre-Show%201.webp'" alt="Fender Studio NAMM pre-show social graphic"><span class="idx">01</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio NAMM pre-show social graphic"><img loading="eager" fetchpriority="high" decoding="async" width="320" height="400" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Social%20Pre-Show%202.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Social%20Pre-Show%202.webp'" alt="Fender Studio NAMM pre-show social graphic"><span class="idx">02</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio NAMM show-day social graphic"><img loading="eager" fetchpriority="high" decoding="async" width="320" height="400" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Social%20Show-Day%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Social%20Show-Day%201.webp'" alt="Fender Studio NAMM show-day social graphic"><span class="idx">03</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio NAMM show-day social graphic"><img loading="eager" fetchpriority="high" decoding="async" width="320" height="400" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Social%20Show-Day%202.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Social%20Show-Day%202.webp'" alt="Fender Studio NAMM show-day social graphic"><span class="idx">04</span></figure></div><h3 class="cs-sub">After the show · retention</h3><p class="cs-lede" style="text-align:left;margin-left:0">Handout and download-card print layouts that kept visitors connected to the product after the floor.</p><div class="grid grid-design in" data-grid="1"><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio download card, front"><img loading="eager" fetchpriority="high" decoding="async" width="400" height="240" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Download%20Card%20Front.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Download%20Card%20Front.webp'" alt="Fender Studio download card, front"><span class="idx">01</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio download card, back"><img loading="eager" fetchpriority="high" decoding="async" width="400" height="240" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Download%20Card%20Back.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Download%20Card%20Back.webp'" alt="Fender Studio download card, back"><span class="idx">02</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio sticker layout"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="267" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Sticker%20Layout.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%20Sticker%20Layout.webp'" alt="Fender Studio sticker layout"><span class="idx">03</span></figure></div></div></section><section class="cs-band" id="cs-cs-namm-outcome"><div class="cs-inner"><div class="cs-head"><div class="cs-num">05 · Outcome</div><div><h2 class="cs-h">A brand debut,<br>at industry scale.</h2><div class="cs-p"><p>The booth marked the public debut of Fender Studio, a newly minted subbrand transitioning the PreSonus identity into the larger Fender organization. The goal was brand awareness for that transition, and the booth was where the new identity met the industry for the first time. Across four days on the floor it drew dealers, press, and A-list musical talent, all meeting the brand in person for the first time.</p></div></div></div><h3 class="cs-sub">What shipped</h3><div class="stat-grid" style="--sc:4"><div class="stat"><b>4</b><span>days on the floor in Anaheim</span></div><div class="stat"><b>2</b><span>to-scale Blender previz angles pitched to leadership</span></div><div class="stat"><b>3</b><span>live booth sessions captured and packaged</span></div><div class="stat"><b>6</b><span>asset categories owned: previz, LED, photo, social, print, large format</span></div></div><h3 class="cs-sub">Credit</h3><div class="credit-grid"><div class="credit-col"><h4>Owned</h4><ul><li>Blender booth mockup, built to scale to pitch the buildout to leadership</li><li>LED wall graphic assets, overlays, and layouts</li><li>Social graphics</li><li>Booth photography</li><li>Handout and download-card print layouts</li><li>Large-format environmental print, packaged and coordinated through outside vendors</li></ul></div><div class="credit-col collab"><h4>Signage</h4><ul><li>A collaborative design effort with our Creative Director. All signage used my images, and I took lead on some designs. Final delivery and signoff owned by the Creative Director.</li></ul></div></div><div class="cs-note">Attendance and engagement figures for the show belong to Fender and NAMM rather than me, so they are not published here. This page covers the creative I owned.</div></div></section><section class="cs-band"><div class="cs-inner"><a class="cta" href="/case-studies/studiolive-se" data-view="cs-se" aria-label="Next case study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span><span class="cta-label">Next case study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span></a></div></section></div>
   <div class="cs-band"><div class="cs-inner"></div></div>
-  <footer class="mono"><span class="foot-id"><img class="foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Snow.svg" alt="" width="28" height="21" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
 </div>
 
 <div class="view" id="view-cs-namm" data-c="blue">
@@ -1386,7 +1415,7 @@ footer{
   </header>
   <div class="cs-body" data-study="cs-namm"></div>
   <div class="cs-band"><div class="cs-inner"></div></div>
-  <footer class="mono"><span class="foot-id"><img class="foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Snow.svg" alt="" width="28" height="21" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
 </div>
 
 <div class="view" id="view-cs-se" data-c="fuch">
@@ -1403,7 +1432,7 @@ footer{
   </header>
   <div class="cs-body" data-study="cs-se"></div>
   <div class="cs-band"><div class="cs-inner"></div></div>
-  <footer class="mono"><span class="foot-id"><img class="foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Snow.svg" alt="" width="28" height="21" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
 </div>
 
 <!-- ==================== VIDEO ==================== -->
@@ -1431,7 +1460,7 @@ footer{
     </div>
     <div class="vgrid" id="filmGrid"></div>
   </section>
-  <footer class="mono"><span class="foot-id"><img class="foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Snow.svg" alt="" width="28" height="21" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
 </div>
 </main>
 
@@ -1465,7 +1494,7 @@ footer{
       <a class="m-item" style="--i:6" href="#contact" data-scroll>Contact</a>
       <a class="m-item" style="--i:7" href="#faq" data-scroll>FAQ</a>
       <button class="theme-switch" id="themeSwitch" type="button" role="switch" aria-checked="false" aria-label="Switch to light mode">
-        <span class="theme-knob" aria-hidden="true"></span>
+        <span class="theme-knob" aria-hidden="true"><img class="tk tk-l" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" decoding="async"><img class="tk tk-d" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" decoding="async"></span>
         <span class="theme-ico moon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.9 6.9 0 0 0 10.7 10.7Z"/></svg></span>
         <span class="theme-ico sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg></span>
       </button>
@@ -2438,12 +2467,14 @@ const nextWordIdx = cur => {
   return i;
 };
 /* off white, chartreuse, fuchsia, true blue. No lifted blue, no black. */
-const COLORS = ['#E9F500','#FF1245','#F7F9FA','#0015FF'];
+const COLORS_D = ['#E9F500','#FF1245','#F7F9FA','#0015FF'];
+const COLORS_L = ['#0011CC','#B3002A','#15161C','#0015FF'];
+const COLORS = () => document.documentElement.getAttribute('data-theme')==='light' ? COLORS_L : COLORS_D;
 /* [TUNE] how long each word holds before it rolls to the next */
 const WORD_HOLD = 1.33;
 let wIdx = 0;
 m2.textContent = WORDS[0];
-function paint(){ m2.style.color = COLORS[wIdx % COLORS.length]; }
+function paint(){ m2.style.color = COLORS()[wIdx % 4]; }
 paint();
 /* Touch uses the same character roll as the nav items: each letter sits in an
    overflow-hidden box over a two-deep stack, and the stack slides up to reveal
@@ -2527,7 +2558,7 @@ const ROLL_MS = 620, ROLL_STEP = 34;
     if (!ready || current !== 'home' || document.hidden) return;
     const nIdx = nextWordIdx(wIdx);
     const next = WORDS[nIdx];
-    const nextColor = COLORS[nIdx % COLORS.length];
+    const nextColor = COLORS()[nIdx % 4];
     cells.forEach((c,i) => {
       c.b.textContent = glyph(next,i);
       c.b.style.color = nextColor;
@@ -2815,20 +2846,24 @@ function refreshReveals(){
 }
 
 /* ---------- neon hover cycling ---------- */
-const FILLS = [['#E9F500','#06070F'],['#0015FF','#F7F9FA'],['#FF1245','#F7F9FA'],['#F7F9FA','#06070F']];
-const TEXTS = ['#E9F500','#FF1245','#F7F9FA','#0015FF'];
+const FILLS_D = [['#E9F500','#06070F'],['#0015FF','#F7F9FA'],['#FF1245','#F7F9FA'],['#F7F9FA','#06070F']];
+const FILLS_L = [['#E9F500','#06070F'],['#0015FF','#F7F9FA'],['#FF1245','#F7F9FA'],['#06070F','#F7F9FA']];
+const FILLS = () => document.documentElement.getAttribute('data-theme')==='light' ? FILLS_L : FILLS_D;
+const TEXTS_D = ['#E9F500','#FF1245','#F7F9FA','#0015FF'];
+const TEXTS_L = ['#0011CC','#B3002A','#15161C','#0015FF'];
+const TEXTS = () => document.documentElement.getAttribute('data-theme')==='light' ? TEXTS_L : TEXTS_D;
 let fillI = 0, lastText = -1;
 function randText(){
   let i;
-  do { i = Math.floor(Math.random() * TEXTS.length); } while (i === lastText && TEXTS.length > 1);
+  do { i = Math.floor(Math.random() * 4); } while (i === lastText);
   lastText = i;
-  return TEXTS[i];
+  return TEXTS()[i];
 }
 document.addEventListener('pointerover', e => {
   const fillEl = e.target.closest('.see-more,.chip,.about-cta,.video-open');
   if (fillEl && !fillEl.dataset.hv){
     fillEl.dataset.hv = 1;
-    const [b, f] = FILLS[fillI++ % FILLS.length];
+    const [b, f] = FILLS()[fillI++ % 4];
     fillEl.style.setProperty('--hb', b); fillEl.style.setProperty('--hf', f);
     fillEl.addEventListener('pointerleave', () => delete fillEl.dataset.hv, { once:true });
   }
