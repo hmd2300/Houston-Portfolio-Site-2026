@@ -98,7 +98,12 @@
   --fuch-tx:#B3002A;             /* fuchsia darkened:    6.52:1 */
   --shadow:rgba(6,7,15,.22);
   color-scheme:light;
+}
 
+/* structural variables: theme independent, must apply in BOTH themes.
+   These were accidentally merged into the light block above, which
+   killed fonts, padding, and the fixed nav whenever the theme was dark. */
+:root{
   --font-display:'Archivo',Impact,sans-serif;
   --font-body:'Instrument Sans',system-ui,sans-serif;
   --font-mono:'Space Mono',ui-monospace,monospace;
