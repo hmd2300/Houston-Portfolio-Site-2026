@@ -344,11 +344,21 @@ body.ready .hero-name{opacity:1}
 }
 body.ready .morph{opacity:1}
 
+/* the copyright moved off the top-left lockup and into this row, so the
+   mark stands alone in the chrome. Three items, evenly spread on wide
+   screens; on narrow ones it drops to its own centred line instead of
+   squeezing the other two into wraps. */
+.meta-mark{text-align:center}
 .hero-meta{
   position:absolute;z-index:10;left:var(--pad);right:var(--pad);
   bottom:calc(20px + env(safe-area-inset-bottom));
   display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
   color:var(--ink-dim);
+}
+@media (max-width:700px){
+  /* the three items DO fit one line at 390px once the 16px gap comes
+     down; wrapping instead would grow the row upward into the headline */
+  .hero-meta{gap:6px}
 }
 
 /* copy fallback for anyone whose browser has no mail handler */
@@ -385,34 +395,29 @@ footer.mono:hover .foot-mark{opacity:1}
 .fmenu.open .theme-switch{opacity:1}
 .theme-switch:hover{background:#101120}
 .theme-knob{
-  position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
+  position:absolute;z-index:1;top:3px;left:3px;width:26px;height:26px;border-radius:50%;
   background:var(--snow);
   transition:transform .45s var(--settle);
   will-change:transform;
 }
 :root[data-theme="light"] .theme-knob{transform:translateX(48px)}
 .theme-ico{
-  position:absolute;top:0;width:40px;height:32px;
+  position:absolute;z-index:2;top:3px;width:26px;height:26px;
   display:flex;align-items:center;justify-content:center;
   color:var(--snow);transition:opacity .3s ease,transform .45s var(--settle);
   pointer-events:none;
 }
 .theme-ico svg{width:15px;height:15px}
-.theme-ico.moon{left:1px}
-.theme-ico.sun{right:1px}
-/* the icon under the knob dims, so the knob always reads as the active side */
-.theme-ico.moon{opacity:1}
-.theme-ico.sun{opacity:.5}
-:root[data-theme="light"] .theme-ico.moon{opacity:.5}
-:root[data-theme="light"] .theme-ico.sun{opacity:1}
+.theme-ico.moon{left:3px}
+.theme-ico.sun{left:51px}
+/* both icons stay visible in both themes. The one the knob has slid under
+   inks to off-black so it reads on the snow circle and marks the active
+   side; the other stays snow at half strength on the dark track. */
+.theme-ico.moon{opacity:1;color:var(--black)}
+.theme-ico.sun{opacity:.5;color:var(--snow)}
+:root[data-theme="light"] .theme-ico.moon{opacity:.5;color:var(--snow)}
+:root[data-theme="light"] .theme-ico.sun{opacity:1;color:var(--black)}
 .theme-switch:focus-visible{outline:2px solid var(--snow);outline-offset:3px}
-/* the knob previews the theme you would switch TO: the opposite logo rides
-   inside the circle. Both variants read on the snow knob. */
-.theme-knob .tk{width:15px;height:auto;display:block}
-.theme-knob .tk-d{display:none}
-:root[data-theme="light"] .theme-knob .tk-l{display:none}
-:root[data-theme="light"] .theme-knob .tk-d{display:block}
 @media (prefers-reduced-motion:reduce){.theme-knob,.theme-ico{transition:none}}
 
 /* ---------- CTA button ----------
@@ -1037,7 +1042,7 @@ footer{
 }
 .corner:hover img,.corner:focus-visible img{transform:translateY(-2px) scale(1.06)}
 /* the header lockup pairs the mark with the existing wordmark */
-.brand{display:inline-flex;align-items:center;gap:9px;pointer-events:auto}
+.brand{display:inline-flex;align-items:center;pointer-events:auto}
 .brand-mark{height:var(--chrome-h);width:auto;display:block;flex:0 0 auto}
 
 /* ---------- reveal ---------- */
@@ -1178,10 +1183,13 @@ footer{
   *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
 }
 
-/* theme logo swap: full colour mark in dark, knockout box in light */
-.lg-l{display:none}
-[data-theme="light"] .lg-l{display:inline-block}
-[data-theme="light"] .lg-d{display:none}
+/* theme logo swap: full colour mark in dark, knockout box in light.
+   These carry a tag qualifier on purpose: .corner img is (0,1,1) and
+   was out-ranking a bare .lg-l (0,1,0), which showed BOTH marks in the
+   corner lockup. img.lg-* is (0,1,2) and wins wherever the pair is used. */
+html img.lg-l{display:none}
+html[data-theme="light"] img.lg-l{display:block}
+html[data-theme="light"] img.lg-d{display:none}
 
 /* ==== touch overrides: MUST stay last so they beat the base rules above ====
    content-visibility's placeholder estimates (340px for a ~172px tile) made
@@ -1232,7 +1240,7 @@ footer{
   <div class="pre-cap mono">Design / Branding / Photo / Video</div>
 </div>
 
-<header class="topbar mono"><a class="brand" href="/" data-view="home" aria-label="Houston Dragna, back to home"><img class="lg-d brand-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" decoding="async"><img class="lg-l brand-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" decoding="async"><span>HD © 2026</span></a></header>
+<header class="topbar mono"><a class="brand" href="/" data-view="home" aria-label="Houston Dragna, back to home"><img class="lg-d brand-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" decoding="async"><img class="lg-l brand-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" decoding="async"></a></header>
 <a class="corner" id="corner" href="/" data-view="home" aria-label="Back to home"><img class="lg-d" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" decoding="async"><img class="lg-l" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" decoding="async"></a>
 
 <div class="rail left" aria-hidden="true">Houston Dragna · Portfolio 2026</div>
@@ -1265,6 +1273,7 @@ footer{
 
       <div class="hero-meta mono" id="heroMeta">
         <span>Baton Rouge, LA</span>
+        <span class="meta-mark">HD © 2026</span>
         <span>Est. 2015 · 11 yrs</span>
       </div>
     </div>
@@ -1521,7 +1530,7 @@ footer{
       <a class="m-item" style="--i:6" href="#contact" data-scroll>Contact</a>
       <a class="m-item" style="--i:7" href="#faq" data-scroll>FAQ</a>
       <button class="theme-switch" id="themeSwitch" type="button" role="switch" aria-checked="false" aria-label="Switch to light mode">
-        <span class="theme-knob" aria-hidden="true"><img class="tk tk-l" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" decoding="async"><img class="tk tk-d" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" decoding="async"></span>
+        <span class="theme-knob" aria-hidden="true"></span>
         <span class="theme-ico moon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.9 6.9 0 0 0 10.7 10.7Z"/></svg></span>
         <span class="theme-ico sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg></span>
       </button>
