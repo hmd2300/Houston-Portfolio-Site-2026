@@ -18,6 +18,18 @@
   window.plausible=window.plausible||function(){(plausible.q=plausible.q||[]).push(arguments)},plausible.init=plausible.init||function(i){plausible.o=i||{}};
   plausible.init({ autoCapturePageviews: false })
 </script>
+<script>
+  /* Resolve the theme before the first paint. Doing this in the main script
+     would flash the wrong palette for a frame. A stored choice wins; failing
+     that the operating system decides. */
+  (function(){
+    try {
+      var saved = localStorage.getItem('hd-theme');
+      var sys = matchMedia('(prefers-color-scheme: light)').matches;
+      if (saved === 'light' || (!saved && sys)) document.documentElement.setAttribute('data-theme','light');
+    } catch(e){}
+  })();
+</script>
 <link rel="canonical" href="https://www.houstondragna.com/case-studies/namm-2026">
 <meta property="og:url" content="https://www.houstondragna.com/case-studies/namm-2026">
 <meta property="og:type" content="website">
@@ -61,6 +73,31 @@
   --line:rgba(247,249,250,.15);
   --accent:var(--chart);
   --accent-ink:var(--black);
+  --accent-tx:var(--chart);      /* the accent used as TEXT, not as a fill */
+  --chart-tx:var(--chart);
+  --fuch-tx:var(--fuch);
+  --shadow:rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+
+/* ---------- light mode ----------
+   Fills keep the brand hues: dark ink on chartreuse or fuchsia reads fine
+   either way. Text accents cannot. On a light ground chartreuse is 1.10:1 and
+   fuchsia 3.55:1, so those get darkened equivalents of the same hue, which
+   keeps the palette recognisable while passing at any size. */
+:root[data-theme="light"]{
+  --bg:#F4F5F6;
+  --bg-2:#E9EBED;
+  --ink:#15161C;
+  --ink-dim:#5A5F66;
+  --line:rgba(6,7,15,.16);
+  --blue-tx:#0011CC;             /* 9.86:1 on light */
+  --blue-hv:#0015FF;
+  --accent-tx:#5A5E00;           /* chartreuse darkened: 6.34:1 */
+  --chart-tx:#5A5E00;
+  --fuch-tx:#B3002A;             /* fuchsia darkened:    6.52:1 */
+  --shadow:rgba(6,7,15,.22);
+  color-scheme:light;
 
   --font-display:'Archivo',Impact,sans-serif;
   --font-body:'Instrument Sans',system-ui,sans-serif;
@@ -73,6 +110,9 @@
   /* [TUNE] the fixed chrome band: the nav pill and the top-left mark share it */
   --chrome-top:12px;
   --chrome-h:48px;
+  /* anything in normal flow at the top of a page has to clear the fixed mark
+     and nav, or the back link lands underneath them */
+  --chrome-clear:calc(var(--chrome-top) + var(--chrome-h) + 22px);
 }
 
 /* ---------- base ---------- */
@@ -191,7 +231,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 }
 .topbar>*{pointer-events:auto}
 .brand span{font-weight:700;transition:color .25s ease,opacity .4s ease}
-.brand:hover span{color:var(--ht,var(--chart))}
+.brand:hover span{color:var(--ht,var(--accent-tx))}
 
 /* ---------- vertical rails ---------- */
 .rail{
@@ -279,7 +319,7 @@ body.ready .hero-frame{opacity:1}
   pointer-events:auto;cursor:default;
   opacity:0;transition:opacity 1.2s var(--ease-out) .15s,color .3s ease;
 }
-.hero-name:hover{color:var(--ht,var(--chart))}
+.hero-name:hover{color:var(--ht,var(--accent-tx))}
 body.ready .hero-name{opacity:1}
 .hero-name span{display:block}
 
@@ -321,6 +361,43 @@ body.ready .morph{opacity:1}
 .foot-id{display:inline-flex;align-items:center;gap:10px}
 .foot-mark{height:21px;width:auto;opacity:.6;transition:opacity .3s ease}
 footer.mono:hover .foot-mark{opacity:1}
+
+/* ---------- theme switch ----------
+   A contained track with a knob that slides between a moon and a sun. It sits
+   at the foot of the open panel, on the panel's own ink so it reads in both
+   themes without a second set of colours. */
+.theme-switch{
+  position:absolute;bottom:22px;left:50%;transform:translateX(-50%);
+  width:82px;height:34px;border-radius:99px;padding:0;
+  background:rgba(6,7,15,.14);border:1px solid rgba(6,7,15,.18);
+  cursor:pointer;display:flex;align-items:center;
+  opacity:0;transition:opacity .22s ease .16s,background .3s ease;
+}
+.fmenu.open .theme-switch{opacity:1}
+.theme-switch:hover{background:rgba(6,7,15,.2)}
+.theme-knob{
+  position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;
+  background:var(--black);
+  transition:transform .45s var(--settle);
+  will-change:transform;
+}
+:root[data-theme="light"] .theme-knob{transform:translateX(48px)}
+.theme-ico{
+  position:absolute;top:0;width:40px;height:32px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--black);transition:opacity .3s ease,transform .45s var(--settle);
+  pointer-events:none;
+}
+.theme-ico svg{width:15px;height:15px}
+.theme-ico.moon{left:1px}
+.theme-ico.sun{right:1px}
+/* the icon under the knob dims, so the knob always reads as the active side */
+.theme-ico.moon{opacity:1}
+.theme-ico.sun{opacity:.42}
+:root[data-theme="light"] .theme-ico.moon{opacity:.42}
+:root[data-theme="light"] .theme-ico.sun{opacity:1}
+.theme-switch:focus-visible{outline:2px solid var(--black);outline-offset:3px}
+@media (prefers-reduced-motion:reduce){.theme-knob,.theme-ico{transition:none}}
 
 /* ---------- CTA button ----------
    A chip unfolds in on the left while the label slides across to meet it, and
@@ -391,9 +468,9 @@ footer.mono:hover .foot-mark{opacity:1}
   transition:color .25s ease;
 }
 .faq-item summary::-webkit-details-marker{display:none}
-.faq-item summary:hover,.faq-item summary:focus-visible{color:var(--sec-tx,var(--chart))}
+.faq-item summary:hover,.faq-item summary:focus-visible{color:var(--sec-tx,var(--accent-tx))}
 .faq-item summary svg{
-  flex:0 0 auto;width:18px;height:18px;color:var(--sec-tx,var(--chart));
+  flex:0 0 auto;width:18px;height:18px;color:var(--sec-tx,var(--accent-tx));
   transition:transform .35s var(--settle);
 }
 .faq-item[open] summary svg{transform:rotate(45deg)}
@@ -402,8 +479,8 @@ footer.mono:hover .foot-mark{opacity:1}
 
 /* ---------- sections ---------- */
 .section{padding:clamp(72px,13vw,140px) var(--pad)}
-[data-c="chart"]{--sec:var(--chart);--sec-ink:var(--black);--sec-tx:var(--chart)}
-[data-c="fuch"]{--sec:var(--fuch);--sec-ink:var(--snow);--sec-tx:var(--fuch)}
+[data-c="chart"]{--sec:var(--chart);--sec-ink:var(--black);--sec-tx:var(--chart-tx)}
+[data-c="fuch"]{--sec:var(--fuch);--sec-ink:var(--snow);--sec-tx:var(--fuch-tx)}
 [data-c="blue"]{--sec:var(--blue);--sec-ink:var(--snow);--sec-tx:var(--blue-tx)}
 .sec-head{
   display:flex;flex-wrap:wrap;align-items:flex-end;justify-content:space-between;
@@ -543,7 +620,7 @@ footer{
   font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
   color:var(--ink-dim);transition:color .25s ease;
 }
-.back:hover{color:var(--ht,var(--chart))}
+.back:hover{color:var(--ht,var(--accent-tx))}
 .back svg{width:13px;height:13px}
 .count-tag{
   display:inline-block;margin-left:14px;padding:4px 9px;vertical-align:middle;
@@ -681,7 +758,7 @@ footer{
 .cs-top img.cs-bg{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .cs-top::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,var(--bg) 0,rgba(6,7,13,.9) 22%,rgba(6,7,13,.3) 60%,rgba(6,7,13,.6) 100%)}
 .cs-top-inner{position:relative;z-index:2;width:100%;padding:clamp(90px,12vw,140px) var(--pad) clamp(24px,3.4vw,40px)}
-.cs-kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sec-tx,var(--chart));margin-bottom:14px;display:block}
+.cs-kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sec-tx,var(--accent-tx));margin-bottom:14px;display:block}
 .cs-title{font-size:clamp(46px,11vw,150px);line-height:.86;letter-spacing:-.03em}
 .cs-tag{max-width:44ch;margin-top:clamp(16px,2.4vw,26px);font-size:clamp(15px,1.9vw,21px);line-height:1.5;color:var(--ink)}
 .cs-facts{display:grid;grid-template-columns:1fr;gap:14px;margin-top:clamp(22px,3vw,34px);border-top:1px solid rgba(247,249,250,.22);padding-top:18px}
@@ -699,7 +776,7 @@ footer{
 .cs-inner{max-width:1320px;margin:0 auto}
 .cs-head{display:grid;gap:16px;grid-template-columns:1fr;margin-bottom:clamp(24px,3.4vw,44px)}
 @media (min-width:960px){.cs-head{grid-template-columns:minmax(150px,16%) minmax(0,1fr);gap:clamp(28px,4vw,72px);align-items:start}}
-.cs-num{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sec-tx,var(--chart));padding-top:.6em}
+.cs-num{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sec-tx,var(--accent-tx));padding-top:.6em}
 .cs-h{
   font-family:var(--font-display);font-weight:900;font-stretch:118%;text-transform:uppercase;
   font-size:clamp(30px,5.4vw,74px);line-height:.9;letter-spacing:-.028em;
@@ -726,7 +803,7 @@ footer{
 @media (min-width:1000px){.owned-grid{grid-template-columns:repeat(3,1fr)}}
 .owned-card{background:var(--bg);padding:clamp(20px,2.6vw,30px);transition:background .3s ease}
 .owned-card:hover{background:var(--bg-2)}
-.owned-card b{display:block;font-family:var(--font-display);font-weight:900;font-stretch:118%;text-transform:uppercase;font-size:clamp(19px,2.2vw,27px);line-height:.94;letter-spacing:-.02em;color:var(--sec-tx,var(--chart))}
+.owned-card b{display:block;font-family:var(--font-display);font-weight:900;font-stretch:118%;text-transform:uppercase;font-size:clamp(19px,2.2vw,27px);line-height:.94;letter-spacing:-.02em;color:var(--sec-tx,var(--accent-tx))}
 .owned-card b+b{color:var(--ink);margin-bottom:12px}
 .owned-card p{color:var(--ink-dim);font-size:14px;line-height:1.55}
 
@@ -734,7 +811,7 @@ footer{
 .stat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line)}
 @media (min-width:760px){.stat-grid{grid-template-columns:repeat(var(--sc,4),1fr)}}
 .stat{background:var(--bg);padding:clamp(20px,2.8vw,32px)}
-.stat b{display:block;font-family:var(--font-display);font-weight:900;font-stretch:118%;font-size:clamp(30px,4.6vw,58px);line-height:.88;letter-spacing:-.03em;color:var(--sec-tx,var(--chart))}
+.stat b{display:block;font-family:var(--font-display);font-weight:900;font-stretch:118%;font-size:clamp(30px,4.6vw,58px);line-height:.88;letter-spacing:-.03em;color:var(--sec-tx,var(--accent-tx))}
 .stat span{display:block;margin-top:10px;font-family:var(--font-mono);font-size:10px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-dim);line-height:1.5}
 .cs-note{margin-top:18px;padding:16px 18px;max-width:80ch;border-left:2px solid var(--sec,var(--chart));background:var(--bg-2);font-family:var(--font-mono);font-size:11px;line-height:1.75;letter-spacing:.02em;color:var(--ink-dim)}
 
@@ -752,7 +829,7 @@ footer{
 .cs-chips{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:20px}
 @media (min-width:760px){.cs-chips{grid-template-columns:repeat(4,1fr)}}
 .cs-chip{background:var(--bg);padding:16px 18px}
-.cs-chip b{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--sec-tx,var(--chart));margin-bottom:7px}
+.cs-chip b{display:block;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--sec-tx,var(--accent-tx));margin-bottom:7px}
 .cs-chip span{font-size:13px;color:var(--ink-dim);line-height:1.45}
 
 /* centred video cards with descriptions */
@@ -765,7 +842,7 @@ footer{
 .cs-vcard .shot::after{content:"";position:absolute;inset:0;border:2px solid transparent;transition:border-color .25s ease}
 .cs-vcard:hover .shot::after{border-color:var(--sec,var(--chart))}
 .cs-vcard h4{font-family:var(--font-display);font-weight:900;font-stretch:110%;text-transform:uppercase;font-size:clamp(19px,2.2vw,26px);line-height:.96;letter-spacing:-.015em}
-.cs-vcard .sub{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--sec-tx,var(--chart))}
+.cs-vcard .sub{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--sec-tx,var(--accent-tx))}
 .cs-vcard p{color:var(--ink-dim);font-size:14px;line-height:1.6;max-width:38ch;margin:0 auto}
 .cs-lede{max-width:70ch;margin:0 auto clamp(26px,3.4vw,44px);text-align:center;color:var(--ink-dim);font-size:clamp(15px,1.6vw,17px);line-height:1.66}
 
@@ -789,11 +866,11 @@ footer{
   font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-dim);
 }
-.cs-cap b{color:var(--sec-tx,var(--chart));font-weight:400}
+.cs-cap b{color:var(--sec-tx,var(--accent-tx));font-weight:400}
 .cs-built{
   display:flex;align-items:center;gap:10px;padding:16px 0 14px;
   font-family:var(--font-mono);font-size:11px;letter-spacing:.22em;
-  text-transform:uppercase;color:var(--sec-tx,var(--chart));
+  text-transform:uppercase;color:var(--sec-tx,var(--accent-tx));
 }
 .cs-built::after{content:"";flex:1;height:1px;background:var(--line)}
 
@@ -815,7 +892,7 @@ footer{
 .cs-steps{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);grid-template-columns:1fr}
 @media (min-width:760px){.cs-steps{grid-template-columns:repeat(3,1fr)}}
 .cs-step{background:var(--bg);padding:clamp(20px,2.6vw,30px)}
-.cs-step b{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--sec-tx,var(--chart));margin-bottom:12px}
+.cs-step b{display:block;font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;color:var(--sec-tx,var(--accent-tx));margin-bottom:12px}
 .cs-step h4{font-family:var(--font-display);font-weight:900;font-stretch:110%;text-transform:uppercase;font-size:clamp(17px,1.9vw,22px);margin-bottom:8px}
 .cs-step p{color:var(--ink-dim);font-size:14px;line-height:1.55}
 .cs-people{display:grid;gap:1px;background:var(--line);border:1px solid var(--line);grid-template-columns:1fr}
@@ -826,7 +903,7 @@ footer{
 .cs-person .pic img{width:100%;height:100%;object-fit:cover}
 .cs-person .body{padding:clamp(18px,2.2vw,24px)}
 .cs-person b{display:block;font-family:var(--font-display);font-weight:900;font-stretch:118%;text-transform:uppercase;font-size:clamp(20px,2.3vw,28px);line-height:.92;letter-spacing:-.02em}
-.cs-person b.two{color:var(--sec-tx,var(--chart))}
+.cs-person b.two{color:var(--sec-tx,var(--accent-tx))}
 .cs-person .role{display:block;margin:10px 0 10px;font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink-dim)}
 .cs-person p{color:var(--ink-dim);font-size:13.5px;line-height:1.55}
 /* pinned horizontal reel: the section holds while vertical scroll travels
@@ -988,7 +1065,7 @@ footer{
   contain:layout paint;
 }
 .fmenu-box:hover{transform:scale(1.04)}
-.fmenu.open .fmenu-box{width:300px;height:442px;border-radius:28px;cursor:default}
+.fmenu.open .fmenu-box{width:300px;height:500px;border-radius:28px;cursor:default}
 .fmenu.open .fmenu-box:hover{transform:none}
 .fmenu-bg{position:absolute;inset:0;background:var(--chart);border-radius:inherit}
 .fmenu-circle{
@@ -1014,8 +1091,11 @@ footer{
 .fmenu.open .burger span:first-child{transform:rotate(45deg)}
 .fmenu.open .burger span:last-child{transform:rotate(-45deg)}
 .fmenu-items{
-  position:absolute;left:0;right:0;top:48px;bottom:0;z-index:2;
+  /* the links sit above centre so the switch has its own margin at the foot
+     rather than being crowded against the last item */
+  position:absolute;left:0;right:0;top:var(--chrome-h);bottom:0;z-index:2;
   display:flex;flex-direction:column;align-items:center;justify-content:center;gap:19px;
+  padding-bottom:64px;
   opacity:0;pointer-events:none;transition:opacity .2s ease;
 }
 .fmenu.open .fmenu-items{opacity:1;pointer-events:auto;transition-delay:.1s}
@@ -1086,6 +1166,9 @@ footer{
   /* static full-bleed hero: a radius reads as a bad seam at the edges */
   .hero-frame{border-radius:0}
   .section{padding:52px var(--pad)}
+  /* the generic 52px is less than the chrome band, so a page head would
+     collide with the mark on the left and the nav on the right */
+  .section.page-head{padding-top:var(--chrome-clear)}
   .sec-head{margin-bottom:26px}
 }
 </style>
@@ -1376,6 +1459,11 @@ footer{
       <a class="m-item" style="--i:5" href="#about" data-scroll>About</a>
       <a class="m-item" style="--i:6" href="#contact" data-scroll>Contact</a>
       <a class="m-item" style="--i:7" href="#faq" data-scroll>FAQ</a>
+      <button class="theme-switch" id="themeSwitch" type="button" role="switch" aria-checked="false" aria-label="Switch to light mode">
+        <span class="theme-knob" aria-hidden="true"></span>
+        <span class="theme-ico moon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.9 6.9 0 0 0 10.7 10.7Z"/></svg></span>
+        <span class="theme-ico sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg></span>
+      </button>
     </div>
   </div>
 </nav>
@@ -1979,6 +2067,37 @@ function hardTop(){
   window.scrollTo(0,0);
   sTarget = sCurrent = sWritten = 0;
 }
+
+/* ---------- theme switch ---------- */
+const themeSwitch = document.getElementById('themeSwitch');
+function paintSwitch(){
+  const light = document.documentElement.getAttribute('data-theme') === 'light';
+  if (!themeSwitch) return;
+  themeSwitch.setAttribute('aria-checked', String(light));
+  themeSwitch.setAttribute('aria-label', light ? 'Switch to dark mode' : 'Switch to light mode');
+}
+paintSwitch();
+if (themeSwitch){
+  themeSwitch.addEventListener('click', e => {
+    e.stopPropagation();                 /* the panel closes on outside clicks */
+    const light = document.documentElement.getAttribute('data-theme') === 'light';
+    if (light) document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme','light');
+    try { localStorage.setItem('hd-theme', light ? 'dark' : 'light'); } catch(err){}
+    paintSwitch();
+    if (typeof plausible === 'function' && !FILE_MODE)
+      plausible('Theme Toggle', { props: { to: light ? 'dark' : 'light' } });
+  });
+}
+/* follow the system only while the visitor has not chosen for themselves */
+matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
+  let saved = null;
+  try { saved = localStorage.getItem('hd-theme'); } catch(err){}
+  if (saved) return;
+  if (e.matches) document.documentElement.setAttribute('data-theme','light');
+  else document.documentElement.removeAttribute('data-theme');
+  paintSwitch();
+});
 
 /* ---------- view router ----------
    Real paths in the browser so every existing URL survives the move off
