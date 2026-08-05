@@ -70,6 +70,9 @@
   --ease-out:cubic-bezier(.16,1,.3,1);
   --ease-io:cubic-bezier(.65,0,.35,1);
   --settle:cubic-bezier(.19,1,.22,1);   /* long tail: elements arrive and settle */
+  /* [TUNE] the fixed chrome band: the nav pill and the top-left mark share it */
+  --chrome-top:12px;
+  --chrome-h:48px;
 }
 
 /* ---------- base ---------- */
@@ -181,9 +184,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 
 /* ---------- top bar ---------- */
 .topbar{
-  position:fixed;top:0;left:0;right:0;z-index:80;
+  position:fixed;top:var(--chrome-top);left:0;right:0;z-index:80;
+  height:var(--chrome-h);
   display:flex;justify-content:flex-start;align-items:center;
-  padding:16px var(--pad);pointer-events:none;
+  padding:0 var(--pad);pointer-events:none;
 }
 .topbar>*{pointer-events:auto}
 .brand span{font-weight:700;transition:color .25s ease,opacity .4s ease}
@@ -911,21 +915,24 @@ footer{
 
 /* ---------- corner name (subpages) ---------- */
 .corner{
-  position:fixed;top:14px;left:calc(var(--pad) - 3px);z-index:80;
-  display:none;align-items:flex-start;gap:1px;
+  /* the old -3px was an optical nudge for the vertical lettering; the mark's
+     plate runs edge to edge, so it aligns on the gutter with no correction */
+  position:fixed;top:var(--chrome-top);left:var(--pad);z-index:80;
+  height:var(--chrome-h);
+  display:none;align-items:center;
   line-height:1;pointer-events:auto;
 }
 .corner.on{display:flex}
 /* the mark replaces the name set vertically: it says the same thing in less
    space and reads instantly at this size */
 .corner img{
-  height:clamp(26px,2.4vw,34px);width:auto;display:block;
+  height:var(--chrome-h);width:auto;display:block;
   transition:transform .45s var(--settle),opacity .3s ease;
 }
 .corner:hover img,.corner:focus-visible img{transform:translateY(-2px) scale(1.06)}
 /* the header lockup pairs the mark with the existing wordmark */
 .brand{display:inline-flex;align-items:center;gap:9px;pointer-events:auto}
-.brand-mark{height:17px;width:auto;display:block;flex:0 0 auto}
+.brand-mark{height:var(--chrome-h);width:auto;display:block;flex:0 0 auto}
 
 /* ---------- reveal ---------- */
 .reveal{
@@ -970,10 +977,10 @@ footer{
 .grid .tile:nth-child(8n+8) img{transition-delay:.35s}
 
 /* ---------- floating nav, top right ---------- */
-.fmenu{position:fixed;top:12px;right:var(--pad);z-index:90}
+.fmenu{position:fixed;top:var(--chrome-top);right:var(--pad);z-index:90}
 .fmenu-box{
   position:relative;overflow:hidden;
-  width:152px;height:48px;border-radius:60px;cursor:pointer;
+  width:152px;height:var(--chrome-h);border-radius:60px;cursor:pointer;
   box-shadow:0 12px 40px -12px rgba(0,0,0,.7);
   /* width/height animate LAYOUT, so this is the one expensive transition on
      the site. Keeping it short matters more than easing it far. */
@@ -991,7 +998,7 @@ footer{
 }
 .fmenu.open .fmenu-circle{top:-24%}
 .fmenu-bar{
-  position:absolute;left:0;right:0;top:0;height:48px;z-index:2;
+  position:absolute;left:0;right:0;top:0;height:var(--chrome-h);z-index:2;
   display:flex;align-items:center;justify-content:space-between;padding:0 20px;line-height:1;
   color:var(--black);transition:color .35s ease;
 }
