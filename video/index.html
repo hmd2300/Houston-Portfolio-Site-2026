@@ -37,7 +37,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="preload" as="image" href="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp">
 <style>
 /* ============================================================
    HOUSTON DRAGNA · PORTFOLIO
@@ -311,6 +310,52 @@ body.ready .morph{opacity:1}
 .morph .ch{display:block;height:1em;overflow:hidden;flex:0 0 auto}
 .morph .stk{display:flex;flex-direction:column;will-change:transform}
 .morph .stk span{display:block;height:1em;line-height:1em;white-space:pre}
+
+/* ---------- CTA button ----------
+   A chip unfolds in on the left while the label slides across to meet it, and
+   the trailing chip folds away. Transform and opacity only. Pill shaped to
+   match every other button on the site; square corners would read as borrowed
+   rather than chosen, and a circular chip keeps the plus centred as it turns. */
+.cta{
+  position:relative;display:inline-flex;align-items:center;gap:8px;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;font-weight:700;
+  --cta-bg:var(--sec,var(--chart));
+  --cta-fg:var(--sec-ink,var(--black));
+  --cta-chip:34px;
+}
+.cta-chip{
+  flex:0 0 auto;width:var(--cta-chip);height:var(--cta-chip);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--cta-bg);color:var(--cta-fg);
+  transition:transform .55s var(--settle);
+  will-change:transform;
+}
+.cta-chip svg{width:11px;height:11px}
+.cta-chip.start{transform:rotate(-45deg) scale(0);transform-origin:left center}
+.cta-chip.end{transform:rotate(0deg) scale(1);transform-origin:right center}
+.cta-label{
+  display:flex;align-items:center;height:var(--cta-chip);padding:0 18px;
+  border-radius:99px;background:var(--cta-bg);color:var(--cta-fg);
+  transform:translateX(calc(-1 * (var(--cta-chip) + 8px)));
+  transition:transform .55s var(--settle);
+  will-change:transform;white-space:nowrap;
+}
+.cta:hover .cta-chip.start,.cta:focus-visible .cta-chip.start{transform:rotate(0deg) scale(1)}
+.cta:hover .cta-chip.end,.cta:focus-visible .cta-chip.end{transform:rotate(-45deg) scale(0)}
+.cta:hover .cta-label,.cta:focus-visible .cta-label{transform:translateX(0)}
+.cta:focus-visible{outline:2px solid var(--cta-bg);outline-offset:4px;border-radius:99px}
+/* colour variants, all drawn from the brand palette */
+.cta.blue{--cta-bg:var(--blue);--cta-fg:var(--snow)}
+.cta.snow{--cta-bg:var(--snow);--cta-fg:var(--black)}
+.cta.outline{--cta-bg:transparent;--cta-fg:var(--ink)}
+.cta.outline .cta-chip,.cta.outline .cta-label{border:1px solid var(--line)}
+@media (prefers-reduced-motion:reduce){
+  .cta-chip,.cta-label{transition:none}
+  .cta-chip.start{transform:none}
+  .cta-label{transform:none}
+  .cta-chip.end{transform:scale(0)}
+}
 
 /* ---------- FAQ ---------- */
 .faq-cta{
@@ -1072,7 +1117,7 @@ footer{
         <div class="hero-frame" id="heroFrame">
           <div class="hero-inner">
           <div class="slide active" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp"></div>
-          <div class="slide" style="--fy:17%" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Chad+Smith+Portrait+BW.webp"></div>
+          <div class="slide" style="--fy:21%" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Chad+Smith+Portrait+BW.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/fender-studio-pro-nyc-lifestyle-9.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/PreSonus%20Quantum%20Launch%20Mad%20Keys%20Lifestyle%20Image.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/quantum_lt_lifestyle_4.webp"></div>
@@ -1140,8 +1185,7 @@ footer{
       <p class="reveal" style="--d:.1s">11 years of it and counting, most recently at Fender, where I've taken work from a global software launch to trade show floors. I'm a photographer by trade and a working audio engineer, so a project can go a long way before I have to hand it off.</p>
       <p class="reveal" style="--d:.15s">Whether it's a launch campaign or snapshots at my daughters' birthday party, I can't help but get invested in the craft. Every image, every layout, every bit of emotion deserves the same care.</p>
       <p class="reveal" style="--d:.2s">I work with kindness, excellence, and a little fun along the way. If that sounds like your bag, let's talk.</p>
-      <a class="about-cta reveal" style="--d:.25s" href="#contact" data-scroll>Contact me
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+      <a class="cta reveal" style="--d:.25s" href="#contact" data-scroll aria-label="Contact me"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Contact me</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a>
     </div>
     <figure class="portrait reveal" style="--d:.1s">
       <img loading="lazy" decoding="async"
@@ -1167,7 +1211,7 @@ footer{
   <section class="section faq" id="faq" data-c="chart">
     <span class="sec-eyebrow mono reveal"><span class="badge">06</span>Questions</span>
     <h2 class="sec-title display reveal" style="--d:.05s">Frequently<br>asked.</h2>
-    <div class="faq-list reveal" style="--d:.1s"><details class="faq-item reveal"><summary><span>What do you do?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>I work across brand design, photography, and video direction. In practice that means brand identity and design systems, campaign key art, product and lifestyle photography, launch films, and the packaging around them: social, retail, and e-commerce. On the largest projects I have run all of it as one pipeline rather than handing pieces to different teams.</p></div></details><details class="faq-item reveal"><summary><span>Where do you work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Anywhere the work is. I am available for global travel and regularly shoot on location, having produced campaigns across multiple cities for international launches. Studio, soundstage, LED volume wall, live venue, or client site. I am based in the United States and travel for the majority of projects.</p></div></details><details class="faq-item reveal"><summary><span>Do you take on freelance and contract work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Yes. Alongside in-house work I run an independent creative practice, taking on project-based engagements and ongoing retainers. That covers a single shoot or deliverable through to a full campaign built and delivered end to end.</p></div></details><details class="faq-item reveal"><summary><span>What kinds of clients do you work with?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Most of my recent work has been with music gear and pro audio brands, where I have led global product launches end to end. The same approach carries into DTC, SaaS and software, and CPG: categories where a product has to be explained and made desirable at the same time. If it needs a coherent visual idea carried across film, photography, and design, it is in scope.</p></div></details><details class="faq-item reveal"><summary><span>Do you handle a project end to end, or one piece of it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Either. I have pitched a campaign, storyboarded it, directed the shoot, shot the stills, mixed the audio, and designed the collateral. I have also been brought in for a single lane, most often photography or direction. Whichever way a project is structured, I am comfortable owning one piece or the whole thing.</p></div></details><details class="faq-item reveal"><summary><span>What is your turnaround?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>It depends on scope, but I plan backwards from your launch date and agree milestones before anything starts. Smaller projects usually move in days rather than weeks. For a multi-phase campaign, the schedule is built into the production plan up front so nothing lands late in the rollout.</p></div></details><details class="faq-item reveal"><summary><span>How do we start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach.</p><a class="faq-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="FAQ">Email me<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></div></details></div>
+    <div class="faq-list reveal" style="--d:.1s"><details class="faq-item reveal"><summary><span>What do you do?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>I work across brand design, photography, and video direction. In practice that means brand identity and design systems, campaign key art, product and lifestyle photography, launch films, and the packaging around them: social, retail, and e-commerce. On the largest projects I have run all of it as one pipeline rather than handing pieces to different teams.</p></div></details><details class="faq-item reveal"><summary><span>Where do you work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Anywhere the work is. I am available for global travel and regularly shoot on location, having produced campaigns across multiple cities for international launches. Studio, soundstage, LED volume wall, live venue, or client site. I am based in the United States and travel for the majority of projects.</p></div></details><details class="faq-item reveal"><summary><span>Do you take on freelance and contract work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Yes. Alongside in-house work I run an independent creative practice, taking on project-based engagements and ongoing retainers. That covers a single shoot or deliverable through to a full campaign built and delivered end to end.</p></div></details><details class="faq-item reveal"><summary><span>What kinds of clients do you work with?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Most of my recent work has been with music gear and pro audio brands, where I have led global product launches end to end. The same approach carries into DTC, SaaS and software, and CPG: categories where a product has to be explained and made desirable at the same time. If it needs a coherent visual idea carried across film, photography, and design, it is in scope.</p></div></details><details class="faq-item reveal"><summary><span>Do you handle a project end to end, or one piece of it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Either. I have pitched a campaign, storyboarded it, directed the shoot, shot the stills, mixed the audio, and designed the collateral. I have also been brought in for a single lane, most often photography or direction. Whichever way a project is structured, I am comfortable owning one piece or the whole thing.</p></div></details><details class="faq-item reveal"><summary><span>What is your turnaround?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>It depends on scope, but I plan backwards from your launch date and agree milestones before anything starts. Smaller projects usually move in days rather than weeks. For a multi-phase campaign, the schedule is built into the production plan up front so nothing lands late in the rollout.</p></div></details><details class="faq-item reveal"><summary><span>How do we start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach.</p><a class="cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="FAQ" aria-label="Email me"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Email me</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a></div></details></div>
   </section>
 
   <footer class="mono"><span>© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
@@ -1759,8 +1803,7 @@ function buildStudyCards(){
     </a>
     <h3>${c.title}</h3>
     <p>${c.line}</p>
-    <a class="go" href="#/${c.view}" data-view="${c.view}">Read the full study
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
+    <a class="cta" href="#/${c.view}" data-view="${c.view}" aria-label="Read the full study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Read the full study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a>
   </article>`).join('');
   syncHrefs();
 }
@@ -1891,8 +1934,9 @@ function buildStudy(key){
   });
   if (open) out += closeBand();
   const i = CS_ORDER.indexOf(key), nxt = CS_ORDER[(i+1) % CS_ORDER.length];
-  out += `<section class="cs-band"><div class="cs-inner"><a class="cs-next" href="#/${nxt}" data-view="${nxt}">Next case study` +
-    `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a></div></section>`;
+  out += `<section class="cs-band"><div class="cs-inner">` +
+    `<a class="cta" href="#/${nxt}" data-view="${nxt}" aria-label="Next case study">` +
+    `<span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Next case study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a></div></section>`;
   host.innerHTML = out;
   st.blocks.filter(b => b.t === 'gallery').forEach((g, n) => {
     const el = host.querySelector(`[data-grid="${n}"]`);
@@ -1908,6 +1952,21 @@ const preRule = document.getElementById('preRule');
 let lastPct = -1, loaded = false, ready = false, shown = 0;
 /* the gate is the first slide, not the whole page: waiting on window.load
    held the preloader up for seconds on a phone */
+/* Shuffle the hero order before anything reads the slides. This has to happen
+   ahead of the preloader, which gates on whichever slide is first: previously
+   it ran afterwards, so the markup order always won and the same image opened
+   every time. The active class moves with the shuffle. */
+(function shuffleSlides(){
+  const host = document.querySelector('.hero-inner');
+  if (!host) return;
+  const all = [...host.querySelectorAll('.slide')];
+  for (let i = all.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [all[i], all[j]] = [all[j], all[i]];
+  }
+  all.forEach((el, i) => { el.classList.toggle('active', i === 0); host.appendChild(el); });
+})();
+
 const firstSlide = document.querySelector('.slide');
 const firstBg = firstSlide && firstSlide.dataset.bg;
 if (firstBg){
@@ -2433,21 +2492,6 @@ const ROLL_MS = 620, ROLL_STEP = 34;
 }
 
 /* ---------- slideshow ---------- */
-/* Shuffle the hero order on every load so the site does not open the same way
-   twice. The first slide keeps its place: it is the one that is preloaded and
-   gated on, so moving it would mean loading a different image than the one the
-   markup preloads. */
-(function shuffleSlides(){
-  const host = document.querySelector('.hero-inner');
-  if (!host) return;
-  const all = [...host.querySelectorAll('.slide')];
-  const rest = all.slice(1);
-  for (let i = rest.length - 1; i > 0; i--){
-    const j = Math.floor(Math.random() * (i + 1));
-    [rest[i], rest[j]] = [rest[j], rest[i]];
-  }
-  rest.forEach(el => host.appendChild(el));
-})();
 const slides = [...document.querySelectorAll('.slide')];
 const slideURL = s => s.dataset.bg || ((s.getAttribute('style')||'').match(/url\(['"]?([^'")]+)/) || [])[1] || '';
 const SLIDE_SRC = slides.map(slideURL);
