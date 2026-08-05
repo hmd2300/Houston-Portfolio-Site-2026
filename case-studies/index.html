@@ -252,7 +252,10 @@ body.ready .hero-frame{opacity:1}
 }
 .slide{
   position:absolute;inset:0;
-  background-size:cover;background-position:center;
+  /* --fy lets a slide name its own focal row: a tall portrait centred on a
+     landscape viewport loses the face to the crop, and the closed hero frame
+     shows only the middle 62% so it disappears entirely until fully open */
+  background-size:cover;background-position:center var(--fy,50%);
   opacity:0;transition:opacity 1.4s ease;
 }
 .slide.active{opacity:1}
@@ -1069,7 +1072,7 @@ footer{
         <div class="hero-frame" id="heroFrame">
           <div class="hero-inner">
           <div class="slide active" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp"></div>
-          <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Chad+Smith+Portrait+BW.webp"></div>
+          <div class="slide" style="--fy:17%" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Chad+Smith+Portrait+BW.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/fender-studio-pro-nyc-lifestyle-9.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/PreSonus%20Quantum%20Launch%20Mad%20Keys%20Lifestyle%20Image.webp"></div>
           <div class="slide" data-bg="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/quantum_lt_lifestyle_4.webp"></div>
@@ -2388,6 +2391,21 @@ const ROLL_MS = 620, ROLL_STEP = 34;
 }
 
 /* ---------- slideshow ---------- */
+/* Shuffle the hero order on every load so the site does not open the same way
+   twice. The first slide keeps its place: it is the one that is preloaded and
+   gated on, so moving it would mean loading a different image than the one the
+   markup preloads. */
+(function shuffleSlides(){
+  const host = document.querySelector('.hero-inner');
+  if (!host) return;
+  const all = [...host.querySelectorAll('.slide')];
+  const rest = all.slice(1);
+  for (let i = rest.length - 1; i > 0; i--){
+    const j = Math.floor(Math.random() * (i + 1));
+    [rest[i], rest[j]] = [rest[j], rest[i]];
+  }
+  rest.forEach(el => host.appendChild(el));
+})();
 const slides = [...document.querySelectorAll('.slide')];
 const slideURL = s => s.dataset.bg || ((s.getAttribute('style')||'').match(/url\(['"]?([^'")]+)/) || [])[1] || '';
 const SLIDE_SRC = slides.map(slideURL);
