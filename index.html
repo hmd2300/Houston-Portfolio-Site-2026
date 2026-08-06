@@ -120,6 +120,13 @@
      and nav, or the back link lands underneath them */
   --chrome-clear:calc(var(--chrome-top) + var(--chrome-h) + 22px);
   --cross:var(--chart);          /* crosshair field colour; light mode overrides to brand blue */
+  /* ONE token drives the gap above and below every section, so two
+     stacked sections always read as 2x this and never drift apart. */
+  --sec-gap:clamp(60px,6.5vw,92px);
+  /* hero leading. fitHero() reads these back out of the computed style
+     for its height guard, so the CSS and the maths cannot drift. */
+  --lh-name:.86;
+  --lh-morph:1.0;
 }
 
 /* ---------- base ---------- */
@@ -320,10 +327,13 @@ body.ready .hero-frame{opacity:1}
   text-align:left;pointer-events:none;
   --hfs:clamp(34px,8.4vw,116px);
   --mfs:var(--hfs);
-  width:75vw;max-width:75vw;
+  /* the block width and the FIT constant in fitHero() are the same number
+     seen twice: the container caps the box, FIT sizes the type inside it.
+     Change one and you must change the other or the type stops filling. */
+  width:60vw;max-width:60vw;
 }
 .hero-name{
-  font-size:var(--hfs);line-height:.94;
+  font-size:var(--hfs);line-height:var(--lh-name);
   color:var(--blue);background:none;text-shadow:none;
   pointer-events:auto;cursor:default;
   opacity:0;transition:opacity 1.2s var(--ease-out) .15s,color .3s ease;
@@ -333,7 +343,7 @@ body.ready .hero-name{opacity:1}
 .hero-name span{display:block}
 
 .morph{
-  position:relative;height:1.04em;
+  position:relative;height:calc(var(--lh-morph) * 1em);
   font-family:var(--font-display);font-weight:900;font-stretch:118%;
   text-transform:uppercase;font-size:var(--mfs,var(--hfs));
   letter-spacing:-.015em;line-height:.94;
@@ -476,9 +486,9 @@ footer.mono:hover .foot-mark{opacity:1}
 }
 .faq-cta:hover,.faq-cta:focus-visible{transform:translateY(-3px);filter:brightness(1.08)}
 .faq-cta svg{width:13px;height:13px}
-/* sits directly under the contact block, so it tucks up rather than
-   opening a second full section gap */
-.section.faq{padding-top:0}
+/* the contact block is a full-bleed chartreuse band, so the FAQ needs the
+   standard gap under it. Tucking it up made the eyebrow sit flush against
+   the colour edge. It now inherits --sec-gap like every other section. */
 .faq-list{border-top:1px solid var(--line)}
 .faq-item{border-bottom:1px solid var(--line)}
 .faq-item summary{
@@ -495,11 +505,24 @@ footer.mono:hover .foot-mark{opacity:1}
   transition:transform .35s var(--settle);
 }
 .faq-item[open] summary svg{transform:rotate(45deg)}
-.faq-a{padding:0 0 clamp(20px,2.6vw,28px);max-width:70ch}
+/* open and close animate the panel height, driven from JS.
+   The grid 0fr-to-1fr trick does NOT work here: the row list would be
+   "auto 0fr" and auto is not interpolable, so the whole value snaps and
+   no transitionend ever fires. Height needs a measured value but it is
+   the one approach that actually animates in every browser.
+   The panel must own NO padding, or a collapsed box still renders the
+   padding and the answer never fully closes. The bottom space lives on
+   the last child instead, inside the clipped box. */
+.faq-item .faq-a{overflow:hidden;
+  transition:height .42s var(--settle),opacity .28s ease}
+.faq-a>:last-child{margin-bottom:clamp(20px,2.6vw,28px)}
+.faq-a{padding:0;max-width:70ch}
+/* the answer copy ran straight into the button */
+.faq-a .cta{margin-top:clamp(20px,2.6vw,28px)}
 .faq-a p{color:var(--ink-dim);font-size:clamp(15px,1.55vw,17px);line-height:1.66}
 
 /* ---------- sections ---------- */
-.section{padding:clamp(72px,13vw,140px) var(--pad)}
+.section{padding:var(--sec-gap) var(--pad)}
 /* unified study accent: one set per theme across all three studies.
    Chartreuse carries dark mode, brand blue carries light mode. */
 [data-c="chart"],[data-c="fuch"],[data-c="blue"]{--sec:var(--chart);--sec-ink:var(--black);--sec-tx:var(--chart-tx)}
@@ -1181,6 +1204,7 @@ footer{
 /* ---------- reduced motion ---------- */
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
+  .faq-item .faq-a{transition:none}
 }
 
 /* theme logo swap: full colour mark in dark, knockout box in light.
@@ -1207,7 +1231,7 @@ html[data-theme="light"] img.lg-d{display:none}
   .grid.mosaic .tile{content-visibility:auto}
   /* static full-bleed hero: a radius reads as a bad seam at the edges */
   .hero-frame{border-radius:0}
-  .section{padding:52px var(--pad)}
+  :root{--sec-gap:56px}
   /* the generic 52px is less than the chrome band, so a page head would
      collide with the mark on the left and the nav on the right */
   .section.page-head{padding-top:var(--chrome-clear)}
@@ -2434,7 +2458,14 @@ if (fine){
    size, then the font size is solved from the ratio. Both name lines share one
    size and all morph words share another, so the block never resizes mid-morph.
    A height guard keeps the stack inside the frame on short, wide screens. */
-const FIT = 0.75;
+const FIT = 0.60;
+const rootCS = getComputedStyle(document.documentElement);
+const cssNum = (name, fallback) => {
+  const v = parseFloat(rootCS.getPropertyValue(name));
+  return Number.isFinite(v) ? v : fallback;
+};
+const LH_NAME  = cssNum('--lh-name', .86);
+const LH_MORPH = cssNum('--lh-morph', 1.0);
 const heroProbe = document.createElement('span');
 heroProbe.setAttribute('aria-hidden','true');
 heroProbe.style.cssText =
@@ -2453,10 +2484,12 @@ function fitHero(){
   if (!nameW || !morphW) return;
   let hfs = 200 * target / nameW;
   let mfs = 200 * target / morphW;
-  /* two name lines at .94 plus one morph line at 1.04 must clear the frame */
-  const stack = hfs * .94 * 2 + mfs * 1.04;
+  /* two name lines plus one morph line must clear the frame. The leading
+     comes out of the CSS tokens so this maths can never fall out of sync
+     with what is actually rendered. */
+  const stack = hfs * LH_NAME * 2 + mfs * LH_MORPH;
   /* only cap when the stack genuinely will not clear the marginalia line,
-     so 75%% width holds at every normal viewport */
+     so 60%% width holds at every normal viewport */
   const room  = Math.max(innerHeight * 0.5, innerHeight - 170);
   if (stack > room){ const k = room / stack; hfs *= k; mfs *= k; }
   heroCopy.style.setProperty('--hfs', hfs.toFixed(2) + 'px');
@@ -3032,6 +3065,65 @@ function frame(now){
   requestAnimationFrame(frame);
 }
 requestAnimationFrame(frame);
+
+/* ---------- FAQ open / close ----------
+   The panel animates on a grid row track. The browser hides a details
+   panel the moment [open] comes off, so a close has to run while the
+   attribute is still there: .closing drives the track back to 0fr and
+   [open] is dropped on transitionend. Opening is the plain attribute
+   flip; the [open] rule animates it. Reduced motion falls through to
+   the native toggle. */
+document.querySelectorAll('.faq-item').forEach(item => {
+  const summary = item.querySelector('summary');
+  const panel   = item.querySelector('.faq-a');
+  if (!summary || !panel) return;
+
+  /* a transitionend can be missed if the tab is backgrounded mid animation,
+     which would leave the item stuck half open and unclickable */
+  let guard = 0;
+  const settle = () => {
+    clearTimeout(guard);
+    item.dataset.busy = '';
+    if (item.dataset.closing === '1'){
+      item.dataset.closing = '';
+      item.open = false;
+    }
+    panel.style.height = '';
+    panel.style.opacity = '';
+  };
+
+  summary.addEventListener('click', e => {
+    if (reduced) return;                    /* native toggle, no animation */
+    e.preventDefault();
+    if (item.dataset.busy === '1') return;  /* ignore clicks mid flight */
+    item.dataset.busy = '1';
+    clearTimeout(guard);
+    guard = setTimeout(settle, 700);
+
+    if (item.open){
+      item.dataset.closing = '1';
+      panel.style.height = panel.scrollHeight + 'px';
+      panel.style.opacity = '1';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        panel.style.height = '0px';
+        panel.style.opacity = '0';
+      }));
+    } else {
+      item.open = true;                     /* content has to exist to measure */
+      panel.style.height = '0px';
+      panel.style.opacity = '0';
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        panel.style.height = panel.scrollHeight + 'px';
+        panel.style.opacity = '1';
+      }));
+    }
+  });
+
+  panel.addEventListener('transitionend', e => {
+    if (e.propertyName !== 'height' || e.target !== panel) return;
+    settle();
+  });
+});
 
 syncHrefs();
 show(routeNow(), true);
