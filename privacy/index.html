@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Privacy | Houston Dragna</title>
+<meta name="description" content="What houstondragna.com collects, what it does not, and how to reach me about it.">
+<link rel="canonical" href="https://www.houstondragna.com/privacy/">
+<meta name="robots" content="index,follow">
+<meta name="color-scheme" content="dark light">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="180x180" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20Favicon%20180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20Favicon%20512.png">
+  <link rel="apple-touch-icon" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20Favicon%20180.png">
+<script>
+  /* Resolve the theme before the first paint. Doing this in the main script
+     would flash the wrong palette for a frame. A stored choice wins; failing
+     that the operating system decides. */
+  (function(){
+    try {
+      var saved = localStorage.getItem('hd-theme');
+      var sys = matchMedia('(prefers-color-scheme: light)').matches;
+      if (saved === 'light' || (!saved && sys)) document.documentElement.setAttribute('data-theme','light');
+    } catch(e){}
+  })();
+</script>
+<style>
+/* Tokens lifted verbatim from index.html at build time. Do not hand edit
+   them here: change the site and regenerate, or the two will drift. */
+:root{
+  --blue:#0015FF;          /* fills: tags, chips, buttons (snow text on it) */
+  --blue-tx:#1F42FF;       /* blue AS TEXT on the dark bg: 3.1:1 */
+  --blue-hv:#4E77FF;       /* link hover: 5.2:1, readable at any size */       /* blue AS TEXT/icon on the dark bg: 3.1:1 (pure blue is 2.4) */
+  --black:#06070F;
+  --chart:#E9F500;
+  --snow:#F7F9FA;
+  --fuch:#FF1245;
+
+  --bg:#06070D;            /* Ink Black, 25% desaturated: less navy */
+  --bg-2:#0F1017;
+  --ink:var(--snow);
+  --ink-dim:#8B8B92;
+  --line:rgba(247,249,250,.15);
+  --accent:var(--chart);
+  --accent-ink:var(--black);
+  --accent-tx:var(--chart);      /* the accent used as TEXT, not as a fill */
+  --chart-tx:var(--chart);
+  --fuch-tx:var(--fuch);
+  --shadow:rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#F4F5F6;
+  --bg-2:#E9EBED;
+  --ink:#15161C;
+  --ink-dim:#5A5F66;
+  --line:rgba(6,7,15,.16);
+  --blue-tx:#0011CC;             /* 9.86:1 on light */
+  --blue-hv:#0015FF;
+  --accent-tx:#0011CC;           /* brand blue as accent text: 9.86:1. Darkened chartreuse read as olive, off brand */
+  --chart-tx:#0011CC;
+  --fuch-tx:#B3002A;             /* fuchsia darkened:    6.52:1 */
+  --shadow:rgba(6,7,15,.22);
+  color-scheme:light;
+  --cross:var(--blue);
+}
+:root{
+  --font-display:'Archivo',Impact,sans-serif;
+  --font-body:'Instrument Sans',system-ui,sans-serif;
+  --font-mono:'Space Mono',ui-monospace,monospace;
+
+  --pad:clamp(18px,4.5vw,64px);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --settle:cubic-bezier(.19,1,.22,1);   /* long tail: elements arrive and settle */
+  /* [TUNE] the fixed chrome band: the nav pill and the top-left mark share it */
+  --chrome-top:12px;
+  --chrome-h:48px;
+  /* anything in normal flow at the top of a page has to clear the fixed mark
+     and nav, or the back link lands underneath them */
+  --chrome-clear:calc(var(--chrome-top) + var(--chrome-h) + 22px);
+  --cross:var(--chart);          /* crosshair field colour; light mode overrides to brand blue */
+  /* ONE token drives the gap above and below every section, so two
+     stacked sections always read as 2x this and never drift apart. */
+  --sec-gap:clamp(60px,6.5vw,92px);
+  /* hero leading. fitHero() reads these back out of the computed style
+     for its height guard, so the CSS and the maths cannot drift. */
+  --lh-name:.86;
+  --lh-morph:1.0;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scrollbar-color:var(--accent) transparent;scrollbar-width:thin}
+body{
+  background:var(--bg);color:var(--ink);font-family:var(--font-body);
+  font-size:16px;line-height:1.7;padding:var(--pad);
+  display:flex;flex-direction:column;min-height:100svh;overflow-x:hidden;
+}
+a{color:inherit}
+::selection{background:var(--accent);color:var(--accent-ink)}
+
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+.skip{
+  position:fixed;top:-100px;left:var(--pad);z-index:200;
+  display:inline-flex;align-items:center;height:var(--chrome-h);padding:0 22px;
+  border-radius:44px;background:var(--accent);color:var(--accent-ink);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;font-weight:700;text-decoration:none;
+  transition:top .25s var(--settle);
+}
+[data-theme="light"] .skip{background:var(--blue);color:var(--snow)}
+.skip:focus{top:12px}
+
+.topbar{display:flex;align-items:center;justify-content:space-between;
+  height:var(--chrome-h);gap:14px}
+.topbar img{height:26px;width:auto;display:block}
+html img.lg-l{display:none}
+html img.lg-d{display:block}
+html[data-theme="light"] img.lg-l{display:block}
+html[data-theme="light"] img.lg-d{display:none}
+.back{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;text-decoration:none;color:var(--ink-dim);
+  transition:color .22s ease;
+}
+.back:hover{color:var(--accent-tx)}
+
+main{flex:1;max-width:74ch;margin:clamp(40px,7vw,86px) 0 0}
+main:focus{outline:none}
+.eyebrow{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent-tx);margin:0 0 14px}
+h1{
+  font-family:var(--font-display);font-weight:900;font-stretch:118%;
+  font-size:clamp(40px,8vw,92px);line-height:.86;letter-spacing:-.02em;
+  text-transform:uppercase;margin:0 0 22px;
+}
+h2{
+  font-family:var(--font-display);font-weight:900;font-stretch:110%;
+  font-size:clamp(17px,2.2vw,23px);line-height:1.1;letter-spacing:-.01em;
+  text-transform:uppercase;margin:38px 0 10px;
+}
+p{margin:0 0 14px}
+ul{margin:0 0 14px;padding-left:20px}
+li{margin:7px 0}
+.lede{font-size:clamp(16px,1.5vw,19px);color:var(--ink)}
+.dim{color:var(--ink-dim)}
+.stamp{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-dim);margin:0 0 34px;
+}
+a.inline{color:var(--accent-tx);text-decoration:none;border-bottom:1px solid var(--line)}
+a.inline:hover{color:var(--fuch-tx);border-color:currentColor}
+
+footer{
+  margin-top:clamp(48px,7vw,90px);padding-top:20px;
+  border-top:1px solid var(--line);
+  display:flex;flex-wrap:wrap;gap:12px 22px;justify-content:space-between;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-dim);
+}
+footer a{text-decoration:none;transition:color .22s ease}
+footer a:hover{color:var(--accent-tx)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{transition-duration:.001s !important}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="topbar">
+  <a href="/" aria-label="Houston Dragna, back to home">
+    <img class="lg-d" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69">
+    <img class="lg-l" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73">
+  </a>
+  <a class="back" href="/">Back to site</a>
+</header>
+
+<main id="main" tabindex="-1">
+  <p class="eyebrow">Houston Dragna &middot; Legal</p>
+  <h1>Privacy</h1>
+  <p class="stamp">Last updated <span id="upd">August 2026</span></p>
+
+  <p class="lede">Short version: this site runs privacy-friendly analytics that cannot identify you, and it stores nothing about you unless you fill in the contact form or email me.</p>
+
+  <h2>What this site collects</h2>
+  <p>houstondragna.com uses <a class="inline" href="https://plausible.io/data-policy" target="_blank" rel="noopener">Plausible Analytics</a>, which is cookieless and does not track people across sites or sessions. It records aggregate counts only:</p>
+  <ul>
+    <li>Which pages were viewed, and how many times</li>
+    <li>The referring site or campaign tag, where one exists</li>
+    <li>Country, browser, operating system, and device type, all at a coarse level</li>
+  </ul>
+  <p>No cookies are set for analytics, no personal profile is built, and no data is sold or shared with advertisers. Because there is no tracking cookie, there is no consent banner to click.</p>
+
+  <h2>The contact form</h2>
+  <p>If you send the form, the name, email address, project type, and message you type are delivered to me through Netlify Forms and stored in that account so I can reply. That is the whole purpose. It is not added to a mailing list, and I do not send marketing email.</p>
+  <p>Emailing me directly does the same thing by a different route: your message sits in my inbox until you ask me to delete it.</p>
+
+  <h2>What this site does not do</h2>
+  <ul>
+    <li>No advertising trackers, pixels, or third-party marketing scripts</li>
+    <li>No cross-site tracking, fingerprinting, or session recording</li>
+    <li>No accounts, no logins, no passwords stored</li>
+    <li>No payment processing, so no card details ever touch this site</li>
+  </ul>
+
+  <h2>Where it is hosted</h2>
+  <p>The site is served by Netlify, which keeps standard server logs including IP addresses for security and abuse prevention. Fonts are served by Google Fonts, which receives the request needed to deliver the font files. Images and video thumbnails may be requested from GitHub and YouTube when you view those pages.</p>
+
+  <h2>Your choices</h2>
+  <p>You can ask me what I hold about you, ask for it to be corrected, or ask for it to be deleted, and I will do it. There is not much to hold: for most visitors the honest answer is nothing at all.</p>
+  <p>Browser do-not-track and ad blockers are respected by default here, since there is nothing to opt out of beyond aggregate counts.</p>
+
+  <h2>Copyright</h2>
+  <p>All photography, film, design, and writing on this site is my own work or work I contributed to as credited, and remains the property of its respective owners. Client work appears with permission for portfolio purposes. Please do not reuse it without asking.</p>
+
+  <h2>Contact</h2>
+  <p>Questions about any of this, or about your data specifically, go to <a class="inline" href="mailto:houston.dragna+site@gmail.com?subject=Privacy%20question">houston.dragna+site@gmail.com</a> and I will answer personally.</p>
+</main>
+
+<footer>
+  <span>&copy; <span id="yr">2026</span> Houston Dragna</span>
+  <a href="/">houstondragna.com</a>
+  <span>Available worldwide</span>
+</footer>
+
+<script>
+document.getElementById('yr').textContent = new Date().getFullYear();
+</script>
+</body>
+</html>

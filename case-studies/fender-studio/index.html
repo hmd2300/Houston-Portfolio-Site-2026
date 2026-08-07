@@ -647,6 +647,85 @@ a.sec-title:hover,.sec-title a:hover{color:var(--ht,var(--sec,var(--chart)))}
 }
 .chip:hover{background:var(--hb,var(--black));border-color:var(--hb,var(--black));color:var(--hf,var(--chart));transform:translateY(-3px)}
 
+/* ---------- contact form ----------
+   Mobile first: every field full width, the two short fields pair up at
+   620px. Inputs inherit the body face so they never fall back to the UA
+   font, which is the usual tell that a form was an afterthought. */
+.cform{margin-top:clamp(28px,3.6vw,44px);max-width:720px}
+.cf-bot{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+.cf-row{display:grid;gap:16px}
+.cf-field{display:flex;flex-direction:column;gap:8px;margin-bottom:16px}
+.cf-field label{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:rgba(6,7,15,.72);
+}
+/* THE GROUND HERE IS FIXED, NOT THEMED. The contact section is a full-bleed
+   chartreuse band in BOTH themes (`.contact{background:var(--chart)}`), so
+   theme tokens are the wrong instrument: --ink-dim labels vanished into the
+   chartreuse and the send button was chartreuse on chartreuse. Everything
+   below is keyed to that band, the same documented exception the case study
+   hero uses for its on-image text. */
+.cform input,.cform select,.cform textarea{
+  font-family:var(--font-body);font-size:15px;color:var(--snow);
+  background:var(--black);border:1px solid rgba(247,249,250,.22);border-radius:12px;
+  padding:13px 15px;width:100%;
+  /* the native dropdown and caret follow this, so the select's own popup
+     renders dark instead of flashing a white system panel */
+  color-scheme:dark;
+  transition:border-color .22s ease,box-shadow .22s ease;
+}
+.cform textarea{resize:vertical;min-height:118px}
+.cform input::placeholder,.cform textarea::placeholder{color:rgba(247,249,250,.55)}
+/* Focus has to read against CHARTREUSE, not against the field. A snow ring
+   would be invisible out there (1.13:1), so the field grows a dark halo
+   instead and brightens its own border. */
+.cform input:focus,.cform select:focus,.cform textarea:focus{
+  outline:none;border-color:var(--snow);box-shadow:0 0 0 3px rgba(6,7,15,.85);
+}
+.cform input:focus-visible,.cform select:focus-visible,.cform textarea:focus-visible{
+  outline:2px solid var(--black);outline-offset:3px;
+}
+.cf-actions{display:flex;flex-wrap:wrap;align-items:center;gap:14px 18px;margin-top:6px}
+/* Brand blue, so the one thing you are meant to press is not the same colour
+   as the four fields above it. Blue holds its own edge against chartreuse at
+   6.9:1, so it needs no stroke to be seen. */
+.cf-send{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:var(--chrome-h);padding:0 28px;border:0;border-radius:44px;cursor:pointer;
+  background:var(--blue);color:var(--snow);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;font-weight:700;
+  transition:background-color .25s ease,color .25s ease,transform .3s var(--settle);
+}
+.cf-send:hover,.cf-send:focus-visible{background:var(--fuch);color:var(--snow);transform:translateY(-2px)}
+.cf-send:focus-visible{outline:2px solid var(--black);outline-offset:3px}
+.cf-send[disabled]{opacity:.6;cursor:default;transform:none}
+.cf-note{
+  font-family:var(--font-mono);font-size:12.5px;font-weight:700;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--black);margin:0;
+}
+.cf-note.good{color:var(--black);font-weight:700}
+.cf-note.bad{color:#8E0021}
+@media (min-width:620px){ .cf-row{grid-template-columns:1fr 1fr} }
+
+/* ---------- skip link + screen reader helpers ---------- */
+.sr-only{
+  position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0;
+}
+.skip{
+  position:fixed;top:-100px;left:var(--pad);z-index:200;
+  display:inline-flex;align-items:center;height:var(--chrome-h);padding:0 22px;
+  border-radius:44px;background:var(--accent);color:var(--accent-ink);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;font-weight:700;text-decoration:none;
+  transition:top .25s var(--settle);
+}
+[data-theme="light"] .skip{background:var(--blue);color:var(--snow)}
+.skip:focus{top:12px}
+/* the skip target must not draw a ring when it is focused programmatically */
+main:focus{outline:none}
+
 /* ---------- site footer ----------
    Mobile first: one column, then the link columns go 2-up, then 4-up, then
    the brand block sits beside them. Nothing here sets `display` on a
@@ -698,6 +777,9 @@ footer:hover .foot-mark{opacity:1}
 }
 .foot-coord{opacity:.75}
 /* the standards page is deliberately unlinked everywhere else on the site */
+.foot-legal{display:inline-flex;gap:18px;align-items:center}
+.foot-legal a{color:var(--ink-dim);text-decoration:none;transition:color .22s ease}
+.foot-legal a:hover,.foot-legal a:focus-visible{color:var(--accent-tx)}
 .foot-std{color:var(--ink-dim);text-decoration:none;opacity:.7;transition:color .22s ease,opacity .22s ease}
 .foot-std:hover,.foot-std:focus-visible{color:var(--accent-tx);opacity:1}
 
@@ -1298,6 +1380,14 @@ html[data-theme="light"] img.lg-d{display:none}
 </head>
 <body class="locked" id="top">
 
+<!-- Home takes 38 tab stops to reach the footer and /photo far more, because
+     every tile is focusable. Without this, a keyboard user has no way past
+     the grids. WCAG 2.4.1. -->
+<a class="skip" href="#main">Skip to content</a>
+<!-- The view swap is client side, so nothing tells assistive tech the page
+     changed. announceRoute() writes the new page name here. -->
+<p class="sr-only" id="routeSay" role="status" aria-live="polite"></p>
+
 <div class="xfield" id="xfield" aria-hidden="true"></div>
 
 <div id="preloader" aria-hidden="true">
@@ -1326,7 +1416,7 @@ html[data-theme="light"] img.lg-d{display:none}
 <div class="rail left" aria-hidden="true">Houston Dragna · Portfolio 2026</div>
 <div class="rail right" aria-hidden="true">30.4515° N / 91.1871° W · Baton Rouge, LA</div>
 
-<main>
+<main id="main" tabindex="-1">
 <!-- ==================== HOME ==================== -->
 <div class="view on" id="view-home">
 
@@ -1387,7 +1477,7 @@ html[data-theme="light"] img.lg-d{display:none}
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
     </div>
     <figure class="tile video-wrap bleed reveal" data-yt="XpN54Uh0eEo">
-      <img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/XpN54Uh0eEo/maxresdefault.jpg" alt="StudioLive Series III SE launch hero film still">
+      <img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/XpN54Uh0eEo/maxresdefault.jpg" alt="StudioLive Series III SE launch hero film still" width="1280" height="720">
       <a class="video-open" href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">
         <span class="lbl">Watch with sound
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
@@ -1410,7 +1500,7 @@ html[data-theme="light"] img.lg-d{display:none}
     <figure class="portrait reveal" style="--d:.1s">
       <img loading="lazy" decoding="async"
            src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Houston%20Dragna%202026%20Headshot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Home/Houston%20Dragna%202026%20Headshot.webp'"
-           alt="Houston Dragna">
+           alt="Houston Dragna" width="1440" height="1800">
       <figcaption>Houston Dragna</figcaption>
     </figure>
     </div>
@@ -1426,7 +1516,50 @@ html[data-theme="light"] img.lg-d{display:none}
         <span class="copy-label">Copy address</span></button>
       <a class="chip" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram · @thehoustondragna</a>
     </div>
-  </section>
+
+    <!-- Netlify Forms. The markup has to exist in the deployed HTML for
+           Netlify to register the form at deploy time, and `form-name` must
+           be posted back or the submission is rejected. Submitted over fetch
+           so a single-page site never navigates away mid-enquiry.
+           `bot-field` is the honeypot: real people never see it. -->
+      <form class="cform reveal" id="cform" name="contact" method="POST"
+            data-netlify="true" netlify-honeypot="bot-field" style="--d:.16s">
+        <input type="hidden" name="form-name" value="contact">
+        <p class="cf-bot"><label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off"></label></p>
+
+        <div class="cf-row">
+          <div class="cf-field">
+            <label for="cf-name">Name</label>
+            <input id="cf-name" name="name" type="text" required autocomplete="name" placeholder="Your name">
+          </div>
+          <div class="cf-field">
+            <label for="cf-email">Email</label>
+            <input id="cf-email" name="email" type="email" required autocomplete="email" placeholder="you@company.com">
+          </div>
+        </div>
+
+        <div class="cf-field">
+          <label for="cf-kind">What do you need</label>
+          <select id="cf-kind" name="project">
+            <option>Brand design or key art</option>
+            <option>Photography</option>
+            <option>Film or video</option>
+            <option>A launch, all of the above</option>
+            <option>Something else</option>
+          </select>
+        </div>
+
+        <div class="cf-field">
+          <label for="cf-msg">Project</label>
+          <textarea id="cf-msg" name="message" rows="4" required placeholder="Timeline, scope, and anything else worth knowing."></textarea>
+        </div>
+
+        <div class="cf-actions">
+          <button class="cf-send" type="submit">Send it</button>
+          <p class="cf-note" id="cf-note" role="status" aria-live="polite">Or just email me. Whichever is easier.</p>
+        </div>
+      </form>
+    </section>
 
   <section class="section faq" id="faq" data-c="chart">
     <span class="sec-eyebrow mono reveal"><span class="badge">06</span>Questions</span>
@@ -1473,7 +1606,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1525,7 +1658,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1577,7 +1710,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1632,24 +1765,24 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
 
 <div class="view" id="view-cs-fender" data-c="chart">
   <header class="cs-top">
-    <img class="cs-bg" loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp'" alt="Fender Studio Pro and Quantum HD at the desk">
+    <img class="cs-bg" loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp'" alt="Fender Studio Pro and Quantum HD at the desk" width="1800" height="1200">
     <div class="cs-top-inner">
       <a class="back" href="/case-studies" data-view="case-studies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>All case studies</a>
-      <div class="cs-lockups"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Logo%20White%20EAEAEA%20Horizontal.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Logo%20White%20EAEAEA%20Horizontal.webp'" alt="Fender Studio"></div>
+      <div class="cs-lockups"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Logo%20White%20EAEAEA%20Horizontal.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Logo%20White%20EAEAEA%20Horizontal.webp'" alt="Fender Studio" width="800" height="158"></div>
       <span class="cs-kicker">Fender × PreSonus · Global Brand Launch · Case Study</span>
       <h1 class="cs-title display">Fender<br>Studio</h1>
       <p class="cs-tag">Repositioning an icon of the stage as a powerhouse of the studio: the visual launch of Fender Studio Pro and the Quantum LT interfaces.</p>
       <dl class="cs-facts"><div><dt>Role</dt><dd>Producer · Lighting · Photo · Mix</dd></div><div><dt>Scope</dt><dd>Film · Photo · Sound · Web · Retail</dd></div><div><dt>Product</dt><dd>Fender Studio Pro · Quantum LT</dd></div></dl>
     </div>
   </header>
-  <div class="cs-body" data-study="cs-fender"><section class="cs-band" id="cs-cs-fender-overview"><div class="cs-inner"><div class="cs-head"><div class="cs-num">01 · The Challenge</div><div><h2 class="cs-h">Not just guitars<br>and amps anymore.</h2><div class="cs-p"><p>Fender is a name built on the stage. Fender Studio Pro, the rebranded PreSonus Studio One Pro, and the new Quantum LT interfaces move that name into professional audio production. The brief was simple and hard: prove Fender belongs in the control room as much as under the spotlight.</p><p>Production spanned five shoots across three cities: the NYC hero film, three Nashville shoots for product demo, the Quantum LT launch and brand collateral, and a New Orleans shoot for the Fender Studio app that folded an earlier launch into the same family. Casting leaned young for a vintage-meets-modern aesthetic. The mission: hold the existing PreSonus demographic while drawing in a younger, more diverse crowd, the next generation of producers who find sanctuary in their studio.</p></div></div></div><h3 class="cs-sub">What I owned</h3><div class="owned-grid"><div class="owned-card"><b>Launch</b><b>Films</b><p>Concept, production, and direction of the NYC hero film and the Quantum LT hardware film.</p></div><div class="owned-card"><b>Lighting</b><b>Design</b><p>Gaffer and lighting design across shoots, lit to feel like the room, not an ad.</p></div><div class="owned-card"><b>Photo</b><b>graphy</b><p>Campaign and product photography, plus key art and YouTube thumbnails.</p></div><div class="owned-card"><b>Audio</b><b>Mix</b><p>Mix engineering for the hardware film, including a remix of Nicole Alexis' original song for the cut.</p></div><div class="owned-card"><b>Graphic</b><b>Design</b><p>Key art, thumbnails, social carousels, and campaign collateral.</p></div><div class="owned-card"><b>Web &amp;</b><b>Retail</b><p>Fender.com wireframing plus the Amazon storefront and A+ merchandising.</p></div></div><h3 class="cs-sub">Production scale</h3><div class="stat-grid" style="--sc:5"><div class="stat"><b>5</b><span>shoots across three cities</span></div><div class="stat"><b>5,000+</b><span>photos shot (150+ final)</span></div><div class="stat"><b>2</b><span>hero films produced</span></div><div class="stat"><b>10</b><span>key art systems</span></div><div class="stat"><b>200+</b><span>static graphic assets</span></div></div></div></section><section class="cs-band alt" id="cs-cs-fender-film"><div class="cs-inner"><div class="cs-head"><div class="cs-num">02 · The Launch Film</div><div><h2 class="cs-h">A legend and<br>a virtuoso.</h2><div class="cs-p"><p>The hero film pairs Nile Rodgers with Alissia inside a working studio: proof that Fender Studio Pro is where real records get made. Shot at the legendary Power Station in Hell's Kitchen, NYC, a room Nile told us was built around Chic in the '70s. The keystone shoot of the whole campaign, and the one true hero film of the launch.</p></div></div></div><a class="cs-video" data-csvid="5ccqyo4J3KA" href="https://www.youtube.com/watch?v=5ccqyo4J3KA" target="_blank" rel="noopener" aria-label="Watch Fender Studio Pro · Nile Rodgers &amp; Alissia"><img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/5ccqyo4J3KA/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/5ccqyo4J3KA/hqdefault.jpg'" alt="Fender Studio Pro · Nile Rodgers &amp; Alissia"><span class="vplay"><span class="vring"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></span></a><div class="cs-vmeta"><h3>Fender Studio Pro · Nile Rodgers &amp; Alissia</h3><span>Power Station, NYC · the hero film</span></div><div class="cs-chips"><div class="cs-chip"><b>Produced</b><span>Full production &amp; direction</span></div><div class="cs-chip"><b>Lighting</b><span>Lighting design on set</span></div><div class="cs-chip"><b>Photography</b><span>Stills &amp; campaign key art</span></div><div class="cs-chip"><b>Key Art</b><span>Thumbnails &amp; graphic design</span></div></div></div></section><figure class="cs-bleed withcopy"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp'" alt="Nile Rodgers at Power Station, New York"><div class="overlay"><span class="cs-kicker">The room, not an ad</span><h2 class="cs-h">Built around<br>Chic.</h2><p>We shot in a room with real history, the same walls that shaped decades of records. Lit and produced to feel authentic, not advertised: the console in the hands of the people who actually make the music.</p></div></figure><section class="cs-band"><div class="cs-inner"></div></section><section class="cs-band alt"><div class="cs-inner"><div class="cs-head"><div class="cs-num">03 · Hardware Launch · Quantum LT</div><div><h2 class="cs-h">The signal chain<br>gets a Fender.</h2><div class="cs-p"><p>The Quantum LT family launch film features Nicole Alexis, cut to her own original song, which I remixed for the film.</p></div></div></div><a class="cs-video" data-csvid="N2W3E1ThYuw" href="https://www.youtube.com/watch?v=N2W3E1ThYuw" target="_blank" rel="noopener" aria-label="Watch Fender Quantum LT · Official Launch"><img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/N2W3E1ThYuw/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/N2W3E1ThYuw/hqdefault.jpg'" alt="Fender Quantum LT · Official Launch"><span class="vplay"><span class="vring"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></span></a><div class="cs-vmeta"><h3>Fender Quantum LT · Official Launch</h3><span>Nashville · featuring Nicole Alexis</span></div><div class="cs-chips"><div class="cs-chip"><b>Gaffer</b><span>Lighting design &amp; grip</span></div><div class="cs-chip"><b>Producer</b><span>Set design &amp; on-site AC</span></div><div class="cs-chip"><b>Mix</b><span>Audio mix &amp; the remix of Nicole's track</span></div><div class="cs-chip"><b>Photo</b><span>Stills &amp; graphic design</span></div></div></div></section><section class="cs-band" id="cs-cs-fender-talent"><div class="cs-inner"><div class="cs-head"><div class="cs-num">04 · The Talent</div><div><h2 class="cs-h">Casting<br>credibility.</h2></div></div><div class="cs-people"><div class="cs-person"><div class="pic"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp'" alt="Nile Rodgers"></div><div class="body"><b>Nile</b><b class="two">Rodgers</b><span class="role">Chic · Daft Punk</span><p>A funk and pop legend and one of the most sampled musicians alive, the living link between disco, funk, and modern pop. Instant authority for a pro-audio story.</p></div></div><div class="cs-person"><div class="pic"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Nile%20Rodgers%20and%20Alissa%20Hero.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Nile%20Rodgers%20and%20Alissa%20Hero.webp'" alt="Alissia "></div><div class="body"><b>Alissia</b><span class="role">Producer · Bassist · DJ</span><p>Grammy-winning Producer of the Year and a killer bassist and DJ, the next-generation virtuoso bridging serious musicianship and the dance floor. The future of the brand.</p></div></div><div class="cs-person"><div class="pic"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%20Nicole%20Alexis%20Wide%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%20Nicole%20Alexis%20Wide%201.webp'" alt="Nicole Alexis"></div><div class="body"><b>Nicole</b><b class="two">Alexis</b><span class="role">Artist · Quantum LT launch</span><p>Featured in the Quantum LT family launch film, cut to her own original song. I remixed the track for the film.</p></div></div><div class="cs-person"><div class="pic"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Joey%20Burcham%20Fender%20Studio%20Hero%20Image%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Joey%20Burcham%20Fender%20Studio%20Hero%20Image%201.webp'" alt="Joey Burcham"></div><div class="body"><b>Joey</b><b class="two">Burcham</b><span class="role">Owner · Roo Studios, Nashville</span><p>Studio owner and engineer, featured in the HiFi demo content that carried the technical proof layer of the campaign.</p></div></div></div></div></section><section class="cs-pin" data-pin=""><div class="cs-pin-label"><b>The Frame Reel</b> · <span class="d">keep scrolling</span><span class="m">swipe sideways</span></div><div class="cs-pin-stick"><div class="cs-pin-track"><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp'" alt="Nile Rodgers · Power Station, NYC"><figcaption>Nile Rodgers · Power Station, NYC</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Nashville%20Brand%20Lifestyle%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Nashville%20Brand%20Lifestyle%201.webp'" alt="Quantum LT · Nashville session"><figcaption>Quantum LT · Nashville session</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp'" alt="Fender Studio Pro &amp; Quantum HD · the desk"><figcaption>Fender Studio Pro &amp; Quantum HD · the desk</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Quantum%20LT%20Family%20Elevated%20Studio%20Photography.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Quantum%20LT%20Family%20Elevated%20Studio%20Photography.webp'" alt="Quantum LT family · LT2, LT4, LT16"><figcaption>Quantum LT family · LT2, LT4, LT16</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Lifestyle%20Keyart%20Family%20shot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Lifestyle%20Keyart%20Family%20shot.webp'" alt="Quantum LT · lifestyle key art"><figcaption>Quantum LT · lifestyle key art</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Youtube%20Thumb.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Youtube%20Thumb.webp'" alt="Launch film thumbnail design"><figcaption>Launch film thumbnail design</figcaption></figure></div></div></section><section class="cs-band alt"><div class="cs-inner"></div></section><section class="cs-band"><div class="cs-inner"><div class="cs-head"><div class="cs-num">05 · Digital &amp; Brand Identity</div><div><h2 class="cs-h">Living on<br>Fender.com.</h2><div class="cs-p"><p>The films needed a home. I played a key role in wireframing and shaping the design, flow, and visual identity of the Fender Studio experience on Fender.com, defining how the ecosystem is introduced, navigated, and shopped.</p><p>Across 11 marketing landing pages: the Fender Studio brand page, the Fender Studio Pro launch page and its seven sub-pages, and the pages for Audio Interfaces, Notion, and Universal Control.</p></div></div></div><div class="stat-grid" style="--sc:3"><div class="stat"><b>11</b><span>marketing landing pages shaped end to end</span></div><div class="stat"><b>7</b><span>sub-pages under the Fender Studio Pro launch page</span></div><div class="stat"><b>3</b><span>product ecosystems introduced: interfaces, Notion, Universal Control</span></div></div></div></section><figure class="cs-bleed"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Website.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Website.webp'" alt="Fender Studio on Fender.com"><figcaption class="cap">Fender Studio on Fender.com · hero, navigation &amp; brand story</figcaption></figure><section class="cs-band alt"><div class="cs-inner"></div></section><section class="cs-band" id="cs-cs-fender-retail"><div class="cs-inner"><div class="cs-head"><div class="cs-num">06 · Retail &amp; Merchandising</div><div><h2 class="cs-h">Owning the<br>digital shelf.</h2><div class="cs-p"><p>I designed and executed the Fender Studio Amazon storefront and led merchandising across every buildout: A+ content, Brand Stories, and enhanced product pages that carry Fender's voice all the way to checkout.</p></div></div></div><div class="grid grid-design in" data-grid="0"><figure class="tile" tabindex="0" role="button" aria-label="View Brand store · recording"><img loading="eager" fetchpriority="high" decoding="async" width="368" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20Cards.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20Cards.webp'" alt="Brand store · recording"><span class="idx">01</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Brand store · mobile"><img loading="eager" fetchpriority="high" decoding="async" width="368" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20iPhone%20Screenshot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20iPhone%20Screenshot.webp'" alt="Brand store · mobile"><span class="idx">02</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View A+ · from the manufacturer"><img loading="eager" fetchpriority="high" decoding="async" width="558" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Quantum%20LT%20Amazon%20A+%20Premium%20Layout.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Quantum%20LT%20Amazon%20A+%20Premium%20Layout.webp'" alt="A+ · from the manufacturer"><span class="idx">03</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Quantum LT2 · product page"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="524" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%202%20Amazon%20PDP.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%202%20Amazon%20PDP.webp'" alt="Quantum LT2 · product page"><span class="idx">04</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Brand Story · carousel"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="439" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Amazon%20Brand%20Story.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Amazon%20Brand%20Story.webp'" alt="Brand Story · carousel"><span class="idx">05</span></figure></div></div></section><section class="cs-band alt" id="cs-cs-fender-results"><div class="cs-inner"><div class="cs-head"><div class="cs-num">07 · Outcome</div><div><h2 class="cs-h">The launch<br>landed.</h2><div class="cs-p"><p>Film, photography, sound, web, and retail all speaking the same language. Fender's name carried convincingly from the stage into the control room, on brand and on time across every channel.</p><p>The launch met its internal targets across traffic, conversion, and revenue. Those figures are Fender's to share rather than mine, so this page stays on the creative.</p></div></div></div><h3 class="cs-sub">What shipped</h3><div class="stat-grid" style="--sc:4"><div class="stat"><b>2</b><span>hero films, concepted and produced</span></div><div class="stat"><b>150+</b><span>final images delivered from five shoots</span></div><div class="stat"><b>11</b><span>landing pages on Fender.com</span></div><div class="stat"><b>5</b><span>Amazon buildouts: brand store, A+, Brand Story, PDPs</span></div></div><div class="cs-note">Performance data for this launch belongs to Fender and is not published here. The work above is the creative I owned. I am happy to talk through the results, and my contribution to them, in conversation.</div><div class="cs-note">I worked under the Creative Director on this launch. The lanes above are mine; overall visual creative direction was not.</div></div></section><section class="cs-band"><div class="cs-inner"><a class="cta" href="/case-studies/namm-2026" data-view="cs-namm" aria-label="Next case study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span><span class="cta-label">Next case study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span></a></div></section></div>
+  <div class="cs-body" data-study="cs-fender"><section class="cs-band" id="cs-cs-fender-overview"><div class="cs-inner"><div class="cs-head"><div class="cs-num">01 · The Challenge</div><div><h2 class="cs-h">Not just guitars<br>and amps anymore.</h2><div class="cs-p"><p>Fender is a name built on the stage. Fender Studio Pro, the rebranded PreSonus Studio One Pro, and the new Quantum LT interfaces move that name into professional audio production. The brief was simple and hard: prove Fender belongs in the control room as much as under the spotlight.</p><p>Production spanned five shoots across three cities: the NYC hero film, three Nashville shoots for product demo, the Quantum LT launch and brand collateral, and a New Orleans shoot for the Fender Studio app that folded an earlier launch into the same family. Casting leaned young for a vintage-meets-modern aesthetic. The mission: hold the existing PreSonus demographic while drawing in a younger, more diverse crowd, the next generation of producers who find sanctuary in their studio.</p></div></div></div><h3 class="cs-sub">What I owned</h3><div class="owned-grid"><div class="owned-card"><b>Launch</b><b>Films</b><p>Concept, production, and direction of the NYC hero film and the Quantum LT hardware film.</p></div><div class="owned-card"><b>Lighting</b><b>Design</b><p>Gaffer and lighting design across shoots, lit to feel like the room, not an ad.</p></div><div class="owned-card"><b>Photo</b><b>graphy</b><p>Campaign and product photography, plus key art and YouTube thumbnails.</p></div><div class="owned-card"><b>Audio</b><b>Mix</b><p>Mix engineering for the hardware film, including a remix of Nicole Alexis' original song for the cut.</p></div><div class="owned-card"><b>Graphic</b><b>Design</b><p>Key art, thumbnails, social carousels, and campaign collateral.</p></div><div class="owned-card"><b>Web &amp;</b><b>Retail</b><p>Fender.com wireframing plus the Amazon storefront and A+ merchandising.</p></div></div><h3 class="cs-sub">Production scale</h3><div class="stat-grid" style="--sc:5"><div class="stat"><b>5</b><span>shoots across three cities</span></div><div class="stat"><b>5,000+</b><span>photos shot (150+ final)</span></div><div class="stat"><b>2</b><span>hero films produced</span></div><div class="stat"><b>10</b><span>key art systems</span></div><div class="stat"><b>200+</b><span>static graphic assets</span></div></div></div></section><section class="cs-band alt" id="cs-cs-fender-film"><div class="cs-inner"><div class="cs-head"><div class="cs-num">02 · The Launch Film</div><div><h2 class="cs-h">A legend and<br>a virtuoso.</h2><div class="cs-p"><p>The hero film pairs Nile Rodgers with Alissia inside a working studio: proof that Fender Studio Pro is where real records get made. Shot at the legendary Power Station in Hell's Kitchen, NYC, a room Nile told us was built around Chic in the '70s. The keystone shoot of the whole campaign, and the one true hero film of the launch.</p></div></div></div><a class="cs-video" data-csvid="5ccqyo4J3KA" href="https://www.youtube.com/watch?v=5ccqyo4J3KA" target="_blank" rel="noopener" aria-label="Watch Fender Studio Pro · Nile Rodgers &amp; Alissia"><img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/5ccqyo4J3KA/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/5ccqyo4J3KA/hqdefault.jpg'" alt="Fender Studio Pro · Nile Rodgers &amp; Alissia" width="1280" height="720"><span class="vplay"><span class="vring"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></span></a><div class="cs-vmeta"><h3>Fender Studio Pro · Nile Rodgers &amp; Alissia</h3><span>Power Station, NYC · the hero film</span></div><div class="cs-chips"><div class="cs-chip"><b>Produced</b><span>Full production &amp; direction</span></div><div class="cs-chip"><b>Lighting</b><span>Lighting design on set</span></div><div class="cs-chip"><b>Photography</b><span>Stills &amp; campaign key art</span></div><div class="cs-chip"><b>Key Art</b><span>Thumbnails &amp; graphic design</span></div></div></div></section><figure class="cs-bleed withcopy"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp'" alt="Nile Rodgers at Power Station, New York" width="1200" height="1600"><div class="overlay"><span class="cs-kicker">The room, not an ad</span><h2 class="cs-h">Built around<br>Chic.</h2><p>We shot in a room with real history, the same walls that shaped decades of records. Lit and produced to feel authentic, not advertised: the console in the hands of the people who actually make the music.</p></div></figure><section class="cs-band"><div class="cs-inner"></div></section><section class="cs-band alt"><div class="cs-inner"><div class="cs-head"><div class="cs-num">03 · Hardware Launch · Quantum LT</div><div><h2 class="cs-h">The signal chain<br>gets a Fender.</h2><div class="cs-p"><p>The Quantum LT family launch film features Nicole Alexis, cut to her own original song, which I remixed for the film.</p></div></div></div><a class="cs-video" data-csvid="N2W3E1ThYuw" href="https://www.youtube.com/watch?v=N2W3E1ThYuw" target="_blank" rel="noopener" aria-label="Watch Fender Quantum LT · Official Launch"><img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/N2W3E1ThYuw/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/N2W3E1ThYuw/hqdefault.jpg'" alt="Fender Quantum LT · Official Launch" width="1280" height="720"><span class="vplay"><span class="vring"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg></span></span></a><div class="cs-vmeta"><h3>Fender Quantum LT · Official Launch</h3><span>Nashville · featuring Nicole Alexis</span></div><div class="cs-chips"><div class="cs-chip"><b>Gaffer</b><span>Lighting design &amp; grip</span></div><div class="cs-chip"><b>Producer</b><span>Set design &amp; on-site AC</span></div><div class="cs-chip"><b>Mix</b><span>Audio mix &amp; the remix of Nicole's track</span></div><div class="cs-chip"><b>Photo</b><span>Stills &amp; graphic design</span></div></div></div></section><section class="cs-band" id="cs-cs-fender-talent"><div class="cs-inner"><div class="cs-head"><div class="cs-num">04 · The Talent</div><div><h2 class="cs-h">Casting<br>credibility.</h2></div></div><div class="cs-people"><div class="cs-person"><div class="pic"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp'" alt="Nile Rodgers" width="600" height="800"></div><div class="body"><b>Nile</b><b class="two">Rodgers</b><span class="role">Chic · Daft Punk</span><p>A funk and pop legend and one of the most sampled musicians alive, the living link between disco, funk, and modern pop. Instant authority for a pro-audio story.</p></div></div><div class="cs-person"><div class="pic"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Nile%20Rodgers%20and%20Alissa%20Hero.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Nile%20Rodgers%20and%20Alissa%20Hero.webp'" alt="Alissia " width="800" height="533"></div><div class="body"><b>Alissia</b><span class="role">Producer · Bassist · DJ</span><p>Grammy-winning Producer of the Year and a killer bassist and DJ, the next-generation virtuoso bridging serious musicianship and the dance floor. The future of the brand.</p></div></div><div class="cs-person"><div class="pic"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%20Nicole%20Alexis%20Wide%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%20Nicole%20Alexis%20Wide%201.webp'" alt="Nicole Alexis" width="800" height="533"></div><div class="body"><b>Nicole</b><b class="two">Alexis</b><span class="role">Artist · Quantum LT launch</span><p>Featured in the Quantum LT family launch film, cut to her own original song. I remixed the track for the film.</p></div></div><div class="cs-person"><div class="pic"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Joey%20Burcham%20Fender%20Studio%20Hero%20Image%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Joey%20Burcham%20Fender%20Studio%20Hero%20Image%201.webp'" alt="Joey Burcham" width="545" height="800"></div><div class="body"><b>Joey</b><b class="two">Burcham</b><span class="role">Owner · Roo Studios, Nashville</span><p>Studio owner and engineer, featured in the HiFi demo content that carried the technical proof layer of the campaign.</p></div></div></div></div></section><section class="cs-pin" data-pin=""><div class="cs-pin-label"><b>The Frame Reel</b> · <span class="d">keep scrolling</span><span class="m">swipe sideways</span></div><div class="cs-pin-stick"><div class="cs-pin-track"><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp'" alt="Nile Rodgers · Power Station, NYC" width="1200" height="1600"><figcaption>Nile Rodgers · Power Station, NYC</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Nashville%20Brand%20Lifestyle%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Nashville%20Brand%20Lifestyle%201.webp'" alt="Quantum LT · Nashville session" width="1800" height="1088"><figcaption>Quantum LT · Nashville session</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp'" alt="Fender Studio Pro &amp; Quantum HD · the desk" width="1800" height="1200"><figcaption>Fender Studio Pro &amp; Quantum HD · the desk</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Quantum%20LT%20Family%20Elevated%20Studio%20Photography.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Quantum%20LT%20Family%20Elevated%20Studio%20Photography.webp'" alt="Quantum LT family · LT2, LT4, LT16" width="1800" height="1199"><figcaption>Quantum LT family · LT2, LT4, LT16</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Lifestyle%20Keyart%20Family%20shot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Lifestyle%20Keyart%20Family%20shot.webp'" alt="Quantum LT · lifestyle key art" width="1800" height="1012"><figcaption>Quantum LT · lifestyle key art</figcaption></figure><figure><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Youtube%20Thumb.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Youtube%20Thumb.webp'" alt="Launch film thumbnail design" width="1800" height="1012"><figcaption>Launch film thumbnail design</figcaption></figure></div></div></section><section class="cs-band alt"><div class="cs-inner"></div></section><section class="cs-band"><div class="cs-inner"><div class="cs-head"><div class="cs-num">05 · Digital &amp; Brand Identity</div><div><h2 class="cs-h">Living on<br>Fender.com.</h2><div class="cs-p"><p>The films needed a home. I played a key role in wireframing and shaping the design, flow, and visual identity of the Fender Studio experience on Fender.com, defining how the ecosystem is introduced, navigated, and shopped.</p><p>Across 11 marketing landing pages: the Fender Studio brand page, the Fender Studio Pro launch page and its seven sub-pages, and the pages for Audio Interfaces, Notion, and Universal Control.</p></div></div></div><div class="stat-grid" style="--sc:3"><div class="stat"><b>11</b><span>marketing landing pages shaped end to end</span></div><div class="stat"><b>7</b><span>sub-pages under the Fender Studio Pro launch page</span></div><div class="stat"><b>3</b><span>product ecosystems introduced: interfaces, Notion, Universal Control</span></div></div></div></section><figure class="cs-bleed"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Website.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Website.webp'" alt="Fender Studio on Fender.com" width="1600" height="1056"><figcaption class="cap">Fender Studio on Fender.com · hero, navigation &amp; brand story</figcaption></figure><section class="cs-band alt"><div class="cs-inner"></div></section><section class="cs-band" id="cs-cs-fender-retail"><div class="cs-inner"><div class="cs-head"><div class="cs-num">06 · Retail &amp; Merchandising</div><div><h2 class="cs-h">Owning the<br>digital shelf.</h2><div class="cs-p"><p>I designed and executed the Fender Studio Amazon storefront and led merchandising across every buildout: A+ content, Brand Stories, and enhanced product pages that carry Fender's voice all the way to checkout.</p></div></div></div><div class="grid grid-design in" data-grid="0"><figure class="tile" tabindex="0" role="button" aria-label="View Brand store · recording"><img loading="eager" fetchpriority="high" decoding="async" width="368" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20Cards.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20Cards.webp'" alt="Brand store · recording"><span class="idx">01</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Brand store · mobile"><img loading="eager" fetchpriority="high" decoding="async" width="368" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20iPhone%20Screenshot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20iPhone%20Screenshot.webp'" alt="Brand store · mobile"><span class="idx">02</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View A+ · from the manufacturer"><img loading="eager" fetchpriority="high" decoding="async" width="558" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Quantum%20LT%20Amazon%20A+%20Premium%20Layout.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Quantum%20LT%20Amazon%20A+%20Premium%20Layout.webp'" alt="A+ · from the manufacturer"><span class="idx">03</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Quantum LT2 · product page"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="524" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%202%20Amazon%20PDP.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%202%20Amazon%20PDP.webp'" alt="Quantum LT2 · product page"><span class="idx">04</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Brand Story · carousel"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="439" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Amazon%20Brand%20Story.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Amazon%20Brand%20Story.webp'" alt="Brand Story · carousel"><span class="idx">05</span></figure></div></div></section><section class="cs-band alt" id="cs-cs-fender-results"><div class="cs-inner"><div class="cs-head"><div class="cs-num">07 · Outcome</div><div><h2 class="cs-h">The launch<br>landed.</h2><div class="cs-p"><p>Film, photography, sound, web, and retail all speaking the same language. Fender's name carried convincingly from the stage into the control room, on brand and on time across every channel.</p><p>The launch met its internal targets across traffic, conversion, and revenue. Those figures are Fender's to share rather than mine, so this page stays on the creative.</p></div></div></div><h3 class="cs-sub">What shipped</h3><div class="stat-grid" style="--sc:4"><div class="stat"><b>2</b><span>hero films, concepted and produced</span></div><div class="stat"><b>150+</b><span>final images delivered from five shoots</span></div><div class="stat"><b>11</b><span>landing pages on Fender.com</span></div><div class="stat"><b>5</b><span>Amazon buildouts: brand store, A+, Brand Story, PDPs</span></div></div><div class="cs-note">Performance data for this launch belongs to Fender and is not published here. The work above is the creative I owned. I am happy to talk through the results, and my contribution to them, in conversation.</div><div class="cs-note">I worked under the Creative Director on this launch. The lanes above are mine; overall visual creative direction was not.</div></div></section><section class="cs-band"><div class="cs-inner"><a class="cta" href="/case-studies/namm-2026" data-view="cs-namm" aria-label="Next case study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span><span class="cta-label">Next case study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span></a></div></section></div>
   <div class="cs-band"><div class="cs-inner"></div></div>
   <footer class="mono site-foot">
 <div class="foot-top">
@@ -1690,17 +1823,17 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
 
 <div class="view" id="view-cs-namm" data-c="blue">
   <header class="cs-top">
-    <img class="cs-bg" loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2013.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2013.webp'" alt="Fender Studio booth at NAMM 2026">
+    <img class="cs-bg" loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2013.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2013.webp'" alt="Fender Studio booth at NAMM 2026" width="1200" height="1500">
     <div class="cs-top-inner">
       <a class="back" href="/case-studies" data-view="case-studies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>All case studies</a>
-      <div class="cs-lockups"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20Logo%20Horizontal%20White.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20Logo%20Horizontal%20White.webp'" alt="Fender Studio"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/The%20NAMM%20Show%20logo.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/The%20NAMM%20Show%20logo.webp'" alt="The NAMM Show"></div>
+      <div class="cs-lockups"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20Logo%20Horizontal%20White.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20Logo%20Horizontal%20White.webp'" alt="Fender Studio" width="800" height="158"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/The%20NAMM%20Show%20logo.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/The%20NAMM%20Show%20logo.webp'" alt="The NAMM Show" width="800" height="548"></div>
       <span class="cs-kicker">Fender Studio · The NAMM Show 2026 · Case Study</span>
       <div role="heading" aria-level="1" class="cs-title display">NAMM<br>2026</div>
       <p class="cs-tag">The physical debut of a new brand identity. The first time Fender Studio met the industry face to face, on the floor in Anaheim.</p>
@@ -1748,17 +1881,17 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
 
 <div class="view" id="view-cs-se" data-c="fuch">
   <header class="cs-top">
-    <img class="cs-bg" loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/StudioLive%20SE/StudioLive%20SE%20elevated%20family%20shot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/StudioLive%20SE/StudioLive%20SE%20elevated%20family%20shot.webp'" alt="StudioLive Series III SE elevated family shot">
+    <img class="cs-bg" loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/StudioLive%20SE/StudioLive%20SE%20elevated%20family%20shot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/StudioLive%20SE/StudioLive%20SE%20elevated%20family%20shot.webp'" alt="StudioLive Series III SE elevated family shot" width="1800" height="1440">
     <div class="cs-top-inner">
       <a class="back" href="/case-studies" data-view="case-studies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>All case studies</a>
-      <div class="cs-lockups"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/StudioLive%20SE/PreSonus%20Logo%20Icon%20Only%20White%20EAEAEA.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/StudioLive%20SE/PreSonus%20Logo%20Icon%20Only%20White%20EAEAEA.webp'" alt="PreSonus"></div>
+      <div class="cs-lockups"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/StudioLive%20SE/PreSonus%20Logo%20Icon%20Only%20White%20EAEAEA.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/StudioLive%20SE/PreSonus%20Logo%20Icon%20Only%20White%20EAEAEA.webp'" alt="PreSonus" width="800" height="643"></div>
       <span class="cs-kicker">PreSonus · Global Product Launch · Case Study</span>
       <div role="heading" aria-level="1" class="cs-title display">StudioLive<br>Series III SE</div>
       <p class="cs-tag">Command every channel. Control every stage. The end-to-end launch of PreSonus' flagship digital console line.</p>
@@ -1806,7 +1939,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1821,7 +1954,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <section class="section" data-c="blue">
     <figure class="tile video-wrap reveal" data-yt="lA7f6GV6NAo">
       <span class="flag">Most recent</span>
-      <img loading="lazy" decoding="async" src="/ASSETS/IMAGES/PAGES/Video/Fender%20Motion%20Launch%20Hero%20YT%20Thumb.webp" alt="Fender Motion controllers launch hero film key art">
+      <img loading="lazy" decoding="async" src="/ASSETS/IMAGES/PAGES/Video/Fender%20Motion%20Launch%20Hero%20YT%20Thumb.webp" alt="Fender Motion controllers launch hero film key art" width="1920" height="1080">
       <a class="video-open" href="https://www.youtube.com/watch?v=lA7f6GV6NAo" target="_blank" rel="noopener">
         <span class="lbl">Watch with sound
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
@@ -1875,7 +2008,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -2615,6 +2748,7 @@ function syncHrefs(){
   });
 }
 let current = 'home';
+let booting = true;          /* first paint must not grab focus */
 let show = function(name, fromHash){
   if (typeof fillDeferred === 'function') fillDeferred(name);
   const anchor = SCROLL_ROUTES[name];          /* /contact renders home, then scrolls */
@@ -2634,6 +2768,21 @@ let show = function(name, fromHash){
     const el = document.getElementById(anchor);
     if (el) jump(el.getBoundingClientRect().top + scrollY);
   });
+  /* A client-side view swap is invisible to assistive tech: nothing fires,
+     and keyboard focus stays on the link the visitor just left, so the next
+     Tab continues from the old page. Move focus to <main> and say the name.
+     Skipped on first paint, or it would steal focus on arrival. */
+  if (!booting){
+    const say = document.getElementById('routeSay');
+    const mainEl = document.getElementById('main');
+    if (mainEl){
+      mainEl.focus({ preventScroll: true });
+      /* focus() alone can leave the page scrolled where the old view was */
+      if (!anchor) hardTop();
+    }
+    if (say && META[name]) say.textContent = META[name][0].split('|')[0].trim() + ', page loaded';
+  }
+
   const meta = META[name];
   if (meta){
     document.title = meta[0];
@@ -3531,6 +3680,46 @@ document.querySelectorAll('.faq-item').forEach(item => {
 
 syncHrefs();
 show(routeNow(), true);
+booting = false;             /* every later route change announces itself */
+/* ---------- contact form ----------
+   Netlify accepts a urlencoded POST to any path on the site as long as
+   `form-name` matches a form it registered at deploy time. Posting over
+   fetch keeps the visitor on the page. Opened from disk there is no Netlify
+   to post to, so the preview reports that instead of failing silently. */
+const cform = document.getElementById('cform');
+if (cform){
+  const note = document.getElementById('cf-note');
+  const send = cform.querySelector('.cf-send');
+  cform.addEventListener('submit', e => {
+    e.preventDefault();
+    if (!cform.reportValidity()) return;
+    if (cform.querySelector('[name="bot-field"]').value) return;   /* honeypot */
+
+    if (FILE_MODE){
+      note.textContent = 'Preview mode: this posts for real once deployed.';
+      note.className = 'cf-note';
+      return;
+    }
+    send.disabled = true;
+    note.className = 'cf-note';
+    note.textContent = 'Sending...';
+    fetch('/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+      body: new URLSearchParams(new FormData(cform)).toString()
+    }).then(r => {
+      if (!r.ok) throw new Error(r.status);
+      cform.reset();
+      note.className = 'cf-note good';
+      note.textContent = 'Got it. I will come back to you shortly.';
+      if (typeof plausible === 'function') plausible('Contact Form');
+    }).catch(() => {
+      note.className = 'cf-note bad';
+      note.textContent = 'That did not send. Email me directly and it will reach me.';
+    }).finally(() => { send.disabled = false; });
+  });
+}
+
 document.querySelectorAll('[data-year]').forEach(el => el.textContent = new Date().getFullYear());
 })();
 </script>
