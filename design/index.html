@@ -647,10 +647,66 @@ a.sec-title:hover,.sec-title a:hover{color:var(--ht,var(--sec,var(--chart)))}
 }
 .chip:hover{background:var(--hb,var(--black));border-color:var(--hb,var(--black));color:var(--hf,var(--chart));transform:translateY(-3px)}
 
+/* ---------- site footer ----------
+   Mobile first: one column, then the link columns go 2-up, then 4-up, then
+   the brand block sits beside them. Nothing here sets `display` on a
+   descendant img: the theme swap rules are `html img.lg-*` at (0,1,2) and a
+   descendant-img rule would out-rank them and paint both marks. */
 footer{
-  padding:26px var(--pad) calc(40px + env(safe-area-inset-bottom));
-  display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  padding:calc(var(--sec-gap) * .72) var(--pad) calc(30px + env(safe-area-inset-bottom));
   color:var(--ink-dim);border-top:1px solid var(--line);
+}
+.foot-top{display:grid;gap:36px}
+.foot-id{
+  display:flex;align-items:center;gap:11px;color:var(--ink);
+  font-size:12px;letter-spacing:.1em;
+}
+.foot-mark{height:26px;width:auto;opacity:.75;transition:opacity .3s ease}
+footer:hover .foot-mark{opacity:1}
+.foot-line{
+  font-family:var(--font-body);font-size:14.5px;line-height:1.62;
+  text-transform:none;letter-spacing:0;color:var(--ink-dim);
+  margin:16px 0 20px;max-width:44ch;
+}
+.foot-cta{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:44px;padding:0 24px;border-radius:44px;text-decoration:none;
+  background:var(--accent);color:var(--accent-ink);font-weight:700;
+  font-size:11px;letter-spacing:.08em;
+  transition:background-color .25s ease,color .25s ease,transform .3s var(--settle);
+}
+[data-theme="light"] .foot-cta{background:var(--blue);color:var(--snow)}
+.foot-cta:hover,.foot-cta:focus-visible{background:var(--fuch);color:var(--snow);transform:translateY(-2px)}
+
+.foot-nav{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:28px 20px}
+.foot-h{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;font-weight:700;color:var(--ink);
+  margin:0 0 10px;
+}
+.foot-col a{
+  display:block;padding:7px 0;color:var(--ink-dim);text-decoration:none;
+  font-size:11px;letter-spacing:.06em;
+  transition:color .22s ease,transform .3s var(--settle);
+}
+.foot-col a:hover,.foot-col a:focus-visible{color:var(--accent-tx);transform:translateX(3px)}
+
+.foot-bar{
+  display:flex;flex-wrap:wrap;gap:12px 22px;justify-content:space-between;
+  align-items:center;margin-top:38px;padding-top:20px;
+  border-top:1px solid var(--line);font-size:10px;letter-spacing:.1em;
+}
+.foot-coord{opacity:.75}
+/* the standards page is deliberately unlinked everywhere else on the site */
+.foot-std{color:var(--ink-dim);text-decoration:none;opacity:.7;transition:color .22s ease,opacity .22s ease}
+.foot-std:hover,.foot-std:focus-visible{color:var(--accent-tx);opacity:1}
+
+@media (min-width:620px){
+  .foot-nav{grid-template-columns:repeat(4,minmax(0,1fr))}
+}
+@media (min-width:1000px){
+  .foot-top{grid-template-columns:minmax(240px,.9fr) 2fr;gap:56px;align-items:start}
+  .foot-line{margin-top:18px}
 }
 
 /* ---------- subpage headers ---------- */
@@ -1378,7 +1434,48 @@ html[data-theme="light"] img.lg-d{display:none}
     <div class="faq-list reveal" style="--d:.1s"><details class="faq-item reveal"><summary><span>What do you do?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>I work across brand design, photography, and video direction. In practice that means brand identity and design systems, campaign key art, product and lifestyle photography, launch films, and the packaging around them: social, retail, and e-commerce. On the largest projects I have run all of it as one pipeline rather than handing pieces to different teams.</p></div></details><details class="faq-item reveal"><summary><span>Where do you work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Anywhere the work is. I am available for global travel and regularly shoot on location, having produced campaigns across multiple cities for international launches. Studio, soundstage, LED volume wall, live venue, or client site. I am based in the United States and travel for the majority of projects.</p></div></details><details class="faq-item reveal"><summary><span>Do you take on freelance and contract work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Yes. Alongside in-house work I run an independent creative practice, taking on project-based engagements and ongoing retainers. That covers a single shoot or deliverable through to a full campaign built and delivered end to end.</p></div></details><details class="faq-item reveal"><summary><span>What kinds of clients do you work with?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Most of my recent work has been with music gear and pro audio brands, where I have led global product launches end to end. The same approach carries into DTC, SaaS and software, and CPG: categories where a product has to be explained and made desirable at the same time. If it needs a coherent visual idea carried across film, photography, and design, it is in scope.</p></div></details><details class="faq-item reveal"><summary><span>Do you handle a project end to end, or one piece of it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Either. I have pitched a campaign, storyboarded it, directed the shoot, shot the stills, mixed the audio, and designed the collateral. I have also been brought in for a single lane, most often photography or direction. Whichever way a project is structured, I am comfortable owning one piece or the whole thing.</p></div></details><details class="faq-item reveal"><summary><span>What is your turnaround?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>It depends on scope, but I plan backwards from your launch date and agree milestones before anything starts. Smaller projects usually move in days rather than weeks. For a multi-phase campaign, the schedule is built into the production plan up front so nothing lands late in the rollout.</p></div></details><details class="faq-item reveal"><summary><span>How do we start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach.</p><a class="cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="FAQ" aria-label="Email me"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Email me</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a></div></details></div>
   </section>
 
-  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono site-foot">
+<div class="foot-top">
+  <div class="foot-brand">
+    <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
+    <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
+    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+  </div>
+  <nav class="foot-nav" aria-label="Footer">
+    <div class="foot-col">
+      <p class="foot-h">Work</p>
+      <a data-view="design" href="/design">Design</a>
+      <a data-view="photo" href="/photo">Photography</a>
+      <a data-view="video" href="/video">Film</a>
+      <a data-view="case-studies" href="/case-studies">Case studies</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Selected work</p>
+      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Studio</p>
+      <a data-view="about" href="/about">About</a>
+      <a data-view="faq" href="/faq">FAQ</a>
+      <a data-view="contact" href="/contact">Contact</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Elsewhere</p>
+      <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
+      <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
+    </div>
+  </nav>
+</div>
+<div class="foot-bar">
+  <span>&copy; <span data-year>2026</span> Houston Dragna</span>
+  <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
+  <span>Est. 2015 &middot; Available worldwide</span>
+  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+</div>
+</footer>
 </div>
 
 <!-- ==================== DESIGN ==================== -->
@@ -1389,7 +1486,48 @@ html[data-theme="light"] img.lg-d{display:none}
     <p class="page-lede">Brand identity, design systems, campaign key art, and launch creative. Eleven years of graphic design across Fender, PreSonus, and independent clients, working on global launches and available for travel. The work spans logo and identity systems, album art, packaging, social and campaign graphics, trade show environmental design, YouTube packaging, and e-commerce merchandising for global product launches.</p>
   </header>
   <section class="section" data-c="chart"><div class="grid grid-design mosaic" data-grid data-bare><figure class="tile" tabindex="0" role="button" aria-label="View Back to Your Heart album art for Novum Records, live recording setup with serif title lockup"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Back%20To%20Your%20Heart%20Album%20Art%20Design%20-%20Novum%20Records.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Back%20To%20Your%20Heart%20Album%20Art%20Design%20-%20Novum%20Records.webp'" alt="Back to Your Heart album art for Novum Records, live recording setup with serif title lockup"><span class="idx">01</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Dad Casual brand identity card showing logo and colour palette"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Dad+Casual+Brand+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Dad+Casual+Brand+Card.webp'" alt="Dad Casual brand identity card showing logo and colour palette"><span class="idx">02</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Jamie Benn hockey spec sports graphic with bold display type"><img loading="eager" fetchpriority="high" decoding="async" width="640" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Jamie+Benn+Graphic+Spec.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Jamie+Benn+Graphic+Spec.webp'" alt="Jamie Benn hockey spec sports graphic with bold display type"><span class="idx">03</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus Sphere social graphic stack showing layered campaign layouts"><img loading="eager" fetchpriority="high" decoding="async" width="703" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+Sphere+Social+Graphic+Stack.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+Sphere+Social+Graphic+Stack.webp'" alt="PreSonus Sphere social graphic stack showing layered campaign layouts"><span class="idx">04</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus Studio 24c interface graphic with a motion swish treatment"><img loading="eager" fetchpriority="high" decoding="async" width="640" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus%20Studio+24c+Swish+4x5.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus%20Studio+24c+Swish+4x5.webp'" alt="PreSonus Studio 24c interface graphic with a motion swish treatment"><span class="idx">05</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus AudioBox GO social graphic set with product and typography"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="567" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+AudioBox+GO+Social+Graphics.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+AudioBox+GO+Social+Graphics.webp'" alt="PreSonus AudioBox GO social graphic set with product and typography"><span class="idx">06</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio hero key art composition with layered background artwork"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="533" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/FS+Hero+with+BG.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/FS+Hero+with+BG.webp'" alt="Fender Studio hero key art composition with layered background artwork"><span class="idx">07</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Kota The Friend-She's Gone-Album Art-Houston Dragna"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Kota+The+Friend-She%27s+Gone-Album+Art-Houston+Dragna.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Kota+The+Friend-She%27s+Gone-Album+Art-Houston+Dragna.webp'" alt="Kota The Friend-She's Gone-Album Art-Houston Dragna"><span class="idx">08</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Speculative PreSonus rebrand concept board with logo and identity system"><img loading="eager" fetchpriority="high" decoding="async" width="800" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+Rebrand+Spec+Option+-+Houston+Dragna.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+Rebrand+Spec+Option+-+Houston+Dragna.webp'" alt="Speculative PreSonus rebrand concept board with logo and identity system"><span class="idx">09</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Studio One Pro 7.2 social carousel card with feature callouts"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="672" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/SOP+7.2+Social+Carousel+card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/SOP+7.2+Social+Carousel+card.webp'" alt="Studio One Pro 7.2 social carousel card with feature callouts"><span class="idx">10</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Shoe podcast brand identity card with logo and type system"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Shoe+Podcast+Brand+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Shoe+Podcast+Brand+Card.webp'" alt="Shoe podcast brand identity card with logo and type system"><span class="idx">11</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View PreSonus Eris speaker Amazon listing card with feature callouts"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="494" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Eris+Accent+Amazon+Listing+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Eris+Accent+Amazon+Listing+Card.webp'" alt="PreSonus Eris speaker Amazon listing card with feature callouts"><span class="idx">12</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio campaign key art in 16x9 format"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Fender+Studio+Key+Art+A+-+16x9.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Fender+Studio+Key+Art+A+-+16x9.webp'" alt="Fender Studio campaign key art in 16x9 format"><span class="idx">13</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Quantum LT social carousel card with product and feature typography"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="524" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Fender+Quantum+LT+Social+Carousel+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Fender+Quantum+LT+Social+Carousel+Card.webp'" alt="Fender Quantum LT social carousel card with product and feature typography"><span class="idx">14</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Key art for the Studio One Pro 7 launch featuring DJ Jazzy Jeff"><img loading="lazy" fetchpriority="low" decoding="async" width="640" height="800" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/DJ%20Jazzy%20Jeff%20Studio%20One%20Pro%207%20Key%20Hero%20Image.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/DJ%20Jazzy%20Jeff%20Studio%20One%20Pro%207%20Key%20Hero%20Image.webp'" alt="Key art for the Studio One Pro 7 launch featuring DJ Jazzy Jeff"><span class="idx">15</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View StudioLive Series III SE dealer infographic card explaining console features"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="556" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/PreSonus+StudioLive+SE+Infogrphics+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/PreSonus+StudioLive+SE+Infogrphics+Card.webp'" alt="StudioLive Series III SE dealer infographic card explaining console features"><span class="idx">16</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View YouTube thumbnail for the Live from NAMM 2026 keynote with DJ Jazzy Jeff"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/NAMM%202026%20LIVE%20FROM%20NAMM%20Keynote%20with%20DJ%20Jazzy%20Jeff%20Thumb.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/NAMM%202026%20LIVE%20FROM%20NAMM%20Keynote%20with%20DJ%20Jazzy%20Jeff%20Thumb.webp'" alt="YouTube thumbnail for the Live from NAMM 2026 keynote with DJ Jazzy Jeff"><span class="idx">17</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View TuneCore YouTube thumbnail featuring Kota the Friend"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Tunecore-Kota-RMB-Thumbnail-YT.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Tunecore-Kota-RMB-Thumbnail-YT.webp'" alt="TuneCore YouTube thumbnail featuring Kota the Friend"><span class="idx">18</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Fender Studio Pro 16x9 hero key art for the global launch"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/FSP-Hero_16x9.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/FSP-Hero_16x9.webp'" alt="Fender Studio Pro 16x9 hero key art for the global launch"><span class="idx">19</span></figure><figure class="tile" tabindex="0" role="button" aria-label="View Wildfire Made brand card in 16x9 format showing identity system"><img loading="lazy" fetchpriority="low" decoding="async" width="800" height="450" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Design/Wildfire+16x9+Brand+Card.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Design/Wildfire+16x9+Brand+Card.webp'" alt="Wildfire Made brand card in 16x9 format showing identity system"><span class="idx">20</span></figure></div></section>
-  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono site-foot">
+<div class="foot-top">
+  <div class="foot-brand">
+    <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
+    <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
+    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+  </div>
+  <nav class="foot-nav" aria-label="Footer">
+    <div class="foot-col">
+      <p class="foot-h">Work</p>
+      <a data-view="design" href="/design">Design</a>
+      <a data-view="photo" href="/photo">Photography</a>
+      <a data-view="video" href="/video">Film</a>
+      <a data-view="case-studies" href="/case-studies">Case studies</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Selected work</p>
+      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Studio</p>
+      <a data-view="about" href="/about">About</a>
+      <a data-view="faq" href="/faq">FAQ</a>
+      <a data-view="contact" href="/contact">Contact</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Elsewhere</p>
+      <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
+      <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
+    </div>
+  </nav>
+</div>
+<div class="foot-bar">
+  <span>&copy; <span data-year>2026</span> Houston Dragna</span>
+  <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
+  <span>Est. 2015 &middot; Available worldwide</span>
+  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+</div>
+</footer>
 </div>
 
 <!-- ==================== PHOTO ==================== -->
@@ -1400,7 +1538,48 @@ html[data-theme="light"] img.lg-d{display:none}
     <p class="page-lede">Commercial, product, lifestyle, and portrait photography, shot and finished in house. US based and available worldwide, shooting from studio product tables to touring stages: campaign and lifestyle imagery, high-end transactional product shots, artist portraits, live music and event coverage, and on-location documentary work for national brands.</p>
   </header>
   <section class="section" data-c="fuch"><div class="grid grid-photo mosaic" data-grid data-bare></div></section>
-  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono site-foot">
+<div class="foot-top">
+  <div class="foot-brand">
+    <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
+    <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
+    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+  </div>
+  <nav class="foot-nav" aria-label="Footer">
+    <div class="foot-col">
+      <p class="foot-h">Work</p>
+      <a data-view="design" href="/design">Design</a>
+      <a data-view="photo" href="/photo">Photography</a>
+      <a data-view="video" href="/video">Film</a>
+      <a data-view="case-studies" href="/case-studies">Case studies</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Selected work</p>
+      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Studio</p>
+      <a data-view="about" href="/about">About</a>
+      <a data-view="faq" href="/faq">FAQ</a>
+      <a data-view="contact" href="/contact">Contact</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Elsewhere</p>
+      <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
+      <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
+    </div>
+  </nav>
+</div>
+<div class="foot-bar">
+  <span>&copy; <span data-year>2026</span> Houston Dragna</span>
+  <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
+  <span>Est. 2015 &middot; Available worldwide</span>
+  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+</div>
+</footer>
 </div>
 
 <!-- ==================== CASE STUDIES ==================== -->
@@ -1414,7 +1593,48 @@ html[data-theme="light"] img.lg-d{display:none}
     <!-- Full studies are Houston's own deployed Netlify apps: cards link out. -->
     <div class="cs-grid" id="csGrid"></div>
   </section>
-  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono site-foot">
+<div class="foot-top">
+  <div class="foot-brand">
+    <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
+    <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
+    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+  </div>
+  <nav class="foot-nav" aria-label="Footer">
+    <div class="foot-col">
+      <p class="foot-h">Work</p>
+      <a data-view="design" href="/design">Design</a>
+      <a data-view="photo" href="/photo">Photography</a>
+      <a data-view="video" href="/video">Film</a>
+      <a data-view="case-studies" href="/case-studies">Case studies</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Selected work</p>
+      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Studio</p>
+      <a data-view="about" href="/about">About</a>
+      <a data-view="faq" href="/faq">FAQ</a>
+      <a data-view="contact" href="/contact">Contact</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Elsewhere</p>
+      <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
+      <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
+    </div>
+  </nav>
+</div>
+<div class="foot-bar">
+  <span>&copy; <span data-year>2026</span> Houston Dragna</span>
+  <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
+  <span>Est. 2015 &middot; Available worldwide</span>
+  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+</div>
+</footer>
 </div>
 
 <div class="view" id="view-cs-fender" data-c="chart">
@@ -1431,7 +1651,48 @@ html[data-theme="light"] img.lg-d{display:none}
   </header>
   <div class="cs-body" data-study="cs-fender"></div>
   <div class="cs-band"><div class="cs-inner"></div></div>
-  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono site-foot">
+<div class="foot-top">
+  <div class="foot-brand">
+    <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
+    <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
+    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+  </div>
+  <nav class="foot-nav" aria-label="Footer">
+    <div class="foot-col">
+      <p class="foot-h">Work</p>
+      <a data-view="design" href="/design">Design</a>
+      <a data-view="photo" href="/photo">Photography</a>
+      <a data-view="video" href="/video">Film</a>
+      <a data-view="case-studies" href="/case-studies">Case studies</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Selected work</p>
+      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Studio</p>
+      <a data-view="about" href="/about">About</a>
+      <a data-view="faq" href="/faq">FAQ</a>
+      <a data-view="contact" href="/contact">Contact</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Elsewhere</p>
+      <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
+      <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
+    </div>
+  </nav>
+</div>
+<div class="foot-bar">
+  <span>&copy; <span data-year>2026</span> Houston Dragna</span>
+  <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
+  <span>Est. 2015 &middot; Available worldwide</span>
+  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+</div>
+</footer>
 </div>
 
 <div class="view" id="view-cs-namm" data-c="blue">
@@ -1448,7 +1709,48 @@ html[data-theme="light"] img.lg-d{display:none}
   </header>
   <div class="cs-body" data-study="cs-namm"></div>
   <div class="cs-band"><div class="cs-inner"></div></div>
-  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono site-foot">
+<div class="foot-top">
+  <div class="foot-brand">
+    <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
+    <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
+    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+  </div>
+  <nav class="foot-nav" aria-label="Footer">
+    <div class="foot-col">
+      <p class="foot-h">Work</p>
+      <a data-view="design" href="/design">Design</a>
+      <a data-view="photo" href="/photo">Photography</a>
+      <a data-view="video" href="/video">Film</a>
+      <a data-view="case-studies" href="/case-studies">Case studies</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Selected work</p>
+      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Studio</p>
+      <a data-view="about" href="/about">About</a>
+      <a data-view="faq" href="/faq">FAQ</a>
+      <a data-view="contact" href="/contact">Contact</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Elsewhere</p>
+      <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
+      <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
+    </div>
+  </nav>
+</div>
+<div class="foot-bar">
+  <span>&copy; <span data-year>2026</span> Houston Dragna</span>
+  <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
+  <span>Est. 2015 &middot; Available worldwide</span>
+  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+</div>
+</footer>
 </div>
 
 <div class="view" id="view-cs-se" data-c="fuch">
@@ -1465,7 +1767,48 @@ html[data-theme="light"] img.lg-d{display:none}
   </header>
   <div class="cs-body" data-study="cs-se"></div>
   <div class="cs-band"><div class="cs-inner"></div></div>
-  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono site-foot">
+<div class="foot-top">
+  <div class="foot-brand">
+    <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
+    <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
+    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+  </div>
+  <nav class="foot-nav" aria-label="Footer">
+    <div class="foot-col">
+      <p class="foot-h">Work</p>
+      <a data-view="design" href="/design">Design</a>
+      <a data-view="photo" href="/photo">Photography</a>
+      <a data-view="video" href="/video">Film</a>
+      <a data-view="case-studies" href="/case-studies">Case studies</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Selected work</p>
+      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Studio</p>
+      <a data-view="about" href="/about">About</a>
+      <a data-view="faq" href="/faq">FAQ</a>
+      <a data-view="contact" href="/contact">Contact</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Elsewhere</p>
+      <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
+      <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
+    </div>
+  </nav>
+</div>
+<div class="foot-bar">
+  <span>&copy; <span data-year>2026</span> Houston Dragna</span>
+  <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
+  <span>Est. 2015 &middot; Available worldwide</span>
+  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+</div>
+</footer>
 </div>
 
 <!-- ==================== VIDEO ==================== -->
@@ -1493,7 +1836,48 @@ html[data-theme="light"] img.lg-d{display:none}
     </div>
     <div class="vgrid" id="filmGrid"></div>
   </section>
-  <footer class="mono"><span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">© <span data-year>2026</span> Houston Dragna</span><span>Available worldwide</span></footer>
+  <footer class="mono site-foot">
+<div class="foot-top">
+  <div class="foot-brand">
+    <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
+    <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
+    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+  </div>
+  <nav class="foot-nav" aria-label="Footer">
+    <div class="foot-col">
+      <p class="foot-h">Work</p>
+      <a data-view="design" href="/design">Design</a>
+      <a data-view="photo" href="/photo">Photography</a>
+      <a data-view="video" href="/video">Film</a>
+      <a data-view="case-studies" href="/case-studies">Case studies</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Selected work</p>
+      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Studio</p>
+      <a data-view="about" href="/about">About</a>
+      <a data-view="faq" href="/faq">FAQ</a>
+      <a data-view="contact" href="/contact">Contact</a>
+    </div>
+    <div class="foot-col">
+      <p class="foot-h">Elsewhere</p>
+      <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
+      <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
+    </div>
+  </nav>
+</div>
+<div class="foot-bar">
+  <span>&copy; <span data-year>2026</span> Houston Dragna</span>
+  <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
+  <span>Est. 2015 &middot; Available worldwide</span>
+  <a class="foot-std" href="/brand-standards/">Brand standards</a>
+</div>
+</footer>
 </div>
 </main>
 
@@ -2172,11 +2556,12 @@ matchMedia('(prefers-color-scheme: light)').addEventListener('change', e => {
    server to rewrite, so it falls back to hash routing for local testing. */
 const brandEl = document.querySelector('.brand');
 const VIEWS = ['home','design','photo','video','case-studies','cs-fender','cs-namm','cs-se'];
-const SCROLL_ROUTES = { 'contact': 'contact', 'faq': 'faq' };   /* land on home, then scroll */
+const SCROLL_ROUTES = { 'contact': 'contact', 'faq': 'faq', 'about': 'about' };   /* land on home, then scroll */
 const FILE_MODE = location.protocol === 'file:';
 const PATHS = {
   'home':'/', 'design':'/design', 'photo':'/photo', 'video':'/video',
   'case-studies':'/case-studies', 'contact':'/contact', 'faq':'/faq',
+  'about':'/about',
   'cs-fender':'/case-studies/fender-studio',
   'cs-namm':'/case-studies/namm-2026',
   'cs-se':'/case-studies/studiolive-se'

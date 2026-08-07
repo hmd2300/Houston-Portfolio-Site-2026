@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Brand Standards | Houston Dragna</title>
+<meta name="robots" content="noindex,follow">
+<meta name="description" content="Internal brand standards for houstondragna.com: logo usage, palette, typography, themes, motion, and voice.">
+<link rel="canonical" href="https://www.houstondragna.com/brand-standards/">
+<link rel="icon" href="/ASSETS/Social%20Share/favicon.ico" sizes="any">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+/* ============================================================
+   HOUSTON DRAGNA · BRAND STANDARDS
+   Every token below is lifted verbatim from houstondragna.com.
+   This document is DARK ONLY by rule; light-mode behaviour is
+   documented inside scoped demo panels, never applied to the page.
+   ============================================================ */
+:root{
+  --blue:#0015FF;
+  --blue-tx:#1F42FF;
+  --blue-hv:#4E77FF;
+  --black:#06070F;
+  --chart:#E9F500;
+  --snow:#F7F9FA;
+  --fuch:#FF1245;
+
+  --bg:#06070D;
+  --bg-2:#0F1017;
+  --ink:var(--snow);
+  --ink-dim:#8B8B92;
+  --line:rgba(247,249,250,.15);
+  --accent:var(--chart);
+  --accent-ink:var(--black);
+
+  --font-display:'Archivo',Impact,sans-serif;
+  --font-body:'Instrument Sans',system-ui,sans-serif;
+  --font-mono:'Space Mono',ui-monospace,monospace;
+
+  --pad:clamp(18px,4.5vw,64px);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --settle:cubic-bezier(.19,1,.22,1);
+  --chrome-h:48px;
+  --sec-gap:clamp(60px,6.5vw,92px);
+  --cross:var(--chart);
+  color-scheme:dark;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+html{scroll-behavior:smooth;scrollbar-color:var(--chart) transparent;scrollbar-width:thin}
+body{
+  background:var(--bg);color:var(--ink);
+  font-family:var(--font-body);font-size:16px;line-height:1.65;
+  overflow-x:hidden;
+}
+a{color:inherit}
+::selection{background:var(--chart);color:var(--black)}
+
+/* ---------- crosshair field, the site's own ---------- */
+.xfield{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.xfield .x{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;opacity:.21}
+.xfield .x::before,.xfield .x::after{content:"";position:absolute;background:var(--cross)}
+.xfield .x::before{left:0;right:0;top:50%;height:1px;margin-top:-.5px}
+.xfield .x::after{top:0;bottom:0;left:50%;width:1px;margin-left:-.5px}
+@media (pointer:fine){ .xfield .x{will-change:transform} }
+
+/* ---------- chrome ---------- */
+.topbar{
+  position:fixed;z-index:50;top:12px;left:var(--pad);right:var(--pad);
+  display:flex;align-items:center;justify-content:space-between;height:var(--chrome-h);
+  pointer-events:none;
+}
+.topbar img{height:34px;width:auto;display:block}
+.topbar>a{pointer-events:auto;display:block}
+.topnav{
+  pointer-events:auto;display:flex;gap:4px;align-items:center;height:var(--chrome-h);
+  padding:0 10px;border-radius:60px;background:var(--bg-2);
+  border:1px solid var(--line);
+  box-shadow:0 12px 40px -12px rgba(0,0,0,.7);
+}
+.topnav a{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  text-decoration:none;color:var(--ink-dim);padding:8px 10px;border-radius:40px;
+  transition:color .25s ease,background-color .25s ease;
+}
+.topnav a:hover{color:var(--black);background:var(--chart)}
+.tn-home{color:var(--ink) !important;border-right:1px solid var(--line);border-radius:40px 0 0 40px;margin-right:4px}
+.tn-home:hover{color:var(--black) !important}
+@media (max-width:900px){ .topnav a{padding:8px 6px;font-size:9px} }
+@media (max-width:640px){ .topnav{display:none} }
+
+/* ---------- structure ---------- */
+.wrap{max-width:1240px;margin:0 auto;padding:0 var(--pad)}
+section{padding:var(--sec-gap) 0;border-top:1px solid var(--line)}
+section:first-of-type{border-top:0}
+
+.eyebrow{
+  display:flex;align-items:center;gap:10px;margin:0 0 26px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  color:var(--ink-dim);
+}
+.eyebrow b{
+  font-weight:700;background:var(--chart);color:var(--black);
+  padding:2px 7px;border-radius:3px;
+}
+h2{
+  font-family:var(--font-display);font-weight:900;font-stretch:118%;
+  font-size:clamp(40px,6.4vw,88px);line-height:.9;letter-spacing:-.02em;
+  text-transform:uppercase;margin:0 0 18px;
+}
+h3{
+  font-family:var(--font-display);font-weight:900;font-stretch:110%;
+  font-size:clamp(18px,2.2vw,26px);line-height:1.05;letter-spacing:-.01em;
+  text-transform:uppercase;margin:44px 0 12px;
+}
+.lede{max-width:64ch;color:var(--ink);font-size:clamp(16px,1.4vw,19px);margin:0 0 8px}
+.dim{color:var(--ink-dim)}
+p{max-width:70ch}
+.rule-note{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;line-height:1.8;
+  color:var(--ink-dim);border-left:2px solid var(--blue);padding:2px 0 2px 14px;
+  max-width:70ch;margin:18px 0;
+}
+.rule-note b{color:var(--ink);font-weight:700}
+
+/* ---------- hero ---------- */
+.hero{min-height:88svh;display:flex;flex-direction:column;justify-content:flex-end;
+  padding-top:120px;padding-bottom:36px;border-top:0}
+.hero-kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--chart);margin:0 0 16px}
+.hero h1{
+  font-family:var(--font-display);font-weight:900;font-stretch:118%;
+  font-size:clamp(46px,9.4vw,150px);line-height:.86;letter-spacing:-.02em;
+  text-transform:uppercase;margin:0;
+}
+.hero h1 .l2{color:var(--blue-tx)}
+.hero-meta{
+  display:flex;justify-content:space-between;gap:16px;margin-top:40px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-dim);
+}
+@media (max-width:700px){ .hero-meta{gap:6px} }
+
+/* ---------- cards & grids ---------- */
+.grid{display:grid;gap:14px}
+.g2{grid-template-columns:repeat(2,1fr)}
+.g3{grid-template-columns:repeat(3,1fr)}
+.g4{grid-template-columns:repeat(4,1fr)}
+@media (max-width:980px){ .g3,.g4{grid-template-columns:repeat(2,1fr)} }
+@media (max-width:640px){ .g2,.g3,.g4{grid-template-columns:1fr} }
+.card{
+  background:var(--bg-2);border:1px solid var(--line);border-radius:14px;
+  padding:20px;
+}
+.card h4{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  font-weight:700;color:var(--ink-dim);margin:0 0 12px;
+}
+
+/* ---------- swatches ---------- */
+.swatch{cursor:pointer;border:1px solid var(--line);border-radius:14px;overflow:hidden;
+  transition:transform .3s var(--settle)}
+.swatch:hover{transform:translateY(-3px)}
+.sw-chip{height:110px}
+.sw-body{padding:14px 16px;background:var(--bg-2)}
+.sw-name{font-family:var(--font-display);font-weight:900;font-stretch:110%;
+  text-transform:uppercase;font-size:15px;letter-spacing:0;margin:0 0 4px}
+.sw-hex{font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;color:var(--ink-dim)}
+.sw-role{font-size:13px;color:var(--ink-dim);margin-top:6px;line-height:1.5}
+
+.copied{
+  position:fixed;z-index:99;left:50%;bottom:26px;transform:translate(-50%,80px);
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--chart);color:var(--black);padding:10px 18px;border-radius:44px;
+  transition:transform .45s var(--settle);pointer-events:none;font-weight:700;
+}
+.copied.show{transform:translate(-50%,0)}
+
+/* token chips: any copyable value */
+.tok{
+  display:inline-flex;align-items:center;gap:8px;cursor:pointer;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;
+  background:var(--bg-2);border:1px solid var(--line);border-radius:8px;
+  padding:6px 10px;margin:3px 4px 3px 0;transition:border-color .25s ease,color .25s ease;
+}
+.tok:hover{border-color:var(--chart);color:var(--chart)}
+.tok i{font-style:normal;color:var(--ink-dim)}
+.tok:hover i{color:inherit}
+
+/* ---------- contrast table ---------- */
+table{border-collapse:collapse;width:100%;font-size:13.5px}
+th{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;
+  color:var(--ink-dim);text-align:left;font-weight:700;padding:10px 12px;border-bottom:1px solid var(--line)}
+td{padding:10px 12px;border-bottom:1px solid var(--line);vertical-align:middle}
+td.mono{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.03em}
+.pill-sample{display:inline-block;padding:3px 10px;border-radius:6px;
+  font-family:var(--font-mono);font-size:11px;font-weight:700}
+.ok{color:var(--chart);font-family:var(--font-mono);font-size:11px}
+.no{color:var(--fuch);font-family:var(--font-mono);font-size:11px}
+
+/* ---------- type specimens ---------- */
+.spec{border:1px solid var(--line);border-radius:14px;background:var(--bg-2);
+  padding:26px;margin:14px 0;overflow:hidden}
+.spec-label{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-dim);margin:0 0 14px;display:flex;
+  justify-content:space-between;flex-wrap:wrap;gap:8px}
+.spec-display{font-family:var(--font-display);font-weight:900;font-stretch:118%;
+  font-size:clamp(38px,6vw,84px);line-height:.86;letter-spacing:-.02em;
+  text-transform:uppercase;margin:0;word-break:break-word}
+.spec-body{font-family:var(--font-body);font-size:17px;line-height:1.65;max-width:64ch;margin:0}
+.spec-mono{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--ink-dim);margin:0}
+
+/* variable playground */
+.play{border:1px solid var(--line);border-radius:14px;background:var(--bg-2);padding:26px;margin-top:14px}
+.play-out{
+  font-family:var(--font-display);text-transform:uppercase;letter-spacing:-.02em;
+  line-height:.9;font-size:clamp(44px,8vw,120px);margin:8px 0 22px;outline:none;
+  min-height:1em;word-break:break-word;
+}
+.play-row{display:flex;align-items:center;gap:14px;margin:10px 0;flex-wrap:wrap}
+.play-row label{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;
+  text-transform:uppercase;color:var(--ink-dim);width:64px}
+.play-row output{font-family:var(--font-mono);font-size:11px;color:var(--chart);width:70px}
+input[type=range]{flex:1;min-width:160px;accent-color:var(--chart);background:transparent}
+.play-note{font-family:var(--font-mono);font-size:10px;letter-spacing:.06em;color:var(--ink-dim)}
+.preset{
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:700;background:var(--blue);color:var(--snow);border:0;border-radius:44px;
+  padding:8px 16px;cursor:pointer;transition:background-color .25s ease,transform .3s var(--settle);
+}
+.preset:hover{background:var(--fuch);transform:translateY(-2px)}
+
+/* ---------- logo section ---------- */
+.logo-hero{display:grid;grid-template-columns:1.1fr .9fr;gap:14px}
+@media (max-width:900px){ .logo-hero{grid-template-columns:1fr} }
+.logo-stage{
+  border:1px solid var(--line);border-radius:14px;min-height:300px;
+  display:flex;align-items:center;justify-content:center;padding:40px;
+}
+.logo-stage.on-dark{background:var(--bg-2)}
+.logo-stage img{width:min(280px,60%);height:auto}
+.anatomy li{margin:10px 0;max-width:56ch}
+.anatomy{padding-left:18px}
+
+.variant{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.v-chip{height:130px;display:flex;align-items:center;justify-content:center;padding:22px}
+.v-chip img{height:64px;width:auto}
+.v-body{padding:12px 14px;background:var(--bg-2);border-top:1px solid var(--line)}
+.v-name{font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  font-weight:700}
+.v-use{font-size:12.5px;color:var(--ink-dim);margin-top:4px;line-height:1.5}
+.tag{display:inline-block;font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;font-weight:700;padding:2px 8px;border-radius:4px;margin-left:6px}
+.tag.primary{background:var(--chart);color:var(--black)}
+.tag.light{background:var(--blue);color:var(--snow)}
+.tag.support{background:transparent;border:1px solid var(--line);color:var(--ink-dim)}
+
+/* clearspace demo */
+.clearspace{position:relative;display:inline-block;padding:0}
+.clearspace .cs-box{
+  border:1px dashed rgba(233,245,0,.55);display:flex;align-items:center;justify-content:center;
+}
+.clearspace img{display:block;height:88px;width:auto}
+.cs-x{position:absolute;font-family:var(--font-mono);font-size:9px;letter-spacing:.08em;
+  color:var(--chart)}
+
+/* misuse grid */
+.dont .v-chip{position:relative;background:var(--bg-2)}
+.dont .v-chip::after{
+  content:"";position:absolute;inset:0;
+  background:linear-gradient(to top right,transparent calc(50% - 1px),var(--fuch) calc(50% - 1px),var(--fuch) calc(50% + 1px),transparent calc(50% + 1px));
+  opacity:.9;pointer-events:none;
+}
+.dont .v-name{color:var(--fuch)}
+.dont .v-name::before{content:"\2715\00a0\00a0"}
+
+/* ---------- theme demo panel ---------- */
+.theme-demo{border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.td-bar{display:flex;justify-content:space-between;align-items:center;gap:12px;
+  padding:12px 16px;background:var(--bg-2);border-bottom:1px solid var(--line)}
+.td-bar span{font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-dim)}
+.td-switch{
+  position:relative;width:80px;height:32px;border-radius:44px;background:var(--black);
+  border:1px solid rgba(247,249,250,.3);cursor:pointer;flex:0 0 auto;
+}
+.td-knob{position:absolute;top:3px;left:3px;width:24px;height:24px;border-radius:50%;
+  background:var(--snow);transition:transform .45s var(--settle)}
+.theme-demo.light .td-knob{transform:translateX(48px)}
+.td-stage{padding:34px 26px;transition:background-color .35s ease,color .35s ease;
+  background:var(--bg);color:var(--snow)}
+.theme-demo.light .td-stage{background:#F4F5F6;color:#15161C}
+.td-h{font-family:var(--font-display);font-weight:900;font-stretch:118%;font-size:34px;
+  line-height:.9;letter-spacing:-.02em;text-transform:uppercase;margin:0 0 8px}
+.td-accent{transition:color .35s ease;color:var(--chart);font-family:var(--font-mono);
+  font-size:10px;letter-spacing:.14em;text-transform:uppercase;display:block;margin-bottom:12px}
+.theme-demo.light .td-accent{color:#0011CC}
+.td-stage p{font-size:14px;line-height:1.6;max-width:52ch;margin:0 0 16px;
+  color:var(--ink-dim);transition:color .35s ease}
+.theme-demo.light .td-stage p{color:#5A5F66}
+.td-logo-d,.td-logo-l{height:40px;width:auto}
+.td-logo-l{display:none}
+.theme-demo.light .td-logo-d{display:none}
+.theme-demo.light .td-logo-l{display:block}
+.td-cross{display:inline-block;width:22px;height:22px;position:relative;vertical-align:middle;margin-right:10px}
+.td-cross::before,.td-cross::after{content:"";position:absolute;background:var(--chart);opacity:.35;transition:background-color .35s ease,opacity .35s ease}
+.theme-demo.light .td-cross::before,.theme-demo.light .td-cross::after{background:var(--blue);opacity:.5}
+.td-cross::before{left:0;right:0;top:50%;height:1px}
+.td-cross::after{top:0;bottom:0;left:50%;width:1px}
+
+/* ---------- motion demos ---------- */
+.ease-demo{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+@media (max-width:900px){ .ease-demo{grid-template-columns:1fr} }
+.ease{border:1px solid var(--line);border-radius:14px;background:var(--bg-2);
+  padding:18px;cursor:pointer;transition:border-color .25s ease}
+.ease:hover{border-color:var(--chart)}
+.ease h4{margin-bottom:4px}
+.ease .curve{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-dim);
+  letter-spacing:.02em;margin-bottom:16px;display:block}
+.track{position:relative;height:34px;border-radius:44px;background:var(--bg);
+  border:1px solid var(--line)}
+.dot{position:absolute;top:3px;left:3px;width:26px;height:26px;border-radius:50%;background:var(--chart)}
+.ease.run .dot{transform:translateX(var(--travel,200px))}
+.ease[data-e="out"].run .dot{transition:transform .9s var(--ease-out)}
+.ease[data-e="io"].run  .dot{transition:transform .9s var(--ease-io)}
+.ease[data-e="settle"].run .dot{transition:transform .9s var(--settle)}
+.ease .hint{font-family:var(--font-mono);font-size:9px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-dim);margin-top:10px;display:block}
+
+.hover-lab{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.hl-btn{
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  font-weight:700;border:0;border-radius:44px;padding:14px 26px;cursor:pointer;
+  background:var(--chart);color:var(--black);
+  transition:background-color .25s ease,color .25s ease,transform .3s var(--settle);
+}
+.hl-btn:hover{transform:translateY(-2px)}
+.hl-name{
+  font-family:var(--font-display);font-weight:900;font-stretch:118%;font-size:40px;
+  letter-spacing:-.02em;text-transform:uppercase;color:var(--blue-tx);cursor:default;
+  transition:color .2s ease;line-height:1;
+}
+
+/* ---------- furniture ---------- */
+.furn{display:grid;grid-template-columns:repeat(2,1fr);gap:14px}
+@media (max-width:900px){ .furn{grid-template-columns:1fr} }
+.furn .card p{font-size:13.5px;color:var(--ink-dim);margin:0;max-width:none}
+.furn .big{font-family:var(--font-display);font-weight:900;font-stretch:118%;
+  font-size:30px;letter-spacing:-.01em;line-height:1;margin:0 0 8px;color:var(--ink)}
+
+footer{border-top:1px solid var(--line);padding:26px 0 34px;margin-top:var(--sec-gap)}
+.foot-row{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;text-transform:uppercase;
+  color:var(--ink-dim)}
+
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+<div class="xfield" id="xfield" aria-hidden="true"></div>
+<div class="copied" id="copied">Copied</div>
+
+<header class="topbar">
+  <a href="/" aria-label="Houston Dragna, back to site"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt=""></a>
+  <nav class="topnav">
+    <a href="/" class="tn-home">Back to site</a>
+    <a href="#logo">Logo</a>
+    <a href="#color">Color</a>
+    <a href="#type">Type</a>
+    <a href="#theme">Themes</a>
+    <a href="#motion">Motion</a>
+    <a href="#furniture">Furniture</a>
+    <a href="#voice">Voice</a>
+  </nav>
+</header>
+
+<!-- ================= HERO ================= -->
+<div class="wrap">
+<section class="hero">
+  <p class="hero-kicker">Houston Dragna &middot; Identity System &middot; 2026</p>
+  <h1>Brand<br><span class="l2">Standards</span></h1>
+  <div class="hero-meta">
+    <span>One source of truth</span>
+    <span>Matched 1:1 to houstondragna.com</span>
+    <span>Est. 2015 &middot; 11 yrs</span>
+  </div>
+</section>
+
+<!-- ================= 01 LOGO ================= -->
+<section id="logo">
+  <p class="eyebrow"><b>01</b> The Mark</p>
+  <h2>Logo</h2>
+  <p class="lede">The HD monogram: an italic H whose right stem doubles as the spine of a D, with three trailing arcs off the bowl. The arcs are the idea &middot; motion, echo, repeat. Everything else in the system supports that read.</p>
+
+  <div class="logo-hero" style="margin-top:26px">
+    <div class="logo-stage on-dark">
+      <img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="HD monogram, full color">
+    </div>
+    <div class="card">
+      <h4>Anatomy</h4>
+      <ul class="anatomy">
+        <li><strong>The H.</strong> Italic, heavy, forward-leaning. Its right stem is shared structure, not decoration.</li>
+        <li><strong>The D.</strong> Built off that shared stem. The two letters are one object; they never separate.</li>
+        <li><strong>The arcs.</strong> Three, always three. Full color sets them chartreuse, blue, fuchsia &middot; the entire palette in one gesture.</li>
+        <li><strong>Two lockups only.</strong> <em>Filled &middot; NO BG</em> (the mark alone) and <em>Box</em> (mark knocked out of a filled plate). No third lockup exists.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Theme pairing</h3>
+  <p>The site runs one variant per theme, everywhere chrome appears: topbar, corner, and all footers. One mark per lockup, never both.</p>
+  <div class="grid g2">
+    <div class="variant">
+      <div class="v-chip" style="background:var(--bg)">
+        <img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="">
+      </div>
+      <div class="v-body">
+        <span class="v-name">Filled &middot; NO BG &middot; Full Color<span class="tag primary">Dark theme</span></span>
+        <p class="v-use">The primary mark. Lives on Ink Black and any dark ground. This is the default answer to "which logo".</p>
+      </div>
+    </div>
+    <div class="variant">
+      <div class="v-chip" style="background:#F4F5F6">
+        <img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="">
+      </div>
+      <div class="v-body">
+        <span class="v-name">Box &middot; Knockout &middot; Off Black<span class="tag light">Light theme</span></span>
+        <p class="v-use">The light-ground mark. The plate gives it an edge the bare mark loses on near-white. Never place it on a dark ground; it disappears.</p>
+      </div>
+    </div>
+  </div>
+
+  <h3>The full set</h3>
+  <p class="dim" style="font-size:14px">Twelve files exist. Colorway variants are for special placements &middot; merch, one-off art, colored grounds &middot; and always sit on a ground that gives the mark at least 3:1 edge contrast.</p>
+  <div class="grid g3">
+    <div class="variant"><div class="v-chip" style="background:var(--bg)"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Snow.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Filled &middot; Snow<span class="tag support">Support</span></span><p class="v-use">Single-color on dark. For contexts where full color is too loud: watermarks, print over photography.</p></div></div>
+    <div class="variant"><div class="v-chip" style="background:var(--bg)"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Blue.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Filled &middot; Blue<span class="tag support">Support</span></span><p class="v-use">Brand blue single-color. Reads on dark and on snow.</p></div></div>
+    <div class="variant"><div class="v-chip" style="background:var(--bg)"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Green.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Filled &middot; Chartreuse<span class="tag support">Support</span></span><p class="v-use">Named "Green" in the files; the color is brand chartreuse. Dark grounds only.</p></div></div>
+    <div class="variant"><div class="v-chip" style="background:#F4F5F6"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Full%20Color.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Box &middot; Full Color<span class="tag support">Support</span></span><p class="v-use">The plated full-color lockup. Works on either ground; the site's original topbar mark before theme pairing.</p></div></div>
+    <div class="variant"><div class="v-chip" style="background:var(--bg)"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Snow.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Box &middot; Knockout &middot; Snow<span class="tag support">Support</span></span><p class="v-use">Inverse of the light-theme mark. Dark or colored grounds.</p></div></div>
+    <div class="variant"><div class="v-chip" style="background:var(--bg)"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Blue.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Box &middot; Knockout &middot; Blue<span class="tag support">Support</span></span><p class="v-use">Also in the set: Knockout Red, Knockout Chartreuse, Filled Red, Filled Off Black. Same ground rules apply.</p></div></div>
+  </div>
+
+  <h3>Clearspace &amp; minimum size</h3>
+  <div class="grid g2">
+    <div class="card" style="display:flex;align-items:center;justify-content:center;padding:44px">
+      <div class="clearspace">
+        <div class="cs-box" style="padding:44px">
+          <img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="">
+        </div>
+        <span class="cs-x" style="top:14px;left:50%;transform:translateX(-50%)">&frac12;X</span>
+        <span class="cs-x" style="left:10px;top:50%;transform:translateY(-50%)">&frac12;X</span>
+      </div>
+    </div>
+    <div class="card">
+      <h4>Rules</h4>
+      <ul class="anatomy" style="margin:0">
+        <li><strong>Clearspace = half the mark's height</strong> on all four sides. Text, edges, and other art stay outside it.</li>
+        <li><strong>Minimum size: 15px tall digital, 6mm print.</strong> Below that the arcs fuse into a blob. The smallest shipped use is 15px.</li>
+        <li><strong>Shipped chrome sizes:</strong> topbar 17px &middot; corner 26 to 34px &middot; footers 15 to 21px. Stay in that family.</li>
+        <li><strong>Where it does not go:</strong> the resume and application documents. The mark stays on the site, client quotes, and client-facing docs.</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Misuse</h3>
+  <div class="grid g3 dont">
+    <div class="variant"><div class="v-chip"><img style="filter:hue-rotate(140deg)" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Recolor</span><p class="v-use">No off-palette tints, ever. Use a supplied variant or nothing.</p></div></div>
+    <div class="variant"><div class="v-chip"><img style="transform:scaleX(1.45)" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Stretch or squash</span><p class="v-use">The ratio is fixed (roughly 4:3). Scale both axes together or not at all.</p></div></div>
+    <div class="variant"><div class="v-chip"><img style="transform:rotate(-14deg)" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Rotate</span><p class="v-use">The italic lean IS the motion. Rotating it fights the drawing.</p></div></div>
+    <div class="variant"><div class="v-chip"><img style="filter:drop-shadow(0 6px 10px rgba(233,245,0,.8))" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Effects</span><p class="v-use">No glows, shadows, outlines, or gradients on the mark.</p></div></div>
+    <div class="variant"><div class="v-chip" style="background:var(--bg)"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt=""></div>
+      <div class="v-body"><span class="v-name">Wrong ground</span><p class="v-use">The off-black knockout on a dark ground vanishes. Match variant to ground, always.</p></div></div>
+    <div class="variant"><div class="v-chip" style="gap:14px"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" style="height:52px"><img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Snow.svg" alt="" style="height:52px"></div>
+      <div class="v-body"><span class="v-name">Doubling up</span><p class="v-use">One mark per lockup. Two variants side by side is a bug, not a system.</p></div></div>
+  </div>
+</section>
+
+<!-- ================= 02 COLOR ================= -->
+<section id="color">
+  <p class="eyebrow"><b>02</b> Palette</p>
+  <h2>Color</h2>
+  <p class="lede">Five colors. No tints, no invented values, no gradients. Anything that is not one of these five, the dim grey, or an alpha of them, is off-brand. Click any swatch to copy its hex.</p>
+
+  <div class="grid g3" style="margin-top:26px">
+    <div class="swatch" data-copy="#0015FF"><div class="sw-chip" style="background:#0015FF"></div>
+      <div class="sw-body"><p class="sw-name">Blue</p><span class="sw-hex">#0015FF</span>
+      <p class="sw-role">The workhorse fill: tags, chips, buttons, the hero name. Snow text on it.</p></div></div>
+    <div class="swatch" data-copy="#06070F"><div class="sw-chip" style="background:#06070F;border-bottom:1px solid var(--line)"></div>
+      <div class="sw-body"><p class="sw-name">Ink Black</p><span class="sw-hex">#06070F</span>
+      <p class="sw-role">Fills and dark plates. The page ground is its 25% desaturated sibling, #06070D.</p></div></div>
+    <div class="swatch" data-copy="#E9F500"><div class="sw-chip" style="background:#E9F500"></div>
+      <div class="sw-body"><p class="sw-name">Neon Chartreuse</p><span class="sw-hex">#E9F500</span>
+      <p class="sw-role">The dark-theme accent. Menus, labels, crosses, primary buttons. Ink Black text on it.</p></div></div>
+    <div class="swatch" data-copy="#F7F9FA"><div class="sw-chip" style="background:#F7F9FA"></div>
+      <div class="sw-body"><p class="sw-name">Bright Snow</p><span class="sw-hex">#F7F9FA</span>
+      <p class="sw-role">Text on dark, text on blue, text on fuchsia. Never pure white.</p></div></div>
+    <div class="swatch" data-copy="#FF1245"><div class="sw-chip" style="background:#FF1245"></div>
+      <div class="sw-body"><p class="sw-name">Hot Fuchsia</p><span class="sw-hex">#FF1245</span>
+      <p class="sw-role">The interruption color: hover states, warnings, one word in a headline. Small doses.</p></div></div>
+    <div class="swatch" data-copy="#8B8B92"><div class="sw-chip" style="background:#8B8B92"></div>
+      <div class="sw-body"><p class="sw-name">Dim</p><span class="sw-hex">#8B8B92</span>
+      <p class="sw-role">Secondary text on dark only. Too light to print on white; use #5A5A63 there.</p></div></div>
+  </div>
+
+  <h3>Text derivatives</h3>
+  <p>Fills and text are different jobs. A color that works as a 48px button can fail as an 11px label, so every loud color has a text form per theme. These are the only sanctioned variants.</p>
+  <div class="card" style="overflow-x:auto">
+  <table>
+    <tr><th>Role</th><th>Dark theme</th><th>Light theme</th><th>Why</th></tr>
+    <tr><td>Blue as text</td>
+        <td class="mono"><span class="pill-sample" style="background:#06070D;color:#1F42FF">#1F42FF</span> 3.1:1</td>
+        <td class="mono"><span class="pill-sample" style="background:#F4F5F6;color:#0011CC">#0011CC</span> 9.9:1</td>
+        <td>Pure #0015FF is 2.4:1 on dark. Display sizes only in dark.</td></tr>
+    <tr><td>Blue link hover</td>
+        <td class="mono"><span class="pill-sample" style="background:#06070D;color:#4E77FF">#4E77FF</span> 5.2:1</td>
+        <td class="mono"><span class="pill-sample" style="background:#F4F5F6;color:#0015FF">#0015FF</span></td>
+        <td>Readable at any size.</td></tr>
+    <tr><td>Accent as text</td>
+        <td class="mono"><span class="pill-sample" style="background:#06070D;color:#E9F500">#E9F500</span> 16.8:1</td>
+        <td class="mono"><span class="pill-sample" style="background:#F4F5F6;color:#0011CC">#0011CC</span> 9.9:1</td>
+        <td>Chartreuse has no legible form on light. Its darkened version reads olive and is banned; blue carries the accent instead.</td></tr>
+    <tr><td>Fuchsia as text</td>
+        <td class="mono"><span class="pill-sample" style="background:#06070D;color:#FF1245">#FF1245</span> 4.6:1</td>
+        <td class="mono"><span class="pill-sample" style="background:#F4F5F6;color:#B3002A">#B3002A</span> 6.5:1</td>
+        <td>Darkened, not desaturated.</td></tr>
+    <tr><td>Body ink</td>
+        <td class="mono"><span class="pill-sample" style="background:#06070D;color:#F7F9FA">#F7F9FA</span></td>
+        <td class="mono"><span class="pill-sample" style="background:#F4F5F6;color:#15161C">#15161C</span></td>
+        <td>Light body ink is #15161C, not Ink Black; the fill and the text part ways here.</td></tr>
+    <tr><td>Dim ink</td>
+        <td class="mono"><span class="pill-sample" style="background:#06070D;color:#8B8B92">#8B8B92</span></td>
+        <td class="mono"><span class="pill-sample" style="background:#F4F5F6;color:#5A5F66">#5A5F66</span></td>
+        <td>Meta rows, captions, coordinates.</td></tr>
+  </table>
+  </div>
+
+  <div class="rule-note"><b>Hard rules.</b> Chartreuse is never text on a light ground &middot; olive (#5A5E00) is extinct and stays that way &middot; page grounds are #06070D dark and #F4F5F6 light &middot; hairlines are alpha snow (15%) on dark and alpha ink (16%) on light &middot; no neon values outside the five, and no new hexes without updating this page first.</div>
+
+  <h3>Tokens</h3>
+  <p class="dim" style="font-size:14px">Click to copy.</p>
+  <div>
+    <span class="tok" data-copy="--blue:#0015FF"><i>--blue</i>#0015FF</span>
+    <span class="tok" data-copy="--black:#06070F"><i>--black</i>#06070F</span>
+    <span class="tok" data-copy="--chart:#E9F500"><i>--chart</i>#E9F500</span>
+    <span class="tok" data-copy="--snow:#F7F9FA"><i>--snow</i>#F7F9FA</span>
+    <span class="tok" data-copy="--fuch:#FF1245"><i>--fuch</i>#FF1245</span>
+    <span class="tok" data-copy="--bg:#06070D"><i>--bg dark</i>#06070D</span>
+    <span class="tok" data-copy="--bg:#F4F5F6"><i>--bg light</i>#F4F5F6</span>
+    <span class="tok" data-copy="--ink-dim:#8B8B92"><i>--ink-dim</i>#8B8B92</span>
+    <span class="tok" data-copy="rgba(247,249,250,.15)"><i>--line dark</i>alpha snow 15%</span>
+    <span class="tok" data-copy="rgba(6,7,15,.16)"><i>--line light</i>alpha ink 16%</span>
+  </div>
+</section>
+
+<!-- ================= 03 TYPE ================= -->
+<section id="type">
+  <p class="eyebrow"><b>03</b> Typefaces</p>
+  <h2>Typography</h2>
+  <p class="lede">Three faces, three jobs, no exceptions. Display shouts, mono organizes, body explains. No serifs anywhere in the system, and no outlined or decorated display faces, ever.</p>
+
+  <div class="spec">
+    <p class="spec-label"><span>Display &middot; Archivo Variable</span><span>wght 900 &middot; wdth 118% &middot; tracking -0.02em &middot; leading 0.86</span></p>
+    <p class="spec-display">Command every channel.<br>Control every stage.</p>
+  </div>
+  <div class="rule-note"><b>It is not Archivo Black.</b> The system loads the Archivo variable family (wdth 62 to 125, wght 400 to 900) and renders display type at weight 900 with 118% width. Archivo Black is a separate single-weight family with its own drawing. Specifying it anywhere introduces a second, subtly different font. On documents that cannot ship the variable file, Archivo Black is the accepted print stand-in; on the web it is wrong.</div>
+
+  <div class="spec">
+    <p class="spec-label"><span>Mono &middot; Space Mono</span><span>10 to 11px &middot; tracking .08 to .16em &middot; always uppercase</span></p>
+    <p class="spec-mono">Error 404 &middot; Page not found &nbsp;&nbsp; 30.4515&deg; N / 91.1871&deg; W &nbsp;&nbsp; Est. 2015 &middot; 11 yrs</p>
+  </div>
+
+  <div class="spec">
+    <p class="spec-label"><span>Body &middot; Instrument Sans</span><span>16 to 19px &middot; weight 400 to 600 &middot; leading 1.65 &middot; sentence case</span></p>
+    <p class="spec-body">Body copy carries the argument, so it stays quiet: sentence case, generous leading, a measure under 70 characters. Emphasis comes from weight 600, never from italics and never from color.</p>
+  </div>
+
+  <h3>Roles</h3>
+  <div class="card" style="overflow-x:auto">
+  <table>
+    <tr><th>Slot</th><th>Face</th><th>Recipe</th></tr>
+    <tr><td>Hero &amp; page titles</td><td>Archivo 900</td><td class="mono">stretch 118% &middot; ls -.02em &middot; lh .86 &middot; UPPERCASE</td></tr>
+    <tr><td>Section headings</td><td>Archivo 900</td><td class="mono">stretch 110 to 118% &middot; ls -.01em &middot; lh .9 to 1.05</td></tr>
+    <tr><td>Eyebrows, labels, meta</td><td>Space Mono 700</td><td class="mono">10 to 11px &middot; ls .08 to .16em &middot; UPPERCASE</td></tr>
+    <tr><td>Buttons &amp; pills</td><td>Space Mono 700</td><td class="mono">11px &middot; ls .08em &middot; UPPERCASE &middot; radius 44px</td></tr>
+    <tr><td>Body, captions, answers</td><td>Instrument Sans</td><td class="mono">400/600 &middot; sentence case &middot; max 70ch</td></tr>
+    <tr><td>Print stand-ins</td><td colspan="2" class="mono">Archivo Black &middot; Space Mono &middot; Instrument Sans (resume system v5+)</td></tr>
+  </table>
+  </div>
+
+  <h3>Variable playground</h3>
+  <div class="play">
+    <p class="spec-label"><span>Drag the axes &middot; click the text to retype it</span></p>
+    <p class="play-out" id="playOut" contenteditable spellcheck="false">HOUSTON</p>
+    <div class="play-row"><label>Weight</label><input id="axW" type="range" min="400" max="900" value="900" step="1"><output id="axWo">900</output></div>
+    <div class="play-row"><label>Width</label><input id="axD" type="range" min="62" max="125" value="118" step="1"><output id="axDo">118%</output></div>
+    <div class="play-row" style="margin-top:16px">
+      <button class="preset" data-w="900" data-d="118">Display spec</button>
+      <button class="preset" data-w="900" data-d="110">Subhead spec</button>
+      <button class="preset" data-w="400" data-d="100">Archivo regular</button>
+      <span class="play-note" id="playNote">The house cut is 900 / 118. Anything else is a departure.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 04 THEMES ================= -->
+<section id="theme">
+  <p class="eyebrow"><b>04</b> Dual Ground</p>
+  <h2>Themes</h2>
+  <p class="lede">One system, two grounds. Dark is the default and the identity; light is a full first-class citizen, not an inversion filter. The accent changes hands between them: chartreuse carries dark, brand blue carries light.</p>
+
+  <div class="theme-demo" id="themeDemo" style="margin-top:26px">
+    <div class="td-bar">
+      <span>Live demo &middot; the swap the site performs</span>
+      <button class="td-switch" id="tdSwitch" aria-label="Toggle demo theme"><span class="td-knob"></span></button>
+    </div>
+    <div class="td-stage">
+      <span class="td-accent"><span class="td-cross"></span>06 &middot; Questions</span>
+      <p class="td-h">Frequently asked.</p>
+      <p>The accent, the crosses, the logo, and the text derivatives all swap together. Nothing is recomputed by filter; every value is a deliberate token.</p>
+      <img class="td-logo-d" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="">
+      <img class="td-logo-l" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="">
+    </div>
+  </div>
+
+  <div class="grid g2" style="margin-top:14px">
+    <div class="card"><h4>What swaps</h4>
+      <p style="font-size:13.5px;color:var(--ink-dim);max-width:none">Accent chartreuse &rarr; blue &middot; crosses chartreuse 21% &rarr; blue 50% &middot; logo Filled Full Color &rarr; Box Knockout Off Black &middot; every text derivative per the color table &middot; scrollbar &middot; preloader ink.</p></div>
+    <div class="card"><h4>What never swaps</h4>
+      <p style="font-size:13.5px;color:var(--ink-dim);max-width:none">Blue fills stay blue &middot; fuchsia stays the interruption &middot; on-image text stays snow with a chartreuse kicker in both themes, because imagery is a dark ground regardless of theme &middot; this document itself: personal tools ship dark only.</p></div>
+  </div>
+</section>
+
+<!-- ================= 05 MOTION ================= -->
+<section id="motion">
+  <p class="eyebrow"><b>05</b> Movement</p>
+  <h2>Motion</h2>
+  <p class="lede">Everything arrives fast and settles slow. Three easings cover the whole site; if a curve is not one of these, it does not ship. Click a card to run it.</p>
+
+  <div class="ease-demo" style="margin-top:26px">
+    <div class="ease" data-e="out"><h4 class="card-h">Ease out &middot; entrances</h4>
+      <span class="curve">cubic-bezier(.16, 1, .3, 1)</span>
+      <div class="track"><div class="dot"></div></div>
+      <span class="hint">Reveals, fades, the 404 line</span></div>
+    <div class="ease" data-e="settle"><h4 class="card-h">Settle &middot; physical objects</h4>
+      <span class="curve">cubic-bezier(.19, 1, .22, 1)</span>
+      <div class="track"><div class="dot" style="background:var(--blue)"></div></div>
+      <span class="hint">Menu, toggle knob, hover lifts, FAQ</span></div>
+    <div class="ease" data-e="io"><h4 class="card-h">Ease in-out &middot; travels</h4>
+      <span class="curve">cubic-bezier(.65, 0, .35, 1)</span>
+      <div class="track"><div class="dot" style="background:var(--fuch)"></div></div>
+      <span class="hint">Anything moving A to B on screen</span></div>
+  </div>
+
+  <h3>Interaction language</h3>
+  <div class="grid g2">
+    <div class="card">
+      <h4>Hover &middot; color flips, not fades</h4>
+      <div class="hover-lab">
+        <button class="hl-btn" id="hlBtn">Email me</button>
+        <span class="hl-name" id="hlName">Dragna</span>
+      </div>
+      <p style="font-size:13.5px;color:var(--ink-dim);margin-top:16px;max-width:none">Buttons lift 2px and flip to another palette color. Display-type links cycle the palette per hover. The flip is instant-feeling: 200 to 250ms.</p>
+    </div>
+    <div class="card">
+      <h4>Standing rules</h4>
+      <ul class="anatomy" style="margin:0">
+        <li><strong>Transform and opacity only.</strong> Never animate blur or filters on touch devices; never animate layout properties.</li>
+        <li><strong>Type morphs by character roll</strong>: letters slide in clipped cells, widths glide with them. 620ms, 34ms per-letter stagger.</li>
+        <li><strong>Reduced motion is honored everywhere</strong>: animation collapses, content never disappears.</li>
+        <li><strong>Idle costs nothing.</strong> Loops short-circuit when settled; the cross field sleeps until the cursor moves.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 06 FURNITURE ================= -->
+<section id="furniture">
+  <p class="eyebrow"><b>06</b> Grounds &amp; Furniture</p>
+  <h2>Furniture</h2>
+  <p class="lede">The recurring props that make a page read as this brand before a single word is set.</p>
+
+  <div class="furn" style="margin-top:26px">
+    <div class="card">
+      <p class="big">The cross field</p>
+      <p>26px hairline crosses on a 152px grid (128px on phones), every other row offset half a cell so it never reads as graph paper. Chartreuse at 21% on dark, blue at 50% on light. Within 300px of the cursor they push away, lean 6 degrees, and swell 10%. It is the background of this very page.</p>
+    </div>
+    <div class="card">
+      <p class="big">The coordinate rail</p>
+      <p>Vertical Space Mono marginalia on both page edges: name and year on the left, 30.4515&deg; N / 91.1871&deg; W on the right. Location is furniture, never a headline; the footer says Available worldwide.</p>
+    </div>
+    <div class="card">
+      <p class="big">One rhythm token</p>
+      <p>Every section's top and bottom padding is the same clamp(60px, 6.5vw, 92px) value, so two stacked sections always read as exactly twice it. Bespoke margins are how spacing drifts; there are none.</p>
+    </div>
+    <div class="card">
+      <p class="big">The chrome band</p>
+      <p>A fixed 48px lane, 12px from the top: the mark left, the pill right. Radius language everywhere else follows it &middot; 60px nav pill, 44px buttons, 28px panels, 14px cards.</p>
+    </div>
+    <div class="card">
+      <p class="big">Numbered eyebrows</p>
+      <p>Sections announce themselves with a chartreuse index chip and a mono label: 06 &middot; Questions. The number is set in the accent; the label stays dim.</p>
+    </div>
+    <div class="card">
+      <p class="big">Hero discipline</p>
+      <p>The hero name and morph fill exactly 60% of the viewport width at every size, leading 0.86, sitting over imagery with the meta row pinned beneath. On-image text is snow in both themes.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 07 VOICE ================= -->
+<section id="voice">
+  <p class="eyebrow"><b>07</b> Words</p>
+  <h2>Voice</h2>
+  <p class="lede">The writing is part of the identity. Short declaratives, the joke on the second sentence, zero filler.</p>
+
+  <div class="grid g2" style="margin-top:26px">
+    <div class="card">
+      <h4>Rules</h4>
+      <ul class="anatomy" style="margin:0">
+        <li><strong>No em-dashes. Anywhere. Ever.</strong> The middot is the house separator: Est. 2015 &middot; 11 yrs. Sentences restructure instead.</li>
+        <li><strong>Labels are uppercase mono.</strong> Headlines are uppercase display. Body is sentence case. Title Case is not used.</li>
+        <li><strong>Two short sentences beat one long one.</strong> "Second breakfast is served. This page is not."</li>
+        <li><strong>Numbers carry claims.</strong> 41 trade press stories, 150+ final images. But client performance data is never published; scope counts only.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h4>Calibration</h4>
+      <table>
+        <tr><th>Instead of</th><th>Write</th></tr>
+        <tr><td class="dim">I'm a passionate creative who loves...</td><td>Design, photo, and film for music brands.</td></tr>
+        <tr><td class="dim">Page not found &#8212; sorry!</td><td>Every road leads somewhere. This one leads nowhere.</td></tr>
+        <tr><td class="dim">Available for hire!!!</td><td>Available worldwide.</td></tr>
+        <tr><td class="dim">EST. 2015 &#8212; 11 YRS</td><td>Est. 2015 &middot; 11 yrs</td></tr>
+      </table>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="foot-row">
+    <span>&copy; 2026 Houston Dragna</span>
+    <span>Brand standards &middot; v1.0 &middot; Aug 2026</span>
+    <a href="/" style="text-decoration:none;color:var(--chart)">houstondragna.com</a>
+  </div>
+</footer>
+</div>
+
+<script>
+(function(){
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* ---- copy anything with data-copy ---- */
+  var toast = document.getElementById('copied'); var toastT;
+  document.addEventListener('click', function(e){
+    var el = e.target.closest('[data-copy]');
+    if (!el) return;
+    var v = el.getAttribute('data-copy');
+    (navigator.clipboard ? navigator.clipboard.writeText(v) : Promise.reject())
+      .catch(function(){
+        var t = document.createElement('textarea');
+        t.value = v; document.body.appendChild(t); t.select();
+        document.execCommand('copy'); t.remove();
+      });
+    toast.textContent = 'Copied ' + v.replace(/^--[a-z-]+:/,'');
+    toast.classList.add('show');
+    clearTimeout(toastT);
+    toastT = setTimeout(function(){ toast.classList.remove('show'); }, 1400);
+  });
+
+  /* ---- variable playground ---- */
+  var out = document.getElementById('playOut');
+  var aw = document.getElementById('axW'), ad = document.getElementById('axD');
+  var awo = document.getElementById('axWo'), ado = document.getElementById('axDo');
+  var note = document.getElementById('playNote');
+  function setAxes(){
+    out.style.fontWeight = aw.value;
+    out.style.fontStretch = ad.value + '%';
+    awo.textContent = aw.value;
+    ado.textContent = ad.value + '%';
+    note.textContent = (aw.value === '900' && ad.value === '118')
+      ? 'This is the house cut: 900 / 118.'
+      : 'The house cut is 900 / 118. Anything else is a departure.';
+  }
+  aw.addEventListener('input', setAxes);
+  ad.addEventListener('input', setAxes);
+  document.querySelectorAll('.preset').forEach(function(b){
+    b.addEventListener('click', function(){
+      aw.value = b.dataset.w; ad.value = b.dataset.d; setAxes();
+    });
+  });
+  setAxes();
+
+  /* ---- theme demo: scoped to the panel, the document stays dark ---- */
+  var demo = document.getElementById('themeDemo');
+  document.getElementById('tdSwitch').addEventListener('click', function(){
+    demo.classList.toggle('light');
+  });
+
+  /* ---- easing demos ---- */
+  document.querySelectorAll('.ease').forEach(function(card){
+    var track = card.querySelector('.track');
+    card.addEventListener('click', function(){
+      if (card.classList.contains('run')){
+        card.classList.remove('run');
+        return;
+      }
+      card.style.setProperty('--travel', (track.clientWidth - 32) + 'px');
+      card.classList.add('run');
+    });
+  });
+
+  /* ---- hover lab: palette-cycling display link ---- */
+  var PAL = ['#E9F500','#FF1245','#F7F9FA','#0015FF'];
+  var name = document.getElementById('hlName'); var pi = 0;
+  name.addEventListener('mouseenter', function(){
+    pi = (pi + 1) % PAL.length;
+    if (PAL[pi] === '#0015FF') pi = (pi + 1) % PAL.length; /* keep it readable, skip pure blue as text */
+    name.style.color = PAL[pi];
+  });
+  name.addEventListener('mouseleave', function(){ name.style.color = ''; });
+  var btn = document.getElementById('hlBtn');
+  var FILLS = [['#E9F500','#06070F'],['#0015FF','#F7F9FA'],['#FF1245','#F7F9FA'],['#F7F9FA','#06070F']];
+  var fi = 0;
+  btn.addEventListener('mouseenter', function(){
+    fi = (fi + 1) % FILLS.length;
+    btn.style.background = FILLS[fi][0];
+    btn.style.color = FILLS[fi][1];
+  });
+
+  /* ---- the site's reactive cross field ---- */
+  var xf = document.getElementById('xfield');
+  var X_R = 300, crosses = [], mx = -9999, my = -9999, X_MAX = 30;
+  var fieldIdle = false;
+  var clamp = function(v,a,b){ return v < a ? a : v > b ? b : v; };
+  var lerp = function(a,b,t){ return a + (b - a) * t; };
+  var smoothstep = function(t){ t = clamp(t,0,1); return t * t * (3 - 2 * t); };
+  function buildField(){
+    var sp = innerWidth < 640 ? 128 : 152;
+    X_MAX = sp * 0.2;
+    var cols = Math.ceil(innerWidth / sp) + 3, rows = Math.ceil(innerHeight / sp) + 3;
+    var frag = document.createDocumentFragment();
+    crosses = [];
+    for (var r = 0; r < rows; r++) for (var c = 0; c < cols; c++){
+      var x = c * sp + (r % 2 ? sp / 2 : 0) - sp, y = r * sp - sp;
+      var el = document.createElement('i');
+      el.className = 'x'; el.style.left = x + 'px'; el.style.top = y + 'px';
+      frag.appendChild(el);
+      crosses.push({ el: el, x: x, y: y, cx: 0, cy: 0, cr: 0, cs: 1, live: false });
+    }
+    xf.replaceChildren(frag);
+  }
+  buildField();
+  var fT; addEventListener('resize', function(){ clearTimeout(fT); fT = setTimeout(buildField, 160); });
+  var fine = matchMedia('(pointer:fine)').matches;
+  if (fine && !reduce){
+    addEventListener('pointermove', function(e){ mx = e.clientX; my = e.clientY; fieldIdle = false; }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', function(){ mx = my = -9999; fieldIdle = false; });
+    (function frame(){
+      if (!fieldIdle){
+        var any = false;
+        for (var i = 0; i < crosses.length; i++){
+          var k = crosses[i];
+          var dx = k.x - mx, dy = k.y - my, d = Math.sqrt(dx * dx + dy * dy);
+          var tx = 0, ty = 0, tr = 0, ts = 1;
+          if (d < X_R){
+            var f = smoothstep(1 - d / X_R), near = smoothstep(d / 74);
+            var mag = X_MAX * f * near, inv = d > 0.001 ? 1 / d : 0;
+            tx = dx * inv * mag; ty = dy * inv * mag; tr = f * near * 6; ts = 1 + f * 0.1;
+          }
+          if (!k.live && !tx && !ty && Math.abs(k.cx) < .01 && Math.abs(k.cy) < .01) continue;
+          k.cx = lerp(k.cx, tx, .11); k.cy = lerp(k.cy, ty, .11);
+          k.cr = lerp(k.cr, tr, .11); k.cs = lerp(k.cs, ts, .11);
+          if (Math.abs(k.cx) < .05 && Math.abs(k.cy) < .05){
+            k.cx = k.cy = k.cr = 0; k.cs = 1;
+            k.el.style.transform = ''; k.live = false; continue;
+          }
+          k.live = true; any = true;
+          k.el.style.transform = 'translate(' + k.cx.toFixed(2) + 'px,' + k.cy.toFixed(2) +
+            'px) rotate(' + k.cr.toFixed(2) + 'deg) scale(' + k.cs.toFixed(3) + ')';
+        }
+        if (!any && mx === -9999) fieldIdle = true;
+      }
+      requestAnimationFrame(frame);
+    })();
+  }
+})();
+</script>
+</body>
+</html>

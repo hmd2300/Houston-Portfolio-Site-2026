@@ -3,7 +3,9 @@
 # on disk, so Netlify serves them directly. No rules needed for those.
 
 /overview            /                     301
-/about               /                     301
+# /about is now a scroll target inside the home view, the same shape as
+# /contact and /faq: rewritten 200 so the visitor keeps the URL they typed.
+/about               /index.html           200
 /config              /                     301
 /cart                /                     301
 
@@ -26,6 +28,9 @@
 /Case-Studies/NAMM-2026          /case-studies/namm-2026          301
 /Case-Studies/Studiolive-Se      /case-studies/studiolive-se      301
 /Case-Studies/StudioLive-SE      /case-studies/studiolive-se      301
+/About                           /about                           301
+/Brand-Standards                 /brand-standards                 301
+/brand                           /brand-standards                 301
 
 # ── Section routes with no file of their own ──────────────────────────
 # /contact and /faq are scroll targets inside the home view, so they have no
