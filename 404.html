@@ -1,0 +1,496 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Page not found | Houston Dragna</title>
+<meta name="description" content="That page is not here. Head back to the work.">
+<!-- a 404 should never be indexed, and Netlify already returns the 404 status -->
+<meta name="robots" content="noindex,follow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..900&family=Instrument+Sans:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="180x180" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20Favicon%20180.png">
+  <link rel="icon" type="image/png" sizes="512x512" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20Favicon%20512.png">
+  <link rel="apple-touch-icon" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20Favicon%20180.png">
+<script>
+  /* Resolve the theme before the first paint. Doing this in the main script
+     would flash the wrong palette for a frame. A stored choice wins; failing
+     that the operating system decides. */
+  (function(){
+    try {
+      var saved = localStorage.getItem('hd-theme');
+      var sys = matchMedia('(prefers-color-scheme: light)').matches;
+      if (saved === 'light' || (!saved && sys)) document.documentElement.setAttribute('data-theme','light');
+    } catch(e){}
+  })();
+</script>
+<style>
+/* Tokens below are lifted from index.html by make_404.py. Do not hand edit
+   them here: change the site and regenerate, or the two will drift. */
+:root{
+  --blue:#0015FF;          /* fills: tags, chips, buttons (snow text on it) */
+  --blue-tx:#1F42FF;       /* blue AS TEXT on the dark bg: 3.1:1 */
+  --blue-hv:#4E77FF;       /* link hover: 5.2:1, readable at any size */       /* blue AS TEXT/icon on the dark bg: 3.1:1 (pure blue is 2.4) */
+  --black:#06070F;
+  --chart:#E9F500;
+  --snow:#F7F9FA;
+  --fuch:#FF1245;
+
+  --bg:#06070D;            /* Ink Black, 25% desaturated: less navy */
+  --bg-2:#0F1017;
+  --ink:var(--snow);
+  --ink-dim:#8B8B92;
+  --line:rgba(247,249,250,.15);
+  --accent:var(--chart);
+  --accent-ink:var(--black);
+  --accent-tx:var(--chart);      /* the accent used as TEXT, not as a fill */
+  --chart-tx:var(--chart);
+  --fuch-tx:var(--fuch);
+  --shadow:rgba(0,0,0,.7);
+  color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#F4F5F6;
+  --bg-2:#E9EBED;
+  --ink:#15161C;
+  --ink-dim:#5A5F66;
+  --line:rgba(6,7,15,.16);
+  --blue-tx:#0011CC;             /* 9.86:1 on light */
+  --blue-hv:#0015FF;
+  --accent-tx:#0011CC;           /* brand blue as accent text: 9.86:1. Darkened chartreuse read as olive, off brand */
+  --chart-tx:#0011CC;
+  --fuch-tx:#B3002A;             /* fuchsia darkened:    6.52:1 */
+  --shadow:rgba(6,7,15,.22);
+  color-scheme:light;
+  --cross:var(--blue);
+}
+:root{
+  --font-display:'Archivo',Impact,sans-serif;
+  --font-body:'Instrument Sans',system-ui,sans-serif;
+  --font-mono:'Space Mono',ui-monospace,monospace;
+
+  --pad:clamp(18px,4.5vw,64px);
+  --ease-out:cubic-bezier(.16,1,.3,1);
+  --ease-io:cubic-bezier(.65,0,.35,1);
+  --settle:cubic-bezier(.19,1,.22,1);   /* long tail: elements arrive and settle */
+  /* [TUNE] the fixed chrome band: the nav pill and the top-left mark share it */
+  --chrome-top:12px;
+  --chrome-h:48px;
+  /* anything in normal flow at the top of a page has to clear the fixed mark
+     and nav, or the back link lands underneath them */
+  --chrome-clear:calc(var(--chrome-top) + var(--chrome-h) + 22px);
+  --cross:var(--chart);          /* crosshair field colour; light mode overrides to brand blue */
+  /* ONE token drives the gap above and below every section, so two
+     stacked sections always read as 2x this and never drift apart. */
+  --sec-gap:clamp(60px,6.5vw,92px);
+  /* hero leading. fitHero() reads these back out of the computed style
+     for its height guard, so the CSS and the maths cannot drift. */
+  --lh-name:.86;
+  --lh-morph:1.0;
+}
+
+*,*::before,*::after{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  /* ONE clearance token drives every vertical gap on this page, the same way
+     --sec-gap does on the site. Nothing here gets a bespoke margin. */
+  --gap:clamp(18px,2.4vw,30px);
+  min-height:100svh;background:var(--bg);color:var(--ink);
+  font-family:var(--font-body);
+  display:flex;flex-direction:column;
+  padding:var(--pad);
+  overflow-x:hidden;
+}
+a{color:inherit}
+
+/* ---------- crosshair field ---------- */
+/* Ported from the site rather than reinvented: same 26px cross, same offset
+   rows, same cursor push. The first build of this page drew a STATIC grid,
+   which is why the reactive behaviour was missing here and nowhere else. */
+.xfield{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+.xfield .x{
+  position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;
+  opacity:.21;
+}
+[data-theme="light"] .xfield .x{opacity:.5}
+.xfield .x::before,.xfield .x::after{content:"";position:absolute;background:var(--cross)}
+.xfield .x::before{left:0;right:0;top:50%;height:1px;margin-top:-.5px}
+.xfield .x::after{top:0;bottom:0;left:50%;width:1px;margin-left:-.5px}
+/* only promote to a layer where the crosses actually move: on touch this
+   would be ~70 needless compositor layers */
+@media (pointer:fine){ .xfield .x{will-change:transform} }
+
+/* ---------- chrome ---------- */
+.topbar{position:relative;z-index:2;display:flex;align-items:center;
+  justify-content:space-between;height:var(--chrome-h)}
+.brand{display:inline-flex;align-items:center;pointer-events:auto}
+.brand img{height:var(--chrome-h);width:auto;display:block}
+html img.lg-l{display:none}
+html[data-theme="light"] img.lg-l{display:block}
+html[data-theme="light"] img.lg-d{display:none}
+
+
+/* ---------- the code ---------- */
+main{
+  position:relative;z-index:2;flex:1;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  text-align:center;gap:var(--gap);
+  /* no padding: the gap already separates the children, and doubling up here
+     is what pushed the page past one screen */
+}
+.eyebrow{
+  font-family:var(--font-mono);font-size:clamp(10px,1.1vw,12px);letter-spacing:.16em;
+  text-transform:uppercase;color:var(--accent-tx);margin:0;
+}
+/* ---------- layered isometric stack ---------- */
+/* Sizing is stepped rather than fluid on purpose: the row height, the font
+   size and the horizontal offset all have to move together or the isometric
+   grid shears apart. Three steps beat a clamp that breaks the geometry. */
+.lt{
+  --fs:82px; --lh:68px;
+  font-family:var(--font-display);font-weight:900;font-stretch:118%;
+  font-size:var(--fs);letter-spacing:-.02em;text-transform:uppercase;
+  /* the stack is the page's primary type: chartreuse in dark. Chartreuse on
+     a near-white ground is unreadable, so light mode takes off-black and lets
+     the blue 404 do the work of standing out. */
+  color:var(--chart);
+  /* The skewed rows paint well OUTSIDE their layout box, above it as well as
+     below. Reserving on one side only is what let the eyebrow collide with
+     the top of the stack. Both sides now carry the same reserve. */
+  /* baseline only. fitStack() measures the REAL painted overhang and
+     overwrites these margins, because the overhang scales with the
+     stack's WIDTH (the -30deg shear), not with its line height, so no
+     CSS constant can be correct at every size. */
+  margin:calc(var(--lh) * 1.6) auto;
+  -webkit-font-smoothing:antialiased;
+  cursor:default;width:max-content;
+}
+.lt ul{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;align-items:center}
+.lt li{
+  position:relative;overflow:hidden;height:var(--lh);
+  transform:translateX(var(--tx-d)) skew(var(--skx),-30deg) scaleY(var(--sy));
+}
+.lt p{
+  margin:0;padding:0 15px;white-space:nowrap;
+  height:var(--lh);line-height:calc(var(--lh) - 5px);
+  transition:transform .8s var(--ease-out);
+  transition-delay:calc(var(--i) * .08s);
+}
+/* every row lifts by exactly one row height, so the lower word takes over */
+.lt.go p{transform:translateY(calc(var(--lh) * -1))}
+[data-theme="light"] .lt{color:var(--black)}
+/* the code itself is the last word in, and stays blue in both themes */
+.lt li:nth-last-child(2) p:last-child,
+.lt li:last-child p:first-child{color:var(--blue-tx)}
+
+/* Stepped, never clamped: --fs, --lh and the offsets have to move together
+   or the isometric grid shears apart. */
+@media (min-width:1100px) and (min-height:1000px){ .lt{--fs:104px;--lh:86px} }
+@media (max-width:1099px){ .lt{--fs:64px;--lh:53px} }
+@media (min-width:760px) and (max-height:790px){ .lt{--fs:58px;--lh:48px} }
+@media (max-width:759px){
+  .lt{--fs:44px;--lh:38px}
+  .lt li{transform:translateX(var(--tx-m)) skew(var(--skx),-30deg) scaleY(var(--sy))}
+  .lt p{padding:0 10px}
+}
+
+/* screen readers get one clean sentence instead of the doubled words */
+.sr{position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
+  clip:rect(0 0 0 0);clip-path:inset(50%);white-space:nowrap;border:0}
+
+.quote{
+  font-family:var(--font-mono);font-size:clamp(13px,1.45vw,16px);
+  line-height:1.75;color:var(--ink-dim);max-width:52ch;
+  margin:0;
+  opacity:0;transform:translateY(6px);
+  transition:opacity .6s var(--ease-out),transform .6s var(--ease-out);
+}
+.quote.in{opacity:1;transform:none}
+
+/* ---------- buttons ---------- */
+/* Every button on this page is FILLED, and every one flips to fuchsia on
+   hover, so the interaction reads identically in both themes. Colours come
+   from the site tokens; no new hex values are introduced here. */
+.acts{display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin:0}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  height:var(--chrome-h);padding:0 26px;border-radius:44px;
+  text-decoration:none;border:1px solid transparent;
+  font-family:var(--font-mono);font-size:11px;letter-spacing:.08em;
+  text-transform:uppercase;font-weight:700;
+  transition:background-color .25s ease,color .25s ease,transform .3s var(--settle);
+}
+.btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+/* primary: the way out */
+.btn-key{background:var(--accent);color:var(--accent-ink)}
+[data-theme="light"] .btn-key{background:var(--blue);color:var(--snow)}
+/* secondary: the four sections */
+.btn-alt{background:var(--blue);color:var(--snow)}
+[data-theme="light"] .btn-alt{background:var(--black);color:var(--snow)}
+/* one hover rule covers every button in both themes */
+.btn:hover,.btn:focus-visible{background:var(--fuch);color:var(--snow);transform:translateY(-2px)}
+
+footer{
+  position:relative;z-index:2;display:flex;flex-wrap:wrap;gap:12px;
+  justify-content:space-between;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;
+  text-transform:uppercase;color:var(--ink-dim);
+}
+
+@media (max-width:759px),(pointer:coarse){
+  .btn{padding:0 20px}
+}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
+  .quote{opacity:1;transform:none}
+  .lt p{transition:none}
+}
+</style>
+</head>
+<body>
+<div class="xfield" id="xfield" aria-hidden="true"></div>
+
+<header class="topbar">
+  <a class="brand" href="/" aria-label="Houston Dragna, back to home">
+    <img class="lg-d" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" decoding="async">
+    <img class="lg-l" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" decoding="async">
+  </a>
+  <a class="btn btn-key" href="/">Back to safety</a>
+</header>
+
+<main>
+  <h1 class="sr">404. This page does not exist.</h1>
+  <p class="eyebrow">Error 404 &middot; Page not found</p>
+  <!-- aria-hidden because the stack holds every word twice: a screen reader
+       would read it as gibberish. The h1 above carries the meaning. -->
+  <div class="lt" id="stack" aria-hidden="true">
+    <ul>
+      <li style="--i:0;--tx-d:-92px;--tx-m:-44px;--skx:60deg;--sy:0.66667"><p>&nbsp;</p><p>LOST</p></li>
+      <li style="--i:1;--tx-d:-46px;--tx-m:-22px;--skx:0deg;--sy:1.33333"><p>LOST</p><p>MISSING</p></li>
+      <li style="--i:2;--tx-d:0px;--tx-m:0px;--skx:60deg;--sy:0.66667"><p>MISSING</p><p>NOWHERE</p></li>
+      <li style="--i:3;--tx-d:46px;--tx-m:22px;--skx:0deg;--sy:1.33333"><p>NOWHERE</p><p>404</p></li>
+      <li style="--i:4;--tx-d:92px;--tx-m:44px;--skx:60deg;--sy:0.66667"><p>404</p><p>&nbsp;</p></li>
+    </ul>
+  </div>
+  <!-- the first line is baked in so the page still reads with JS off -->
+  <p class="quote" id="quote">Every road leads somewhere. This one leads nowhere.</p>
+  <div class="acts">
+    <a class="btn btn-alt" href="/design">Design</a>
+    <a class="btn btn-alt" href="/photo">Photo</a>
+    <a class="btn btn-alt" href="/video">Video</a>
+    <a class="btn btn-alt" href="/case-studies">Case studies</a>
+  </div>
+</main>
+
+<footer>
+  <span>&copy; <span id="yr">2026</span> Houston Dragna</span>
+  <span>Available worldwide</span>
+</footer>
+
+<script>
+(function(){
+  var LINES = [
+  "Every road leads somewhere. This one leads nowhere.",
+  "The map is old, and the page it promised is long gone.",
+  "You have wandered off the path. There was never a path here.",
+  "One does not simply find a page that was never written.",
+  "The wizard looked into it. He blames whoever typed the address.",
+  "Somewhere a ring went into a mountain. Closer to home, a link went bad.",
+  "Second breakfast is served. This page is not.",
+  "The elves keep records of everything. They have nothing on this address.",
+  "The dwarves dug too greedily and took the rest of this URL with them.",
+  "There and back again, minus the there.",
+  "Nine rings, seven dwarf-lords, zero pages at this address.",
+  "The eagles were asked. They declined to carry this page.",
+  "Nothing passes here. There is nothing on the other side to pass into.",
+  "A dragon is sleeping on this URL. There is no page underneath it.",
+  "One wrong character, and the whole quest ends in a field like this one.",
+  "The quest was long, the fellowship was strong, the link was still broken."
+  ];
+  /* a different line on every load, never the one already sitting in the
+     markup on the first swap */
+  var reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  var el = document.getElementById('quote');
+  if (el){
+    var i = Math.floor(Math.random() * LINES.length);
+    if (LINES[i] === el.textContent.trim() && LINES.length > 1) i = (i + 1) % LINES.length;
+    el.textContent = LINES[i];
+    requestAnimationFrame(function(){ el.classList.add('in'); });
+  }
+
+  document.getElementById('yr').textContent = new Date().getFullYear();
+
+  /* ---- layered stack ----
+     Hover drives it on a mouse. On touch there is no hover at all, so the
+     stack plays itself once shortly after load and settles back; tapping
+     replays it. */
+  var stack = document.getElementById('stack');
+
+  /* fitStack: start big and shrink until the whole page fits on one screen.
+     The skewed rows shear by -30deg, so their painted box is far taller than
+     their layout box and the overhang grows with the stack's WIDTH. That is
+     why this is measured rather than declared: no CSS constant is right at
+     every viewport. Same approach the site hero uses for its type. */
+  function fitStack(){
+    if (!stack) return;
+    var rows = stack.querySelectorAll('li');
+    if (!rows.length) return;
+    var main = stack.parentElement;
+    var BASE_FS = 168, BASE_LH = 140;
+
+    for (var s = 1; s > 0.16; s *= 0.94){
+      stack.style.setProperty('--fs', (BASE_FS * s).toFixed(1) + 'px');
+      stack.style.setProperty('--lh', (BASE_LH * s).toFixed(1) + 'px');
+      stack.style.margin = '0 auto';
+      stack.style.transform = '';
+
+      /* painted bounds, which is what actually has to clear its neighbours */
+      var box = stack.getBoundingClientRect();
+      var t = Infinity, b = -Infinity, l = Infinity, r = -Infinity;
+      for (var i = 0; i < rows.length; i++){
+        var q = rows[i].getBoundingClientRect();
+        if (q.top < t) t = q.top;
+        if (q.bottom > b) b = q.bottom;
+        if (q.left < l) l = q.left;
+        if (q.right > r) r = q.right;
+      }
+
+      /* reserve the exact overhang on each side */
+      stack.style.marginTop = Math.max(0, box.top - t).toFixed(1) + 'px';
+      stack.style.marginBottom = Math.max(0, b - box.bottom).toFixed(1) + 'px';
+      /* the paint is not centred on the layout box, so nudge it back */
+      stack.style.transform = 'translateX(' + (innerWidth / 2 - (l + r) / 2).toFixed(1) + 'px)';
+
+      /* "fits" is not just "does not scroll": the buttons must also keep a
+         real gap above the footer, or the stack grows until the page is
+         technically one screen but visually jammed. */
+      /* a custom property comes back as its unresolved clamp() token, never a
+         number, so read the box that actually consumes it */
+      var gapPx = parseFloat(getComputedStyle(main).rowGap) || 24;
+      var acts = document.querySelector('.acts').getBoundingClientRect();
+      var foot = document.querySelector('footer').getBoundingClientRect();
+      var wide = (r - l) > (main.clientWidth - 8);
+      var tall = document.documentElement.scrollHeight > innerHeight
+              || (foot.top - acts.bottom) < gapPx;
+      if (!wide && !tall) break;
+    }
+  }
+
+  if (stack){
+    /* fonts change every measurement, so fit once they are actually in */
+    if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitStack);
+    fitStack();
+    addEventListener('load', fitStack);
+    var fitT;
+    addEventListener('resize', function(){
+      clearTimeout(fitT); fitT = setTimeout(fitStack, 140);
+    });
+  }
+
+  if (stack && !reduce){
+    var finePtr = matchMedia('(pointer:fine)').matches;
+    if (finePtr){
+      stack.addEventListener('mouseenter', function(){ stack.classList.add('go'); });
+      stack.addEventListener('mouseleave', function(){ stack.classList.remove('go'); });
+    } else {
+      stack.addEventListener('click', function(){ stack.classList.toggle('go'); });
+    }
+    /* one unprompted pass so the effect announces itself, then it rests */
+    setTimeout(function(){ stack.classList.add('go'); }, 900);
+    setTimeout(function(){ stack.classList.remove('go'); }, 2600);
+  }
+
+  /* ---- crosshair field ----
+     Lifted from the site so this page behaves like the rest of it: crosses
+     within R of the cursor push outward, lean, and swell slightly. The loop
+     short-circuits the moment everything has settled, so an idle 404 costs
+     nothing. Touch and reduced motion get the static grid. */
+  var xf = document.getElementById('xfield');
+  var X_R = 300, crosses = [], mx = -9999, my = -9999, X_MAX = 30;
+  var fieldIdle = false;
+  var clamp = function(v, a, b){ return v < a ? a : v > b ? b : v; };
+  var lerp  = function(a, b, t){ return a + (b - a) * t; };
+  var smoothstep = function(t){ t = clamp(t, 0, 1); return t * t * (3 - 2 * t); };
+
+  function buildField(){
+    if (!xf) return;
+    var sp = innerWidth < 640 ? 128 : 152;
+    X_MAX = sp * 0.2;                       /* never travel past 20% of a cell */
+    var cols = Math.ceil(innerWidth / sp) + 3;
+    var rows = Math.ceil(innerHeight / sp) + 3;
+    var frag = document.createDocumentFragment();
+    crosses = [];
+    for (var r = 0; r < rows; r++){
+      for (var c = 0; c < cols; c++){
+        var x = c * sp + (r % 2 ? sp / 2 : 0) - sp;   /* every other row offset */
+        var y = r * sp - sp;
+        var el = document.createElement('i');
+        el.className = 'x';
+        el.style.left = x + 'px';
+        el.style.top = y + 'px';
+        frag.appendChild(el);
+        crosses.push({ el: el, x: x, y: y, cx: 0, cy: 0, cr: 0, cs: 1, live: false });
+      }
+    }
+    xf.replaceChildren(frag);
+  }
+  buildField();
+  var fieldT;
+  addEventListener('resize', function(){
+    clearTimeout(fieldT); fieldT = setTimeout(buildField, 160);
+  });
+
+  var fine = matchMedia('(pointer:fine)').matches;
+  if (fine && !reduce){
+    addEventListener('pointermove', function(e){
+      mx = e.clientX; my = e.clientY; fieldIdle = false;
+    }, { passive: true });
+    document.documentElement.addEventListener('pointerleave', function(){
+      mx = my = -9999; fieldIdle = false;
+    });
+    (function frame(){
+      if (!fieldIdle){
+        var any = false;
+        for (var i = 0; i < crosses.length; i++){
+          var k = crosses[i];
+          var dx = k.x - mx, dy = k.y - my;
+          var d = Math.sqrt(dx * dx + dy * dy);
+          var tx = 0, ty = 0, tr = 0, ts = 1;
+          if (d < X_R){
+            /* smoothstep at the outer edge kills the pop-in; the `near` term
+               fades displacement to zero as the cursor sits directly on a
+               cross, so the direction never flips hard */
+            var f = smoothstep(1 - d / X_R);
+            var near = smoothstep(d / 74);
+            var mag = X_MAX * f * near;
+            var inv = d > 0.001 ? 1 / d : 0;
+            tx = dx * inv * mag;
+            ty = dy * inv * mag;
+            tr = f * near * 6;              /* a lean, not a spin */
+            ts = 1 + f * 0.1;
+          }
+          if (!k.live && !tx && !ty && Math.abs(k.cx) < .01 && Math.abs(k.cy) < .01) continue;
+          k.cx = lerp(k.cx, tx, .11); k.cy = lerp(k.cy, ty, .11);
+          k.cr = lerp(k.cr, tr, .11); k.cs = lerp(k.cs, ts, .11);
+          if (Math.abs(k.cx) < .05 && Math.abs(k.cy) < .05){
+            k.cx = k.cy = k.cr = 0; k.cs = 1;
+            k.el.style.transform = '';
+            k.live = false;
+            continue;
+          }
+          k.live = true; any = true;
+          k.el.style.transform = 'translate(' + k.cx.toFixed(2) + 'px,' + k.cy.toFixed(2) +
+            'px) rotate(' + k.cr.toFixed(2) + 'deg) scale(' + k.cs.toFixed(3) + ')';
+        }
+        if (!any && mx === -9999) fieldIdle = true;
+      }
+      requestAnimationFrame(frame);
+    })();
+  }
+})();
+</script>
+</body>
+</html>

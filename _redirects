@@ -1,6 +1,6 @@
 # ── Old Squarespace URLs ──────────────────────────────────────────────
-# /design /photo /video /case-studies /contact keep their paths, so they
-# need no rules at all: the SPA rewrite at the bottom serves them.
+# /design /photo /video /case-studies keep their paths and have real files
+# on disk, so Netlify serves them directly. No rules needed for those.
 
 /overview            /                     301
 /about               /                     301
@@ -12,7 +12,32 @@
 # Change the target when the new wedding site exists.
 /wedding             /contact              301
 
-# ── Client-side routing ───────────────────────────────────────────────
-# Everything else is served by index.html so deep links like
-# /case-studies/namm-2026 work on a hard refresh. Must stay last.
-/*                   /index.html           200
+# ── Title-case variants ───────────────────────────────────────────────
+# Netlify path matching is case sensitive. Links shared by hand or by a CMS
+# routinely arrive title-cased, and one of those is how a Fender contact
+# landed on the wrong page once. Send them to the canonical lowercase URL
+# with a 301 so search engines only ever see the one address.
+/Design                          /design                          301
+/Photo                           /photo                           301
+/Video                           /video                           301
+/Case-Studies                    /case-studies                    301
+/Case-Studies/Fender-Studio      /case-studies/fender-studio      301
+/Case-Studies/Namm-2026          /case-studies/namm-2026          301
+/Case-Studies/NAMM-2026          /case-studies/namm-2026          301
+/Case-Studies/Studiolive-Se      /case-studies/studiolive-se      301
+/Case-Studies/StudioLive-SE      /case-studies/studiolive-se      301
+
+# ── Section routes with no file of their own ──────────────────────────
+# /contact and /faq are scroll targets inside the home view, so they have no
+# HTML file. They are rewritten (200, not 301) so the URL the visitor sees
+# stays put and the router can scroll to the right block.
+/contact             /index.html           200
+/faq                 /index.html           200
+
+# ── Anything else is genuinely missing ────────────────────────────────
+# There used to be a `/* /index.html 200` catch-all here. It meant EVERY bad
+# URL answered 200 with the homepage: a soft 404. Google treats those as
+# duplicate pages, and a real 404 page could never be reached because this
+# rule swallowed the request first. Deep links still work without it because
+# every route has its own HTML file on disk. With no catch-all, Netlify falls
+# through to 404.html automatically and returns a real 404 status.

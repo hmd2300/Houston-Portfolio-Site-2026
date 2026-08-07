@@ -2540,16 +2540,29 @@ const ROLL_MS = 620, ROLL_STEP = 34;
   document.body.appendChild(probe);
 
   const advCache = new Map();
-  function advances(w){
-    const cs = getComputedStyle(m2);
-    const key = w + '|' + cs.fontSize + '|' + cs.letterSpacing;
-    if (advCache.has(key)) return advCache.get(key);
+  function faceProbe(cs){
     probe.style.fontFamily    = cs.fontFamily;
     probe.style.fontSize      = cs.fontSize;
     probe.style.fontWeight    = cs.fontWeight;
     probe.style.fontStretch   = cs.fontStretch;
     probe.style.letterSpacing = cs.letterSpacing;
     probe.style.textTransform = cs.textTransform;
+  }
+  /* A live signature of the CURRENT face, folded into the cache key. The key
+     used to be word + size + tracking, which cannot tell Archivo from the
+     Impact fallback: a measurement taken before the webfont arrived stayed
+     cached for the life of the page. That is what left DESIGN in 782px of
+     cells holding 612px of letters, the slack showing as broken kerning. */
+  function faceSig(cs){
+    faceProbe(cs);
+    probe.textContent = 'HAMBURGEFONSIV';
+    return Math.round(probe.getBoundingClientRect().width);
+  }
+  function advances(w){
+    const cs = getComputedStyle(m2);
+    const key = w + '|' + cs.fontSize + '|' + cs.letterSpacing + '|' + faceSig(cs);
+    if (advCache.has(key)) return advCache.get(key);
+    faceProbe(cs);
     probe.textContent = '';
     const spans = [...w].map(ch => {
       const sp = document.createElement('span');
@@ -2626,6 +2639,12 @@ const ROLL_MS = 620, ROLL_STEP = 34;
   const CYCLE = Math.round(WORD_HOLD * 1000) + WIDEST * ROLL_STEP;
   (function waitForReveal(){
     if (!ready) return setTimeout(waitForReveal, 100);
+    /* the reveal is the one moment the real display face is guaranteed to be
+       in. fitHero runs first because it sets the size the advances are then
+       measured at; measuring before it would cache widths for the wrong size. */
+    fitHero();
+    advCache.clear();
+    apply(word, false);
     setTimeout(() => { roll(); setInterval(roll, CYCLE); }, CYCLE);
   })();
 }
