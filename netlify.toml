@@ -19,4 +19,14 @@
     X-Content-Type-Options = "nosniff"
     Referrer-Policy = "strict-origin-when-cross-origin"
     X-Frame-Options = "SAMEORIGIN"
+    # Tell browsers to refuse plain HTTP for a year. Netlify already redirects
+    # to HTTPS; this stops the first insecure request from happening at all.
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # Isolate the browsing context from anything a third party opens.
+    Cross-Origin-Opener-Policy = "same-origin"
+    # CSP is deliberately permissive on inline script and style: this site is
+    # built as single self-contained files, so hashing every block would break
+    # on the next edit. The value here is the ORIGIN allowlist, which is what
+    # actually stops an injected script from phoning somewhere unexpected.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://raw.githubusercontent.com https://i.ytimg.com; frame-src https://www.youtube.com https://www.youtube-nocookie.com; connect-src 'self' https://plausible.io; form-action 'self'; base-uri 'self'; object-src 'none'"
     Permissions-Policy = "geolocation=(), microphone=(), camera=()"

@@ -647,6 +647,31 @@ a.sec-title:hover,.sec-title a:hover{color:var(--ht,var(--sec,var(--chart)))}
 }
 .chip:hover{background:var(--hb,var(--black));border-color:var(--hb,var(--black));color:var(--hf,var(--chart));transform:translateY(-3px)}
 
+/* ---------- lockup over the dark case study hero ----------
+   In light mode the mark is the off-black knockout, and a case study hero is
+   a dark photograph. Measured against the actual pixels it came out at
+   1.17:1, effectively invisible. While the chrome sits over that band the
+   light theme borrows the dark theme's mark. Specificity here is (0,3,2),
+   which beats the `html img.lg-*` swap rules at (0,1,2) on purpose. */
+html[data-theme="light"].over-dark img.lg-l{display:none}
+html[data-theme="light"].over-dark img.lg-d{display:block}
+
+/* The facts row measured 3.80:1 over open photograph. The fix is a deeper
+   FIRST STOP on the hero's existing gradient, not a second overlay: my first
+   attempt added a `.cs-top::after` of its own and silently REPLACED this one,
+   which brightened the whole hero and cost contrast everywhere. There is only
+   one ::after per element, so it has to be edited in place. Stops were
+   .9 at 22% and .3 at 60%; the lower band is now heavier and reaches higher. */
+.cs-top::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#06070D 0,rgba(6,7,13,.94) 30%,rgba(6,7,13,.45) 62%,rgba(6,7,13,.6) 100%)}
+
+/* ---------- tap targets ----------
+   WCAG 2.5.8 asks 24px on any pointer target. These measured 16 to 23px tall.
+   Padding grows the hit area rather than the type, and the menu's gap drops
+   by exactly what the item padding adds, so its rhythm is unchanged. */
+.foot-legal a,.foot-std{display:inline-flex;align-items:center;min-height:32px}
+.back{min-height:32px;padding:6px 0}
+.m-item{padding:11px 0}
+
 /* ---------- contact form ----------
    Mobile first: every field full width, the two short fields pair up at
    620px. Inputs inherit the body face so they never fall back to the UA
@@ -942,7 +967,7 @@ footer:hover .foot-mark{opacity:1}
 /* the hero band is dark-grounded in BOTH themes: it ends on literal ink
    black, not var(--bg), so the standfirst and facts inside it never
    straddle a light fade. In dark this is pixel-identical to before. */
-.cs-top::after{content:"";position:absolute;inset:0;background:linear-gradient(to top,#06070D 0,rgba(6,7,13,.9) 22%,rgba(6,7,13,.3) 60%,rgba(6,7,13,.6) 100%)}
+
 .cs-top-inner{position:relative;z-index:2;width:100%;padding:clamp(90px,12vw,140px) var(--pad) clamp(24px,3.4vw,40px)}
 .cs-kicker{font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--sec-tx,var(--accent-tx));margin-bottom:14px;display:block}
 /* the hero sits on dark imagery in every study, so its text is an on-image
@@ -1263,6 +1288,17 @@ footer:hover .foot-mark{opacity:1}
 .fmenu.open .fmenu-box{width:300px;height:500px;border-radius:28px;cursor:default}
 .fmenu.open .fmenu-box:hover{transform:none}
 .fmenu-bg{position:absolute;inset:0;background:var(--chart);border-radius:inherit}
+/* The circle is deliberately wider than the pill so it sweeps the whole
+   panel. At 320px that pushed 43px of horizontal scroll onto the document,
+   because nothing was clipping it. The pill clips its own contents now. */
+.fmenu-box{overflow:hidden}
+/* The crosshair field is fixed and clips its own children, but a FIXED
+   element's overflow does not stop the ROOT from reporting their width, so
+   320px screens picked up 43px of horizontal scroll (and 360px got 4px).
+   body already had overflow-x:hidden; the root did not. `clip` is used
+   rather than `hidden` because `hidden` on the root would make it a scroll
+   container and can break position:sticky further down the page. */
+html{overflow-x:clip}
 .fmenu-circle{
   position:absolute;left:50%;top:-220%;width:220%;height:220%;border-radius:50%;
   transform:translateX(-50%);background:var(--blue);
@@ -1289,8 +1325,12 @@ footer:hover .foot-mark{opacity:1}
   /* the links sit above centre so the switch has its own margin at the foot
      rather than being crowded against the last item */
   position:absolute;left:0;right:0;top:var(--chrome-h);bottom:0;z-index:2;
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:19px;
-  padding-bottom:64px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  /* items carry 11px of vertical padding for a 45px touch target, so the
+     gap is zero and the foot padding is trimmed by the same amount. The
+     visual rhythm is unchanged; only the hit area grew. */
+  gap:0;
+  padding-bottom:40px;
   opacity:0;pointer-events:none;transition:opacity .2s ease;
 }
 .fmenu.open .fmenu-items{opacity:1;pointer-events:auto;transition-delay:.1s}
@@ -1730,7 +1770,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <span class="flag">Case study</span>
       <img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio%20Brand%20Launch%20Case%20Study%20Thumb.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio%20Brand%20Launch%20Case%20Study%20Thumb.jpg'" alt="Fender Studio · Global Launch" width="800" height="450">
     </a>
-    <h3>Fender Studio · Global Launch</h3>
+    <h2 class="cs-card-h">Fender Studio · Global Launch</h2>
     <p>A global software launch past a billion impressions.</p>
     <a class="cta" href="/case-studies/fender-studio" data-view="cs-fender" aria-label="Read the full study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span><span class="cta-label">Read the full study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span></a>
   </article>
@@ -1739,7 +1779,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <span class="flag">Case study</span>
       <img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/imgi_19_NAMM+2026+Case+Study+Thumb.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/imgi_19_NAMM+2026+Case+Study+Thumb.jpg'" alt="NAMM 2026 · Fender Studio Booth" width="800" height="450">
     </a>
-    <h3>NAMM 2026 · Fender Studio Booth</h3>
+    <h2 class="cs-card-h">NAMM 2026 · Fender Studio Booth</h2>
     <p>The booth build that put the app on the show floor.</p>
     <a class="cta" href="/case-studies/namm-2026" data-view="cs-namm" aria-label="Read the full study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span><span class="cta-label">Read the full study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span></a>
   </article>
@@ -1748,7 +1788,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <span class="flag">Case study</span>
       <img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/imgi_25_studiolive-seriesiii-se-keyart-1080x1920.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/imgi_25_studiolive-seriesiii-se-keyart-1080x1920.jpg'" alt="PreSonus StudioLive Series III SE · Launch" width="800" height="450">
     </a>
-    <h3>PreSonus StudioLive Series III SE · Launch</h3>
+    <h2 class="cs-card-h">PreSonus StudioLive Series III SE · Launch</h2>
     <p>A launch I pitched and directed.</p>
     <a class="cta" href="/case-studies/studiolive-se" data-view="cs-se" aria-label="Read the full study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span><span class="cta-label">Read the full study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"></path></svg></span></a>
   </article></div>
@@ -1987,7 +2027,7 @@ html[data-theme="light"] img.lg-d{display:none}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
     </figure>
     <div class="hero-film-cap reveal">
-      <h3><a href="https://www.youtube.com/watch?v=lA7f6GV6NAo" target="_blank" rel="noopener">Fender Motion Controllers &#8211; Launch Hero</a></h3>
+      <h2><a href="https://www.youtube.com/watch?v=lA7f6GV6NAo" target="_blank" rel="noopener">Fender Motion Controllers &#8211; Launch Hero</a></h2>
       <div class="roles"><span class="role">Lighting Design</span><span class="role">Set Design</span><span class="role">Producer</span><span class="role">Photographer</span><span class="role">Key Art</span></div>
     </div>
 
@@ -2442,7 +2482,7 @@ function buildStudyCards(){
       <span class="flag">Case study</span>
       <img loading="lazy" decoding="async" src="${THUMB(c.data)}" onerror="${FALLBACK(c.data)}" alt="${c.title}">
     </a>
-    <h3>${c.title}</h3>
+    <h2 class="cs-card-h">${c.title}</h2>
     <p>${c.line}</p>
     <a class="cta" href="#/${c.view}" data-view="${c.view}" aria-label="Read the full study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Read the full study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a>
   </article>`).join('');
@@ -2809,6 +2849,14 @@ let show = function(name, fromHash){
     }
     if (say && META[name]) say.textContent = META[name][0].split('|')[0].trim() + ', page loaded';
   }
+
+  /* Tell every nav surface which page it is on. Colour alone was carrying
+     this; assistive tech had no signal at all. */
+  document.querySelectorAll('[data-view]').forEach(a => {
+    if (a.dataset.view === name) a.setAttribute('aria-current', 'page');
+    else a.removeAttribute('aria-current');
+  });
+  syncOverDark();
 
   const meta = META[name];
   if (meta){
@@ -3708,6 +3756,19 @@ document.querySelectorAll('.faq-item').forEach(item => {
 syncHrefs();
 show(routeNow(), true);
 booting = false;             /* every later route change announces itself */
+/* While the fixed chrome overlaps a case study's dark hero band, the light
+   theme borrows the dark mark: its own off-black knockout measured 1.17:1
+   against that photograph. Recomputed on scroll and on every route change. */
+function syncOverDark(){
+  const band = document.querySelector('.view.on .cs-top');
+  const chromeLow = 96;                     /* the tallest the chrome reaches */
+  const over = !!band && band.getBoundingClientRect().bottom > chromeLow;
+  document.documentElement.classList.toggle('over-dark', over);
+}
+addEventListener('scroll', syncOverDark, { passive: true });
+addEventListener('resize', syncOverDark);
+syncOverDark();
+
 /* ---------- contact form ----------
    Netlify accepts a urlencoded POST to any path on the site as long as
    `form-name` matches a form it registered at deploy time. Posting over

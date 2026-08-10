@@ -117,9 +117,9 @@ h3{
   font-size:clamp(18px,2.2vw,26px);line-height:1.05;letter-spacing:-.01em;
   text-transform:uppercase;margin:44px 0 12px;
 }
-.lede{max-width:64ch;color:var(--ink);font-size:clamp(16px,1.4vw,19px);margin:0 0 8px}
+.lede{max-width:58ch;color:var(--ink);font-size:clamp(16px,1.4vw,19px);margin:0 0 8px}
 .dim{color:var(--ink-dim)}
-p{max-width:70ch}
+p{max-width:68ch}
 .rule-note{
   font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;line-height:1.8;
   color:var(--ink-dim);border-left:2px solid var(--blue);padding:2px 0 2px 14px;
@@ -156,7 +156,7 @@ p{max-width:70ch}
   background:var(--bg-2);border:1px solid var(--line);border-radius:14px;
   padding:20px;
 }
-.card h4{
+.card h3.card-h{
   font-family:var(--font-mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   font-weight:700;color:var(--ink-dim);margin:0 0 12px;
 }
@@ -211,7 +211,7 @@ td.mono{font-family:var(--font-mono);font-size:11.5px;letter-spacing:.03em}
 .spec-display{font-family:var(--font-display);font-weight:900;font-stretch:118%;
   font-size:clamp(38px,6vw,84px);line-height:.86;letter-spacing:-.02em;
   text-transform:uppercase;margin:0;word-break:break-word}
-.spec-body{font-family:var(--font-body);font-size:17px;line-height:1.65;max-width:64ch;margin:0}
+.spec-body{font-family:var(--font-body);font-size:17px;line-height:1.65;max-width:60ch;margin:0}
 .spec-mono{font-family:var(--font-mono);font-size:11px;letter-spacing:.14em;
   text-transform:uppercase;color:var(--ink-dim);margin:0}
 
@@ -318,7 +318,7 @@ input[type=range]{flex:1;min-width:160px;accent-color:var(--chart);background:tr
 .ease{border:1px solid var(--line);border-radius:14px;background:var(--bg-2);
   padding:18px;cursor:pointer;transition:border-color .25s ease}
 .ease:hover{border-color:var(--chart)}
-.ease h4{margin-bottom:4px}
+.ease h3.card-h{margin-bottom:4px}
 .ease .curve{font-family:var(--font-mono);font-size:10.5px;color:var(--ink-dim);
   letter-spacing:.02em;margin-bottom:16px;display:block}
 .track{position:relative;height:34px;border-radius:44px;background:var(--bg);
@@ -404,7 +404,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;margin-top:var(--sec
       <img src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="HD monogram, full color">
     </div>
     <div class="card">
-      <h4>Anatomy</h4>
+      <h3 class="card-h">Anatomy</h3>
       <ul class="anatomy">
         <li><strong>The H.</strong> Italic, heavy, forward-leaning. Its right stem is shared structure, not decoration.</li>
         <li><strong>The D.</strong> Built off that shared stem. The two letters are one object; they never separate.</li>
@@ -466,7 +466,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;margin-top:var(--sec
       </div>
     </div>
     <div class="card">
-      <h4>Rules</h4>
+      <h3 class="card-h">Rules</h3>
       <ul class="anatomy" style="margin:0">
         <li><strong>Clearspace = half the mark's height</strong> on all four sides. Text, edges, and other art stay outside it.</li>
         <li><strong>Minimum size: 15px tall digital, 6mm print.</strong> Below that the arcs fuse into a blob. The smallest shipped use is 15px.</li>
@@ -641,9 +641,9 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;margin-top:var(--sec
   </div>
 
   <div class="grid g2" style="margin-top:14px">
-    <div class="card"><h4>What swaps</h4>
+    <div class="card"><h3 class="card-h">What swaps</h3>
       <p style="font-size:13.5px;color:var(--ink-dim);max-width:none">Accent chartreuse &rarr; blue &middot; crosses chartreuse 21% &rarr; blue 50% &middot; logo Filled Full Color &rarr; Box Knockout Off Black &middot; every text derivative per the color table &middot; scrollbar &middot; preloader ink.</p></div>
-    <div class="card"><h4>What never swaps</h4>
+    <div class="card"><h3 class="card-h">What never swaps</h3>
       <p style="font-size:13.5px;color:var(--ink-dim);max-width:none">Blue fills stay blue &middot; fuchsia stays the interruption &middot; on-image text stays snow with a chartreuse kicker in both themes, because imagery is a dark ground regardless of theme &middot; this document itself: personal tools ship dark only.</p></div>
   </div>
 </section>
@@ -655,15 +655,15 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;margin-top:var(--sec
   <p class="lede">Everything arrives fast and settles slow. Three easings cover the whole site; if a curve is not one of these, it does not ship. Click a card to run it.</p>
 
   <div class="ease-demo" style="margin-top:26px">
-    <div class="ease" data-e="out"><h4 class="card-h">Ease out &middot; entrances</h4>
+    <div class="ease" data-e="out"><h3 class="card-h">Ease out &middot; entrances</h3>
       <span class="curve">cubic-bezier(.16, 1, .3, 1)</span>
       <div class="track"><div class="dot"></div></div>
       <span class="hint">Reveals, fades, the 404 line</span></div>
-    <div class="ease" data-e="settle"><h4 class="card-h">Settle &middot; physical objects</h4>
+    <div class="ease" data-e="settle"><h3 class="card-h">Settle &middot; physical objects</h3>
       <span class="curve">cubic-bezier(.19, 1, .22, 1)</span>
       <div class="track"><div class="dot" style="background:var(--blue)"></div></div>
       <span class="hint">Menu, toggle knob, hover lifts, FAQ</span></div>
-    <div class="ease" data-e="io"><h4 class="card-h">Ease in-out &middot; travels</h4>
+    <div class="ease" data-e="io"><h3 class="card-h">Ease in-out &middot; travels</h3>
       <span class="curve">cubic-bezier(.65, 0, .35, 1)</span>
       <div class="track"><div class="dot" style="background:var(--fuch)"></div></div>
       <span class="hint">Anything moving A to B on screen</span></div>
@@ -672,7 +672,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;margin-top:var(--sec
   <h3>Interaction language</h3>
   <div class="grid g2">
     <div class="card">
-      <h4>Hover &middot; color flips, not fades</h4>
+      <h3 class="card-h">Hover &middot; color flips, not fades</h3>
       <div class="hover-lab">
         <button class="hl-btn" id="hlBtn">Email me</button>
         <span class="hl-name" id="hlName">Dragna</span>
@@ -680,7 +680,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;margin-top:var(--sec
       <p style="font-size:13.5px;color:var(--ink-dim);margin-top:16px;max-width:none">Buttons lift 2px and flip to another palette color. Display-type links cycle the palette per hover. The flip is instant-feeling: 200 to 250ms.</p>
     </div>
     <div class="card">
-      <h4>Standing rules</h4>
+      <h3 class="card-h">Standing rules</h3>
       <ul class="anatomy" style="margin:0">
         <li><strong>Transform and opacity only.</strong> Never animate blur or filters on touch devices; never animate layout properties.</li>
         <li><strong>Type morphs by character roll</strong>: letters slide in clipped cells, widths glide with them. 620ms, 34ms per-letter stagger.</li>
@@ -733,7 +733,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;margin-top:var(--sec
 
   <div class="grid g2" style="margin-top:26px">
     <div class="card">
-      <h4>Rules</h4>
+      <h3 class="card-h">Rules</h3>
       <ul class="anatomy" style="margin:0">
         <li><strong>No em-dashes. Anywhere. Ever.</strong> The middot is the house separator: Est. 2015 &middot; 11 yrs. Sentences restructure instead.</li>
         <li><strong>Labels are uppercase mono.</strong> Headlines are uppercase display. Body is sentence case. Title Case is not used.</li>
@@ -742,7 +742,7 @@ footer{border-top:1px solid var(--line);padding:26px 0 34px;margin-top:var(--sec
       </ul>
     </div>
     <div class="card">
-      <h4>Calibration</h4>
+      <h3 class="card-h">Calibration</h3>
       <table>
         <tr><th>Instead of</th><th>Write</th></tr>
         <tr><td class="dim">I'm a passionate creative who loves...</td><td>Design, photo, and film for music brands.</td></tr>
