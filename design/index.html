@@ -539,6 +539,14 @@ footer.mono:hover .foot-mark{opacity:1}
   background:var(--sec,var(--chart));color:var(--sec-ink,var(--black));font-weight:700;
 }
 .sec-title{font-size:clamp(42px,10vw,120px);transition:color .25s ease}
+/* The 42px floor is wider than a 320px screen for the longest headline word
+   ("FREQUENTLY" measured 350px into a 284px box), which is where the 43px of
+   horizontal scroll at 320px came from. NOT the crosshair field, which was my
+   first guess. Below 375px the floor comes down to fit; break-word is a
+   backstop so no future headline can reintroduce it. */
+@media (max-width:374px){
+  .sec-title{font-size:clamp(32px,9.4vw,42px);overflow-wrap:break-word}
+}
 a.sec-title:hover,.sec-title a:hover{color:var(--ht,var(--sec,var(--chart)))}
 .see-more{
   display:inline-flex;align-items:center;gap:10px;
@@ -1292,13 +1300,16 @@ footer:hover .foot-mark{opacity:1}
    panel. At 320px that pushed 43px of horizontal scroll onto the document,
    because nothing was clipping it. The pill clips its own contents now. */
 .fmenu-box{overflow:hidden}
-/* The crosshair field is fixed and clips its own children, but a FIXED
-   element's overflow does not stop the ROOT from reporting their width, so
-   320px screens picked up 43px of horizontal scroll (and 360px got 4px).
-   body already had overflow-x:hidden; the root did not. `clip` is used
-   rather than `hidden` because `hidden` on the root would make it a scroll
-   container and can break position:sticky further down the page. */
-html{overflow-x:clip}
+/* The crosshair field is fixed and clips its own children visually, but its
+   descendants still counted toward the ROOT's scrollable width, so 320px
+   screens picked up 43px of horizontal scroll and 360px got 4px.
+   DO NOT SOLVE THIS ON <html>. `overflow-x:clip` there looks harmless and
+   silently kills position:sticky, which is what pins the hero: the frame
+   kept expanding while the whole hero scrolled away underneath it.
+   `contain:paint` is the right instrument. It clips the same way AND takes
+   the descendants out of the document's scrollable overflow, without
+   touching the root's scroll behaviour. */
+.xfield{contain:paint}
 .fmenu-circle{
   position:absolute;left:50%;top:-220%;width:220%;height:220%;border-radius:50%;
   transform:translateX(-50%);background:var(--blue);
