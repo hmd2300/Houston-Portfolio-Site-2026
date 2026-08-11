@@ -1193,12 +1193,23 @@ footer:hover .foot-mark{opacity:1}
     width:max-content;                  /* natural width so it can overflow */
     gap:0;padding:0;
   }
+  /* Frames are sized by HEIGHT, not width, so every image is full bleed
+     vertically and a landscape frame simply runs wider than the screen. The
+     old rule pinned each frame to 100vw and let the height fall out of the
+     aspect ratio, which left up to 284px of dead black under a landscape
+     shot and stranded its caption down there in the empty box. More sideways
+     scrolling is the intended trade. */
   .cs-pin-track figure{
-    flex:0 0 100vw;width:100vw;height:auto;margin:0;
-    scroll-snap-align:center;scroll-snap-stop:always;
+    flex:0 0 auto;width:auto;height:68svh;margin:0;
+    /* snap to the START of a frame: with frames wider than the viewport,
+       centre-snapping would fight the swipe and jump past detail */
+    scroll-snap-align:start;
   }
-  .cs-pin-track img{width:100vw;height:auto;max-width:none;display:block}
-  .cs-pin-track figcaption{font-size:9px;padding:9px 12px}
+  .cs-pin-track img{height:100%;width:auto;max-width:none;display:block}
+  /* the tag belongs ON the picture, not in a box beneath it */
+  .cs-pin-track figcaption{
+    position:absolute;left:0;bottom:0;font-size:9px;padding:9px 12px;
+  }
   .cs-pin-label{position:static;padding:0 var(--pad) 12px;mix-blend-mode:normal}
   .cs-pin-label .d{display:none}
 }
@@ -2640,8 +2651,24 @@ function buildStudy(key){
         `<div class="cs-pin-label"><b>${esc(b.h)}</b>${b.sub ? ' · '+esc(b.sub) : ''} · ` +
         `<span class="d">keep scrolling</span><span class="m">swipe sideways</span></div>` +
         `<div class="cs-pin-stick"><div class="cs-pin-track">` +
-        b.items.map(([src,cap]) =>
-          `<figure><img loading="lazy" decoding="async" src="${VIEW(src)}" onerror="${FALLBACK(src)}" alt="${esc(cap)}"><figcaption>${esc(cap)}</figcaption></figure>`).join('') +
+        b.items.map(([src,cap], i) => {
+          /* A DEADLOCK LIVED HERE. These images had no width/height, so an
+             un-loaded reel had a track only ~95px wide. sizePins() then gave
+             the section a runway of `innerHeight + 0`, so the reel could
+             never travel sideways; and because the frames are lazy AND sit
+             off-screen horizontally, they were never scrolled into view, so
+             they never loaded, so the track never gained width. The reel was
+             simply dead on any study reached by clicking through from the
+             index. It only worked on a page you LANDED on, where the markup
+             is pre-rendered with dimensions already baked in.
+             Intrinsic dimensions break the cycle: the track has its true
+             width before a single byte of image arrives. */
+          const d = dimOf(VIEW(src)) || dimOf(src);
+          const wh = d ? ` width="${d.split('x')[0]}" height="${d.split('x')[1]}"` : '';
+          /* the first two are on screen the moment the reel is reached */
+          const pri = i < 2 ? ' loading="eager" fetchpriority="high"' : ' loading="lazy"';
+          return `<figure><img${pri} decoding="async"${wh} src="${VIEW(src)}" onerror="${FALLBACK(src)}" alt="${esc(cap)}"><figcaption>${esc(cap)}</figcaption></figure>`;
+        }).join('') +
         `</div></div></section>`;
       out += openBand();
     } else if (b.t === 'boards'){
