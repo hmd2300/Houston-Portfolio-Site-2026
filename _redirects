@@ -31,6 +31,8 @@
 /About                           /about                           301
 /Brand-Standards                 /brand-standards                 301
 /Privacy                         /privacy                         301
+/Accessibility                   /accessibility                   301
+/a11y                            /accessibility                   301
 /brand                           /brand-standards                 301
 
 # ── Section routes with no file of their own ──────────────────────────

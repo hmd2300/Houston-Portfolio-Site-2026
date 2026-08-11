@@ -741,6 +741,36 @@ html[data-theme="light"].over-dark img.lg-d{display:block}
 .cf-note.bad{color:#8E0021}
 @media (min-width:620px){ .cf-row{grid-template-columns:1fr 1fr} }
 
+/* ---------- current page, stated without colour ----------
+   WCAG 1.4.1: colour must not be the only carrier of meaning. The active nav
+   item was distinguished by colour alone, which is invisible to anyone with
+   a colour vision deficiency and to anyone in forced-colours mode. */
+[aria-current="page"]{text-decoration:underline;text-underline-offset:5px;text-decoration-thickness:2px}
+.m-item[aria-current="page"]{text-underline-offset:8px;text-decoration-thickness:3px}
+
+/* ---------- Windows High Contrast / forced colours ----------
+   In forced-colours mode the OS replaces the palette wholesale. Backgrounds
+   are dropped, so filled buttons lose their shape entirely, and the 117
+   decorative crosshairs survive as pure noise over the text. */
+@media (forced-colors: active){
+  .xfield{display:none}
+  .btn,.cta,.chip,.cf-send,.foot-cta,.preset,.hl-btn,.theme-switch,.fmenu-bar{
+    border:1px solid ButtonText;
+    forced-color-adjust:none;
+    background:ButtonFace;color:ButtonText;
+  }
+  .btn:hover,.cta:hover,.chip:hover,.cf-send:hover,.foot-cta:hover{
+    background:Highlight;color:HighlightText;
+  }
+  .cform input,.cform select,.cform textarea{
+    border:1px solid ButtonText;forced-color-adjust:none;
+    background:Field;color:FieldText;
+  }
+  /* the tile index badge and spec flag are decoration over photography */
+  .tile .idx{display:none}
+  a:focus-visible,button:focus-visible,[tabindex]:focus-visible{outline:3px solid Highlight;outline-offset:2px}
+}
+
 /* ---------- skip link + screen reader helpers ---------- */
 .sr-only{
   position:absolute;width:1px;height:1px;margin:-1px;padding:0;overflow:hidden;
@@ -1657,7 +1687,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
+  <span class="foot-legal"><a href="/accessibility/">Accessibility</a><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1709,7 +1739,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
+  <span class="foot-legal"><a href="/accessibility/">Accessibility</a><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1761,7 +1791,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
+  <span class="foot-legal"><a href="/accessibility/">Accessibility</a><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1816,7 +1846,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
+  <span class="foot-legal"><a href="/accessibility/">Accessibility</a><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1874,7 +1904,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
+  <span class="foot-legal"><a href="/accessibility/">Accessibility</a><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1932,7 +1962,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
+  <span class="foot-legal"><a href="/accessibility/">Accessibility</a><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -1990,7 +2020,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
+  <span class="foot-legal"><a href="/accessibility/">Accessibility</a><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -2131,7 +2161,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <span>&copy; <span data-year>2026</span> Houston Dragna</span>
   <span class="foot-coord">30.4515&deg; N / 91.1871&deg; W</span>
   <span>Est. 2015 &middot; Available worldwide</span>
-  <span class="foot-legal"><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
+  <span class="foot-legal"><a href="/accessibility/">Accessibility</a><a href="/privacy/">Privacy</a><a class="foot-std" href="/brand-standards/">Brand standards</a></span>
 </div>
 </footer>
 </div>
@@ -2501,12 +2531,49 @@ function fillDeferred(view){
   if (!el || el.dataset.filled) return;
   el.dataset.filled = '1';
   fillGrid(el, entry[1]());
+  labelGrid(el);
   requestAnimationFrame(layoutMosaics);
 }
-/* a pre-rendered page already has its tiles: mark it so it is not rebuilt */
+/* A pre-rendered page already has its tiles: mark it so it is not rebuilt.
+   BUT fillGrid() is the ONLY place GALLERIES is populated, and marking the
+   grid filled means fillGrid never runs. lbOpen() then does
+   `lbSet = GALLERIES.get(grid); if (!lbSet) return;` and silently does
+   nothing, so on a page you LAND on directly (/photo, /design straight from
+   a search result or a shared link) clicking any image did nothing at all.
+   Navigating from home worked, because there the grid is built by JS.
+   The gallery is recovered from the DOM instead. The original full-size path
+   is read out of each img's onerror fallback because that is exact: the
+   thumbnail rename (.jpg -> .webp) cannot be reversed by string surgery. */
+/* A grid reads to a screen reader as a run of unrelated buttons with no size
+   and no position, so there is no way to tell how far in you are or how much
+   is left. aria-setsize/aria-posinset restore that on ANY role, unlike
+   role=list which would fight the role=button already on each tile. */
+function labelGrid(el){
+  const tiles = [...el.querySelectorAll('.tile')];
+  tiles.forEach((t, i) => {
+    t.setAttribute('aria-setsize', tiles.length);
+    t.setAttribute('aria-posinset', i + 1);
+  });
+}
+function galleryFromDOM(el){
+  return [...el.querySelectorAll('.tile img')].map(img => {
+    const m = (img.getAttribute('onerror') || '').match(/this\.src='([^']+)'/);
+    return [m ? m[1] : img.getAttribute('src'), img.getAttribute('alt') || ''];
+  });
+}
 Object.entries(DEFERRED).forEach(([v, [sel]]) => {
   const el = document.querySelector(sel);
-  if (el && el.children.length) el.dataset.filled = '1';
+  if (el && el.children.length){
+    el.dataset.filled = '1';
+    GALLERIES.set(el, galleryFromDOM(el));
+  }
+});
+/* same trap for any other pre-rendered grid on the page, e.g. the home
+   highlight strips and case study galleries when their route is the one
+   that was baked */
+document.querySelectorAll('[data-grid]').forEach(el => {
+  if (el.children.length && !GALLERIES.has(el)) GALLERIES.set(el, galleryFromDOM(el));
+  if (el.children.length) labelGrid(el);
 });
 function buildFilms(){
   const host = document.getElementById('filmGrid');
