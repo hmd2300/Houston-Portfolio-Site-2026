@@ -1,0 +1,25 @@
+# macOS junk. Nineteen of these were sitting in the repo and would have
+# deployed with the site, exposing folder names for nothing.
+.DS_Store
+._*
+.Spotlight-V100
+.Trashes
+
+# Windows
+Thumbs.db
+Desktop.ini
+
+# Editors
+.vscode/
+.idea/
+*.swp
+
+# QA harnesses live beside the site but must NOT be published: Netlify serves
+# the repo root, so a committed harness is publicly fetchable. Keep them here
+# for your own use and let this file hold them back.
+qa_*.js
+node_modules/
+
+# Local build scratch
+deploy*/
+*.zip
