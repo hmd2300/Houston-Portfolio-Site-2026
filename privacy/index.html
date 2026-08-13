@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<title>Accessibility | Houston Dragna</title>
-<meta name="description" content="Accessibility statement for houstondragna.com: the standard it targets, what conforms, what does not yet, and how to report a barrier.">
-<link rel="canonical" href="https://www.houstondragna.com/accessibility/">
+<title>Privacy | Houston Dragna</title>
+<meta name="description" content="What houstondragna.com collects, what it does not, and how to reach me about it.">
+<link rel="canonical" href="https://www.houstondragna.com/privacy/">
 <meta name="robots" content="index,follow">
 <meta name="color-scheme" content="dark light">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -187,46 +187,45 @@ footer a:hover{color:var(--accent-tx)}
 </header>
 
 <main id="main" tabindex="-1">
-  <p class="eyebrow">Houston Dragna &middot; Accessibility</p>
-  <h1>Accessibility</h1>
-  <p class="stamp">Last tested <span id="tested">August 2026</span> &middot; 744 automated checks passing</p>
+  <p class="eyebrow">Houston Dragna &middot; Legal</p>
+  <h1>Privacy</h1>
+  <p class="stamp">Last updated <span id="upd">August 2026</span></p>
 
-  <p class="lede">This site aims to meet WCAG 2.2 Level AA. It is not perfect, and the parts that fall short are listed below rather than left for you to discover.</p>
+  <p class="lede">Short version: this site runs privacy-friendly analytics that cannot identify you, and it stores nothing about you unless you fill in the contact form or email me.</p>
 
-  <h2>What is in place</h2>
+  <h2>What this site collects</h2>
+  <p>houstondragna.com uses <a class="inline" href="https://plausible.io/data-policy" target="_blank" rel="noopener">Plausible Analytics</a>, which is cookieless and does not track people across sites or sessions. It records aggregate counts only:</p>
   <ul>
-    <li>A skip link, so the keyboard does not have to walk the whole photo grid to reach the content</li>
-    <li>Every interactive element reachable and operable by keyboard, with a visible focus ring</li>
-    <li>Page changes announced to screen readers, with focus moved to the new content</li>
-    <li>Alt text on every image, written by looking at the picture rather than reading the filename</li>
-    <li>Photo grids that report their size and your position in them</li>
-    <li>Text and controls that meet contrast minimums in both the dark and light themes, verified by measurement</li>
-    <li>Full function at 400% zoom with no sideways scrolling, and with your own text spacing applied</li>
-    <li>Motion that respects the reduced-motion setting, and color that is never the only signal</li>
-    <li>Support for Windows High Contrast and forced-colors modes</li>
-    <li>Touch targets that clear the 24px minimum</li>
+    <li>Which pages were viewed, and how many times</li>
+    <li>The referring site or campaign tag, where one exists</li>
+    <li>Country, browser, operating system, and device type, all at a coarse level</li>
+  </ul>
+  <p>No cookies are set for analytics, no personal profile is built, and no data is sold or shared with advertisers. Because there is no tracking cookie, there is no consent banner to click.</p>
+
+  <h2>The contact form</h2>
+  <p>If you send the form, the name, email address, project type, and message you type are delivered to me through Netlify Forms and stored in that account so I can reply. That is the whole purpose. It is not added to a mailing list, and I do not send marketing email.</p>
+  <p>Emailing me directly does the same thing by a different route: your message sits in my inbox until you ask me to delete it.</p>
+
+  <h2>What this site does not do</h2>
+  <ul>
+    <li>No advertising trackers, pixels, or third-party marketing scripts</li>
+    <li>No cross-site tracking, fingerprinting, or session recording</li>
+    <li>No accounts, no logins, no passwords stored</li>
+    <li>No payment processing, so no card details ever touch this site</li>
   </ul>
 
-  <h2>Where it still falls short</h2>
-  <p>Stated plainly, because a list of known gaps is worth more than a badge:</p>
-  <ul>
-    <li>Small monospaced labels around the edges of the layout run to 10px. They pass contrast, but they are smaller than I would set for body copy.</li>
-    <li>The hero name sits over photography, so its contrast depends on the image behind it.</li>
-    <li>The films are hosted on YouTube. Captions there are the platform's, not mine, and quality varies by video.</li>
-    <li>Testing is largely automated. It is checked by hand with a screen reader periodically, not on every change.</li>
-  </ul>
+  <h2>Where it is hosted</h2>
+  <p>The site is served by Netlify, which keeps standard server logs including IP addresses for security and abuse prevention. Fonts are served by Google Fonts, which receives the request needed to deliver the font files. Images and video thumbnails may be requested from GitHub and YouTube when you view those pages.</p>
 
-  <h2>No accessibility overlay</h2>
-  <p>This site does not use an accessibility overlay or widget. Those tools are widely opposed by the disabled people they claim to help, and they frequently make screen reader use worse rather than better. Accessibility here is built into the markup instead.</p>
+  <h2>Your choices</h2>
+  <p>You can ask me what I hold about you, ask for it to be corrected, or ask for it to be deleted, and I will do it. There is not much to hold: for most visitors the honest answer is nothing at all.</p>
+  <p>Browser do-not-track and ad blockers are respected by default here, since there is nothing to opt out of beyond aggregate counts.</p>
 
-  <h2>How it is tested</h2>
-  <p>Every build runs an automated suite covering keyboard operation, focus handling, heading structure, contrast measured against the actual background, tap target sizes, horizontal overflow at ten screen widths, and reduced motion. Automated testing catches perhaps a third of real problems, which is why the list above admits what it misses.</p>
+  <h2>Copyright</h2>
+  <p>All photography, film, design, and writing on this site is my own work or work I contributed to as credited, and remains the property of its respective owners. Client work appears with permission for portfolio purposes. Please do not reuse it without asking.</p>
 
-  <h2>Found a barrier?</h2>
-  <p>Tell me and I will fix it. Email <a class="inline" href="mailto:houston.dragna+site@gmail.com?subject=Accessibility%20on%20houstondragna.com">houston.dragna+site@gmail.com</a> with the page and what got in your way. You will get a person, not a ticket queue, and I would rather hear about it than not.</p>
-
-  <h2>In client work</h2>
-  <p>The same standards go into what I build for clients: contrast-tested palettes, alt text written by a human, keyboard-tested builds. If accessibility matters on your project, say so early and it costs almost nothing. Retrofitted later, it costs a great deal.</p>
+  <h2>Contact</h2>
+  <p>Questions about any of this, or about your data specifically, go to <a class="inline" href="mailto:houston.dragna+site@gmail.com?subject=Privacy%20question">houston.dragna+site@gmail.com</a> and I will answer personally.</p>
 </main>
 
 <footer>

@@ -16,13 +16,17 @@
   <link rel="apple-touch-icon" href="/ASSETS/Social%20Share/Houston%20Dragna%202026%20Favicon%20180.png">
 <script>
   /* Resolve the theme before the first paint. Doing this in the main script
-     would flash the wrong palette for a frame. A stored choice wins; failing
-     that the operating system decides. */
+     would flash the wrong palette for a frame.
+     DARK IS THE BRAND, so dark is the default on every device regardless of
+     the operating system setting: a visitor on a light-mode phone was getting
+     a different first impression than one on a dark-mode laptop. The system
+     preference is deliberately NOT consulted here. A visitor who picks light
+     with the toggle still gets light on every later visit, because their
+     stored choice is the only thing that can override the default. */
   (function(){
     try {
-      var saved = localStorage.getItem('hd-theme');
-      var sys = matchMedia('(prefers-color-scheme: light)').matches;
-      if (saved === 'light' || (!saved && sys)) document.documentElement.setAttribute('data-theme','light');
+      if (localStorage.getItem('hd-theme') === 'light')
+        document.documentElement.setAttribute('data-theme','light');
     } catch(e){}
   })();
 </script>
