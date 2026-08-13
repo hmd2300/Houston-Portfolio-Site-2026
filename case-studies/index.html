@@ -320,7 +320,7 @@ body.ready .hero-frame{opacity:1}
      landscape viewport loses the face to the crop, and the closed hero frame
      shows only the middle 62% so it disappears entirely until fully open */
   background-size:cover;background-position:center var(--fy,50%);
-  opacity:0;transition:opacity 1.4s ease;
+  opacity:0;transition:opacity 1.05s ease;
 }
 .slide.active{opacity:1}
 /* hero copy: one type size, left justified, pinned bottom left */
@@ -3413,7 +3413,10 @@ setInterval(() => {
   slides[slideIdx].classList.remove('active');
   slideIdx = (slideIdx + 1) % slides.length;
   slides[slideIdx].classList.add('active');
-}, 4600);
+  /* 3450ms, down from 4600. The crossfade below was scaled by the same 25%,
+     because a 1.4s fade inside a 3.45s dwell would leave the hero mid-
+     transition 40% of the time and the images would never settle. */
+}, 3450);
 
 /* ---------- YouTube: muted, looping, autoplay, lazy ---------- */
 const ytIO = new IntersectionObserver(es => es.forEach(en => {
