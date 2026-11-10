@@ -758,7 +758,7 @@ html[data-theme="light"].over-dark img.lg-d{display:block}
    decorative crosshairs survive as pure noise over the text. */
 @media (forced-colors: active){
   .xfield{display:none}
-  .btn,.cta,.chip,.cf-send,.foot-cta,.preset,.hl-btn,.theme-switch,.fmenu-bar{
+  .btn,.cta,.chip,.cf-send,.foot-cta,.preset,.hl-btn,.theme-switch,.fmenu-bar,.social-btn{
     border:1px solid ButtonText;
     forced-color-adjust:none;
     background:ButtonFace;color:ButtonText;
@@ -792,6 +792,31 @@ html[data-theme="light"].over-dark img.lg-d{display:block}
 .skip:focus{top:12px}
 /* the skip target must not draw a ring when it is focused programmatically */
 main:focus{outline:none}
+
+/* ---------- social icons ----------
+   One sprite per page, referenced with <use>, so the glyphs take
+   currentColor and the path data ships once. 44px targets throughout. */
+.sprite{position:absolute;width:0;height:0;overflow:hidden}
+.social-links{display:inline-flex;gap:10px;align-items:center;flex:0 0 auto}
+.social-btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:44px;height:44px;border-radius:50%;flex:0 0 auto;
+  color:var(--ink);background:transparent;border:1px solid var(--line);
+  text-decoration:none;
+  transition:background-color .25s ease,border-color .25s ease,color .25s ease,transform .3s cubic-bezier(.2,.8,.2,1);
+}
+.social-btn svg{width:18px;height:18px;display:block}
+.social-btn:hover,.social-btn:focus-visible{background:var(--fuch);border-color:var(--fuch);color:var(--snow);transform:translateY(-2px)}
+.social-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
+/* In the menu the two icons flank the theme switch on one centre line.
+   They are split into a left and a right half so DOM order matches the
+   visual order: Instagram, switch, LinkedIn. */
+.m-social{position:absolute;bottom:17px}
+.m-social-l{right:calc(50% + 53px)}
+.m-social-r{left:calc(50% + 53px)}
+.m-social .social-btn{color:var(--snow);border-color:rgba(247,249,250,.38)}
+.m-social .social-btn:focus-visible{outline-color:var(--snow)}
+.foot-act{display:flex;flex-wrap:wrap;align-items:center;gap:12px}
 
 /* ---------- site footer ----------
    Mobile first: one column, then the link columns go 2-up, then 4-up, then
@@ -975,6 +1000,80 @@ footer:hover .foot-mark{opacity:1}
   border-top:1px solid var(--line);padding-top:16px;
 }
 .sub-head h2{font-family:var(--font-display);font-weight:900;font-stretch:118%;text-transform:uppercase;font-size:clamp(22px,3vw,34px);letter-spacing:-.015em}
+
+/* ---------- series stack ----------
+   A whole playlist in the footprint of one film card. The deck is four real
+   thumbnails from the series, dealt out behind the front card, so "this is
+   many videos" reads before the label does. The offsets are transforms and
+   take no layout, so the margin on the link reserves the room they paint
+   into. That is what keeps the deck inside the page at 320px. */
+.series{display:grid;gap:clamp(18px,3vw,30px);align-items:center}
+@media (min-width:760px){
+  .series{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media (min-width:1240px){
+  /* same three columns as the film grid above, so the deck lines up with it */
+  .series{grid-template-columns:repeat(3,minmax(0,1fr))}
+  .series-body{grid-column:span 2}
+}
+.series-stack{
+  --dx:12px;--dy:9px;
+  position:relative;z-index:63;display:block;aspect-ratio:16/9;
+  margin:calc(var(--dy) * 3) calc(var(--dx) * 3) 0 0;
+  text-decoration:none;cursor:pointer;
+}
+.series-stack .card{
+  position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
+  border-radius:6px;background:var(--bg-2);
+  /* a ring in the page colour cuts each card out from the one behind it */
+  box-shadow:0 0 0 3px var(--bg);
+  transform-origin:0 100%;
+  transition:transform .55s var(--ease-out),filter .4s ease;
+}
+.series-stack .c2{transform:translate(var(--dx),calc(var(--dy) * -1));filter:brightness(.74)}
+.series-stack .c3{transform:translate(calc(var(--dx) * 2),calc(var(--dy) * -2));filter:brightness(.54)}
+.series-stack .c4{transform:translate(calc(var(--dx) * 3),calc(var(--dy) * -3));filter:brightness(.36)}
+/* .reveal staggers every nth-child; the deck sets its own timing instead */
+.series.reveal .series-stack .card{transition-delay:0s}
+.series.reveal.in .series-stack .c2{transition-delay:.05s}
+.series.reveal.in .series-stack .c3{transition-delay:.1s}
+.series.reveal.in .series-stack .c4{transition-delay:.15s}
+/* before it scrolls in the deck is squared up, then it deals itself out */
+.series.reveal:not(.in) .series-stack .card{transform:none}
+@media (hover:hover){
+  .series-stack:hover .card,.series-stack:focus-visible .card{filter:none}
+  .series-stack:hover .c2,.series-stack:focus-visible .c2{transform:translate(calc(var(--dx) * 1.5),calc(var(--dy) * -1.2)) rotate(1.5deg)}
+  .series-stack:hover .c3,.series-stack:focus-visible .c3{transform:translate(calc(var(--dx) * 2.6),calc(var(--dy) * -2.2)) rotate(3deg)}
+  .series-stack:hover .c4,.series-stack:focus-visible .c4{transform:translate(calc(var(--dx) * 3),calc(var(--dy) * -3)) rotate(4.5deg)}
+}
+.series-stack::after{
+  content:"";position:absolute;inset:0;z-index:2;border:2px solid transparent;border-radius:6px;
+  transition:border-color .25s ease;pointer-events:none;
+}
+.series-stack:hover::after,.series-stack:focus-visible::after{border-color:var(--sec,var(--blue))}
+.series-stack:focus-visible{outline:2px solid var(--ink);outline-offset:4px;border-radius:6px}
+.series-stack .flag{
+  position:absolute;top:0;left:0;z-index:3;padding:6px 10px;border-radius:6px 0 0 0;
+  display:inline-flex;align-items:center;gap:7px;
+  background:var(--sec,var(--blue));color:var(--sec-ink,var(--snow));
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;font-weight:700;
+}
+.series-stack .flag svg{width:13px;height:13px;flex:0 0 auto}
+.series-body{display:flex;flex-direction:column;gap:12px;align-items:flex-start}
+.series-kicker{color:var(--ink-dim);font-size:10px;letter-spacing:.14em}
+.series-body h3{
+  font-family:var(--font-display);font-weight:900;font-stretch:110%;text-transform:uppercase;
+  font-size:clamp(20px,2.4vw,27px);line-height:.95;letter-spacing:-.015em;
+}
+.series-body h3 a{color:var(--chart-tx);text-decoration:none;display:inline-block;transition:color .25s ease}
+.series-body h3 a:hover,.series-body h3 a:focus-visible{color:var(--blue-hv)}
+.series-body p:not(.mono){color:var(--ink-dim);font-size:15px;line-height:1.55;max-width:62ch}
+.series-body .roles{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+.series-body .role{
+  padding:5px 10px;border:1px solid var(--line);border-radius:30px;
+  font-family:var(--font-mono);font-size:10px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--ink-dim);
+}
 
 /* ---------- case studies ---------- */
 .cs-grid{display:grid;gap:clamp(18px,3vw,30px);grid-template-columns:1fr}
@@ -1386,10 +1485,13 @@ footer:hover .foot-mark{opacity:1}
      gap is zero and the foot padding is trimmed by the same amount. The
      visual rhythm is unchanged; only the hit area grew. */
   gap:0;
-  padding-bottom:40px;
-  opacity:0;pointer-events:none;transition:opacity .2s ease;
+  /* 52 not 40: the foot row is 44px icons now, not just the 34px switch */
+  padding-bottom:52px;
+  /* visibility, not just opacity: a closed menu must not hold keyboard focus */
+  opacity:0;pointer-events:none;visibility:hidden;
+  transition:opacity .2s ease,visibility 0s linear .2s;
 }
-.fmenu.open .fmenu-items{opacity:1;pointer-events:auto;transition-delay:.1s}
+.fmenu.open .fmenu-items{opacity:1;pointer-events:auto;visibility:visible;transition:opacity .2s ease .1s,visibility 0s linear 0s}
 .m-item{
   font-family:var(--font-display);font-weight:900;font-stretch:105%;
   font-size:23px;text-transform:uppercase;letter-spacing:-.01em;
@@ -1436,6 +1538,15 @@ footer:hover .foot-mark{opacity:1}
 }
 
 /* ---------- reduced motion ---------- */
+/* Same failure as .sec-title above, on the three headline styles it did not
+   cover: at 320px "STUDIES" ran 316px into a 284px box, "STUDIOLIVE" 341px,
+   and "TRANSACTIONAL" 318px. Floors come down under 375px so the longest
+   word fits; break-word is the backstop. */
+@media (max-width:374px){
+  .page-title{font-size:clamp(46px,15.5vw,58px);overflow-wrap:break-word}
+  .cs-title{font-size:clamp(34px,11.5vw,46px);overflow-wrap:break-word}
+  .cs-h{font-size:clamp(25px,8vw,30px);overflow-wrap:break-word}
+}
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.001s !important;transition-duration:.001s !important}
   .faq-item .faq-a{transition:none}
@@ -1472,7 +1583,7 @@ html[data-theme="light"] img.lg-d{display:none}
   .sec-head{margin-bottom:26px}
 }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.houstondragna.com/#website","url":"https://www.houstondragna.com","name":"Houston Dragna","publisher":{"@id":"https://www.houstondragna.com/#houston"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://www.houstondragna.com/#page","url":"https://www.houstondragna.com/","name":"HOUSTON DRAGNA | Design, Branding, Photo, Video","description":"Brand designer, photographer, and video director. Campaign key art, brand systems, and global launch creative for Fender and PreSonus. Available worldwide.","isPartOf":{"@id":"https://www.houstondragna.com/#website"},"about":{"@id":"https://www.houstondragna.com/#houston"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://www.houstondragna.com/ASSETS/Social%20Share/Houston%20Dragna%202026%20Portfolio%20Social%20Share%20Image.jpg"},"inLanguage":"en-US"},{"@type":"Person","@id":"https://www.houstondragna.com/#houston","name":"Houston Dragna","url":"https://www.houstondragna.com","image":"https://www.houstondragna.com/ASSETS/Social%20Share/Houston%20Dragna%202026%20Portfolio%20Social%20Share%20Image.jpg","jobTitle":"Creative Specialist, Photographer and Video Director","description":"Brand designer, photographer, and video director specialising in brand systems, campaign key art, and global product launch creative for music and pro audio.","address":{"@type":"PostalAddress","addressLocality":"Baton Rouge","addressRegion":"LA","addressCountry":"US"},"knowsAbout":["Brand design","Art direction","Campaign key art","Product photography","Video direction","Creative direction","Pro audio marketing","Design systems"],"sameAs":["https://instagram.com/thehoustondragna"],"areaServed":{"@type":"Place","name":"Worldwide"},"availableLanguage":"en"},{"@type":"FAQPage","@id":"https://www.houstondragna.com/#faq","mainEntity":[{"@type":"Question","name":"What do you do?","acceptedAnswer":{"@type":"Answer","text":"I work across brand design, photography, and video direction. In practice that means brand identity and design systems, campaign key art, product and lifestyle photography, launch films, and the packaging around them: social, retail, and e-commerce. On the largest projects I have run all of it as one pipeline rather than handing pieces to different teams."}},{"@type":"Question","name":"Where do you work?","acceptedAnswer":{"@type":"Answer","text":"Anywhere the work is. I am available for global travel and regularly shoot on location, having produced campaigns across multiple cities for international launches. Studio, soundstage, LED volume wall, live venue, or client site. I am based in the United States and travel for the majority of projects."}},{"@type":"Question","name":"Do you take on freelance and contract work?","acceptedAnswer":{"@type":"Answer","text":"Yes. Alongside in-house work I run an independent creative practice, taking on project-based engagements and ongoing retainers. That covers a single shoot or deliverable through to a full campaign built and delivered end to end."}},{"@type":"Question","name":"What kinds of clients do you work with?","acceptedAnswer":{"@type":"Answer","text":"Most of my recent work has been with music gear and pro audio brands, where I have led global product launches end to end. The same approach carries into DTC, SaaS and software, and CPG: categories where a product has to be explained and made desirable at the same time. If it needs a coherent visual idea carried across film, photography, and design, it is in scope."}},{"@type":"Question","name":"Do you handle a project end to end, or one piece of it?","acceptedAnswer":{"@type":"Answer","text":"Either. I have pitched a campaign, storyboarded it, directed the shoot, shot the stills, mixed the audio, and designed the collateral. I have also been brought in for a single lane, most often photography or direction. Whichever way a project is structured, I am comfortable owning one piece or the whole thing."}},{"@type":"Question","name":"What is your turnaround?","acceptedAnswer":{"@type":"Answer","text":"It depends on scope, but I plan backwards from your launch date and agree on milestones before anything starts. Smaller projects usually move in days rather than weeks. For a multi-phase campaign, the schedule is built into the production plan up front so nothing lands late in the rollout."}},{"@type":"Question","name":"How do we start?","acceptedAnswer":{"@type":"Answer","text":"Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach."}}]}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.houstondragna.com/#website","url":"https://www.houstondragna.com","name":"Houston Dragna","publisher":{"@id":"https://www.houstondragna.com/#houston"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://www.houstondragna.com/#page","url":"https://www.houstondragna.com/","name":"HOUSTON DRAGNA | Design, Branding, Photo, Video","description":"Brand designer, photographer, and video director. Campaign key art, brand systems, and global launch creative for Fender and PreSonus. Available worldwide.","isPartOf":{"@id":"https://www.houstondragna.com/#website"},"about":{"@id":"https://www.houstondragna.com/#houston"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://www.houstondragna.com/ASSETS/Social%20Share/Houston%20Dragna%202026%20Portfolio%20Social%20Share%20Image.jpg"},"inLanguage":"en-US"},{"@type":"Person","@id":"https://www.houstondragna.com/#houston","name":"Houston Dragna","url":"https://www.houstondragna.com","image":"https://www.houstondragna.com/ASSETS/Social%20Share/Houston%20Dragna%202026%20Portfolio%20Social%20Share%20Image.jpg","jobTitle":"Creative Specialist, Photographer and Video Director","description":"Brand designer, photographer, and video director specialising in brand systems, campaign key art, and global product launch creative for music and pro audio.","address":{"@type":"PostalAddress","addressLocality":"Baton Rouge","addressRegion":"LA","addressCountry":"US"},"knowsAbout":["Brand design","Art direction","Campaign key art","Product photography","Video direction","Creative direction","Pro audio marketing","Design systems"],"sameAs":["https://instagram.com/thehoustondragna","https://www.linkedin.com/in/houstondragna"],"areaServed":{"@type":"Place","name":"Worldwide"},"availableLanguage":"en"},{"@type":"FAQPage","@id":"https://www.houstondragna.com/#faq","mainEntity":[{"@type":"Question","name":"What do you do?","acceptedAnswer":{"@type":"Answer","text":"I work across brand design, photography, and video direction. In practice that means brand identity and design systems, campaign key art, product and lifestyle photography, launch films, and the packaging around them: social, retail, and e-commerce. On the largest projects I have run all of it as one pipeline rather than handing pieces to different teams."}},{"@type":"Question","name":"Where do you work?","acceptedAnswer":{"@type":"Answer","text":"Anywhere the work is. I am available for global travel and regularly shoot on location, having produced campaigns across multiple cities for international launches. Studio, soundstage, LED volume wall, live venue, or client site. I am based in the United States and travel for the majority of projects."}},{"@type":"Question","name":"Do you take on freelance and contract work?","acceptedAnswer":{"@type":"Answer","text":"Yes. Alongside in-house work I run an independent creative practice, taking on project-based engagements and ongoing retainers. That covers a single shoot or deliverable through to a full campaign built and delivered end to end."}},{"@type":"Question","name":"What kinds of clients do you work with?","acceptedAnswer":{"@type":"Answer","text":"Most of my recent work has been with music gear and pro audio brands, where I have led global product launches end to end. The same approach carries into DTC, SaaS and software, and CPG: categories where a product has to be explained and made desirable at the same time. If it needs a coherent visual idea carried across film, photography, and design, it is in scope."}},{"@type":"Question","name":"Do you handle a project end to end, or one piece of it?","acceptedAnswer":{"@type":"Answer","text":"Either. I have pitched a campaign, storyboarded it, directed the shoot, shot the stills, mixed the audio, and designed the collateral. I have also been brought in for a single lane, most often photography or direction. Whichever way a project is structured, I am comfortable owning one piece or the whole thing."}},{"@type":"Question","name":"What is your turnaround?","acceptedAnswer":{"@type":"Answer","text":"It depends on scope, but I plan backwards from your launch date and agree on milestones before anything starts. Smaller projects usually move in days rather than weeks. For a multi-phase campaign, the schedule is built into the production plan up front so nothing lands late in the rollout."}},{"@type":"Question","name":"How do we start?","acceptedAnswer":{"@type":"Answer","text":"Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach."}}]}]}</script>
 </head>
 <body class="locked" id="top">
 
@@ -1480,6 +1591,7 @@ html[data-theme="light"] img.lg-d{display:none}
      every tile is focusable. Without this, a keyboard user has no way past
      the grids. WCAG 2.4.1. -->
 <a class="skip" href="#main">Skip to content</a>
+<svg class="sprite" aria-hidden="true" focusable="false" width="0" height="0"><symbol id="i-ig" viewBox="0 0 48 48" fill="currentColor"><path d="M24 4.32187C30.4125 4.32187 31.1719 4.35 33.6938 4.4625C36.0375 4.56562 37.3031 4.95938 38.1469 5.2875C39.2625 5.71875 40.0688 6.24375 40.9031 7.07812C41.7469 7.92188 42.2625 8.71875 42.6938 9.83438C43.0219 10.6781 43.4156 11.9531 43.5188 14.2875C43.6313 16.8187 43.6594 17.5781 43.6594 23.9813C43.6594 30.3938 43.6313 31.1531 43.5188 33.675C43.4156 36.0188 43.0219 37.2844 42.6938 38.1281C42.2625 39.2438 41.7375 40.05 40.9031 40.8844C40.0594 41.7281 39.2625 42.2438 38.1469 42.675C37.3031 43.0031 36.0281 43.3969 33.6938 43.5C31.1625 43.6125 30.4031 43.6406 24 43.6406C17.5875 43.6406 16.8281 43.6125 14.3063 43.5C11.9625 43.3969 10.6969 43.0031 9.85313 42.675C8.7375 42.2438 7.93125 41.7188 7.09688 40.8844C6.25313 40.0406 5.7375 39.2438 5.30625 38.1281C4.97813 37.2844 4.58438 36.0094 4.48125 33.675C4.36875 31.1438 4.34063 30.3844 4.34063 23.9813C4.34063 17.5688 4.36875 16.8094 4.48125 14.2875C4.58438 11.9437 4.97813 10.6781 5.30625 9.83438C5.7375 8.71875 6.2625 7.9125 7.09688 7.07812C7.94063 6.23438 8.7375 5.71875 9.85313 5.2875C10.6969 4.95938 11.9719 4.56562 14.3063 4.4625C16.8281 4.35 17.5875 4.32187 24 4.32187ZM24 0C17.4844 0 16.6688 0.028125 14.1094 0.140625C11.5594 0.253125 9.80625 0.665625 8.2875 1.25625C6.70312 1.875 5.3625 2.69062 4.03125 4.03125C2.69063 5.3625 1.875 6.70313 1.25625 8.27813C0.665625 9.80625 0.253125 11.55 0.140625 14.1C0.028125 16.6687 0 17.4844 0 24C0 30.5156 0.028125 31.3312 0.140625 33.8906C0.253125 36.4406 0.665625 38.1938 1.25625 39.7125C1.875 41.2969 2.69063 42.6375 4.03125 43.9688C5.3625 45.3 6.70313 46.125 8.27813 46.7344C9.80625 47.325 11.55 47.7375 14.1 47.85C16.6594 47.9625 17.475 47.9906 23.9906 47.9906C30.5063 47.9906 31.3219 47.9625 33.8813 47.85C36.4313 47.7375 38.1844 47.325 39.7031 46.7344C41.2781 46.125 42.6188 45.3 43.95 43.9688C45.2812 42.6375 46.1063 41.2969 46.7156 39.7219C47.3063 38.1938 47.7188 36.45 47.8313 33.9C47.9438 31.3406 47.9719 30.525 47.9719 24.0094C47.9719 17.4938 47.9438 16.6781 47.8313 14.1188C47.7188 11.5688 47.3063 9.81563 46.7156 8.29688C46.125 6.70312 45.3094 5.3625 43.9688 4.03125C42.6375 2.7 41.2969 1.875 39.7219 1.26562C38.1938 0.675 36.45 0.2625 33.9 0.15C31.3313 0.028125 30.5156 0 24 0Z"/><path d="M24 11.6719C17.1938 11.6719 11.6719 17.1938 11.6719 24C11.6719 30.8062 17.1938 36.3281 24 36.3281C30.8062 36.3281 36.3281 30.8062 36.3281 24C36.3281 17.1938 30.8062 11.6719 24 11.6719ZM24 31.9969C19.5844 31.9969 16.0031 28.4156 16.0031 24C16.0031 19.5844 19.5844 16.0031 24 16.0031C28.4156 16.0031 31.9969 19.5844 31.9969 24C31.9969 28.4156 28.4156 31.9969 24 31.9969Z"/><path d="M39.6937 11.1843C39.6937 12.778 38.4 14.0624 36.8156 14.0624C35.2219 14.0624 33.9375 12.7687 33.9375 11.1843C33.9375 9.59053 35.2313 8.30615 36.8156 8.30615C38.4 8.30615 39.6937 9.5999 39.6937 11.1843Z"/></symbol><symbol id="i-li" viewBox="0 0 48 48" fill="currentColor"><path d="M44.4469 0H3.54375C1.58437 0 0 1.54688 0 3.45938V44.5312C0 46.4437 1.58437 48 3.54375 48H44.4469C46.4062 48 48 46.4438 48 44.5406V3.45938C48 1.54688 46.4062 0 44.4469 0ZM14.2406 40.9031H7.11563V17.9906H14.2406V40.9031ZM10.6781 14.8688C8.39062 14.8688 6.54375 13.0219 6.54375 10.7437C6.54375 8.46562 8.39062 6.61875 10.6781 6.61875C12.9563 6.61875 14.8031 8.46562 14.8031 10.7437C14.8031 13.0125 12.9563 14.8688 10.6781 14.8688ZM40.9031 40.9031H33.7875V29.7656C33.7875 27.1125 33.7406 23.6906 30.0844 23.6906C26.3812 23.6906 25.8187 26.5875 25.8187 29.5781V40.9031H18.7125V17.9906H25.5375V21.1219H25.6312C26.5781 19.3219 28.9031 17.4188 32.3625 17.4188C39.5719 17.4188 40.9031 22.1625 40.9031 28.3313V40.9031Z"/></symbol></svg>
 <!-- The view swap is client side, so nothing tells assistive tech the page
      changed. announceRoute() writes the new page name here. -->
 <p class="sr-only" id="routeSay" role="status" aria-live="polite"></p>
@@ -1668,7 +1780,10 @@ html[data-theme="light"] img.lg-d{display:none}
   <div class="foot-brand">
     <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
     <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
-    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+    <div class="foot-act">
+      <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+      <span class="social-links"><a class="social-btn" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)" data-goal="Instagram Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-ig"/></svg></a><a class="social-btn" href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)" data-goal="LinkedIn Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-li"/></svg></a></span>
+    </div>
   </div>
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
@@ -1694,6 +1809,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <p class="foot-h">Elsewhere</p>
       <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
       <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">LinkedIn</a>
       <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
     </div>
   </nav>
@@ -1720,7 +1836,10 @@ html[data-theme="light"] img.lg-d{display:none}
   <div class="foot-brand">
     <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
     <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
-    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+    <div class="foot-act">
+      <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+      <span class="social-links"><a class="social-btn" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)" data-goal="Instagram Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-ig"/></svg></a><a class="social-btn" href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)" data-goal="LinkedIn Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-li"/></svg></a></span>
+    </div>
   </div>
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
@@ -1746,6 +1865,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <p class="foot-h">Elsewhere</p>
       <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
       <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">LinkedIn</a>
       <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
     </div>
   </nav>
@@ -1772,7 +1892,10 @@ html[data-theme="light"] img.lg-d{display:none}
   <div class="foot-brand">
     <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
     <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
-    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+    <div class="foot-act">
+      <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+      <span class="social-links"><a class="social-btn" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)" data-goal="Instagram Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-ig"/></svg></a><a class="social-btn" href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)" data-goal="LinkedIn Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-li"/></svg></a></span>
+    </div>
   </div>
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
@@ -1798,6 +1921,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <p class="foot-h">Elsewhere</p>
       <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
       <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">LinkedIn</a>
       <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
     </div>
   </nav>
@@ -1827,7 +1951,10 @@ html[data-theme="light"] img.lg-d{display:none}
   <div class="foot-brand">
     <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
     <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
-    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+    <div class="foot-act">
+      <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+      <span class="social-links"><a class="social-btn" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)" data-goal="Instagram Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-ig"/></svg></a><a class="social-btn" href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)" data-goal="LinkedIn Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-li"/></svg></a></span>
+    </div>
   </div>
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
@@ -1853,6 +1980,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <p class="foot-h">Elsewhere</p>
       <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
       <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">LinkedIn</a>
       <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
     </div>
   </nav>
@@ -1885,7 +2013,10 @@ html[data-theme="light"] img.lg-d{display:none}
   <div class="foot-brand">
     <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
     <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
-    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+    <div class="foot-act">
+      <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+      <span class="social-links"><a class="social-btn" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)" data-goal="Instagram Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-ig"/></svg></a><a class="social-btn" href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)" data-goal="LinkedIn Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-li"/></svg></a></span>
+    </div>
   </div>
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
@@ -1911,6 +2042,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <p class="foot-h">Elsewhere</p>
       <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
       <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">LinkedIn</a>
       <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
     </div>
   </nav>
@@ -1943,7 +2075,10 @@ html[data-theme="light"] img.lg-d{display:none}
   <div class="foot-brand">
     <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
     <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
-    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+    <div class="foot-act">
+      <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+      <span class="social-links"><a class="social-btn" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)" data-goal="Instagram Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-ig"/></svg></a><a class="social-btn" href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)" data-goal="LinkedIn Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-li"/></svg></a></span>
+    </div>
   </div>
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
@@ -1969,6 +2104,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <p class="foot-h">Elsewhere</p>
       <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
       <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">LinkedIn</a>
       <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
     </div>
   </nav>
@@ -2001,7 +2137,10 @@ html[data-theme="light"] img.lg-d{display:none}
   <div class="foot-brand">
     <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
     <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
-    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+    <div class="foot-act">
+      <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+      <span class="social-links"><a class="social-btn" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)" data-goal="Instagram Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-ig"/></svg></a><a class="social-btn" href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)" data-goal="LinkedIn Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-li"/></svg></a></span>
+    </div>
   </div>
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
@@ -2027,6 +2166,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <p class="foot-h">Elsewhere</p>
       <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
       <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">LinkedIn</a>
       <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
     </div>
   </nav>
@@ -2064,13 +2204,34 @@ html[data-theme="light"] img.lg-d{display:none}
       <h2>Selected films</h2><span class="mono" style="color:var(--ink-dim)">Title / role / scope</span>
     </div>
     <div class="vgrid" id="filmGrid"></div>
+    <div class="sub-head reveal">
+      <h2>Tutorial series</h2><span class="mono" style="color:var(--ink-dim)">Series / role / scope</span>
+    </div>
+    <article class="series reveal" id="seriesSnapshots">
+      <a class="series-stack" href="https://www.youtube.com/playlist?list=PLcJ31ytB086Y" target="_blank" rel="noopener" aria-label="Watch the StudioLive Snapshots playlist on YouTube, 84 videos (opens in a new tab)" data-goal="Playlist Click" data-goal-source="Video">
+        <img class="card c4" loading="lazy" decoding="async" src="https://i.ytimg.com/vi/eqdTBjNP7S4/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/eqdTBjNP7S4/hqdefault.jpg'" alt="" width="1280" height="720">
+        <img class="card c3" loading="lazy" decoding="async" src="https://i.ytimg.com/vi/EASpZvDUxHc/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/EASpZvDUxHc/hqdefault.jpg'" alt="" width="1280" height="720">
+        <img class="card c2" loading="lazy" decoding="async" src="https://i.ytimg.com/vi/ZUPcwWN-h10/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/ZUPcwWN-h10/hqdefault.jpg'" alt="" width="1280" height="720">
+        <img class="card c1" loading="lazy" decoding="async" src="https://i.ytimg.com/vi/8cQmcT-5qMg/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/8cQmcT-5qMg/hqdefault.jpg'" alt="" width="1280" height="720">
+        <span class="flag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="square" aria-hidden="true"><path d="M3 6h13M3 12h13M3 18h8"/><path d="M17 14.5v6l5-3z" fill="currentColor" stroke="none"/></svg>84 videos</span>
+      </a>
+      <div class="series-body">
+        <p class="mono series-kicker">PreSonus <span aria-hidden="true">&middot;</span> Playlist of 84</p>
+        <h3><a href="https://www.youtube.com/playlist?list=PLcJ31ytB086Y" target="_blank" rel="noopener" data-goal="Playlist Click" data-goal-source="Video">StudioLive Snapshots</a></h3>
+        <p>Bite-size tutorials covering the features and workflows of the StudioLive mixer line. Lit, produced, and camera-operated across nearly the entire series, with script support along the way. Thumbnails and series key art designed in house.</p>
+        <div class="roles"><span class="role">Producer</span><span class="role">Lighting Designer</span><span class="role">Cam Op</span><span class="role">Thumbnail Design</span><span class="role">Key Art</span></div>
+      </div>
+    </article>
   </section>
   <footer class="mono site-foot">
 <div class="foot-top">
   <div class="foot-brand">
     <span class="foot-id"><img class="lg-d foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Filled%20-%20NO%20BG%20-%20Full%20Color.svg" alt="" width="92" height="69" loading="lazy" decoding="async"><img class="lg-l foot-mark" src="/ASSETS/Logos/Houston%20Dragna%202026%20Logo/SVG/Houston%20Dragna%202026%20Logo%20-%20Box%20-%20Knockout%20-%20Off%20Black.svg" alt="" width="96" height="73" loading="lazy" decoding="async">Houston Dragna</span>
     <p class="foot-line">Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.</p>
-    <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+    <div class="foot-act">
+      <a class="foot-cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Start a project</a>
+      <span class="social-links"><a class="social-btn" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)" data-goal="Instagram Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-ig"/></svg></a><a class="social-btn" href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)" data-goal="LinkedIn Click" data-goal-source="Footer"><svg aria-hidden="true" focusable="false"><use href="#i-li"/></svg></a></span>
+    </div>
   </div>
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
@@ -2096,6 +2257,7 @@ html[data-theme="light"] img.lg-d{display:none}
       <p class="foot-h">Elsewhere</p>
       <a href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="Footer">Email</a>
       <a href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" data-goal="Instagram Click">Instagram</a>
+      <a href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">LinkedIn</a>
       <a href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">Latest film</a>
     </div>
   </nav>
@@ -2139,11 +2301,13 @@ html[data-theme="light"] img.lg-d{display:none}
       <a class="m-item" style="--i:5" href="#about" data-scroll>About</a>
       <a class="m-item" style="--i:6" href="#contact" data-scroll>Contact</a>
       <a class="m-item" style="--i:7" href="#faq" data-scroll>FAQ</a>
+      <span class="social-links m-social m-social-l"><a class="social-btn" href="https://instagram.com/thehoustondragna" target="_blank" rel="noopener" aria-label="Instagram (opens in a new tab)" data-goal="Instagram Click" data-goal-source="Menu"><svg aria-hidden="true" focusable="false"><use href="#i-ig"/></svg></a></span>
       <button class="theme-switch" id="themeSwitch" type="button" role="switch" aria-checked="false" aria-label="Switch to light mode">
         <span class="theme-knob" aria-hidden="true"></span>
         <span class="theme-ico moon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.5 14.2A8.6 8.6 0 1 1 9.8 3.5a6.9 6.9 0 0 0 10.7 10.7Z"/></svg></span>
         <span class="theme-ico sun"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="4.2"/><path d="M12 2v2.4M12 19.6V22M4.2 4.2l1.7 1.7M18.1 18.1l1.7 1.7M2 12h2.4M19.6 12H22M4.2 19.8l1.7-1.7M18.1 5.9l1.7-1.7"/></svg></span>
       </button>
+      <span class="social-links m-social m-social-r"><a class="social-btn" href="https://www.linkedin.com/in/houstondragna" target="_blank" rel="noopener" aria-label="LinkedIn (opens in a new tab)" data-goal="LinkedIn Click" data-goal-source="Menu"><svg aria-hidden="true" focusable="false"><use href="#i-li"/></svg></a></span>
     </div>
   </div>
 </nav>
@@ -3712,7 +3876,10 @@ document.querySelectorAll('.m-item').forEach(item => {
     stk.append(a,b); ch.append(stk); item.append(ch);
   });
 });
-function setMenu(open){ fmenu.classList.toggle('open', open); fbar.setAttribute('aria-expanded', String(open)); }
+function setMenu(open){
+  if (!open && fmenu.classList.contains('open') && document.getElementById('fmenuItems').contains(document.activeElement)) fbar.focus();
+  fmenu.classList.toggle('open', open); fbar.setAttribute('aria-expanded', String(open));
+}
 function closeMenu(){ setMenu(false); }
 fbox.addEventListener('click', () => { if (!fmenu.classList.contains('open')) setMenu(true); });
 fbar.addEventListener('click', e => { e.stopPropagation(); setMenu(!fmenu.classList.contains('open')); });
