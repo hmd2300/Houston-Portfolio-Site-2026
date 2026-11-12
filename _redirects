@@ -19,21 +19,21 @@
 # routinely arrive title-cased, and one of those is how a Fender contact
 # landed on the wrong page once. Send them to the canonical lowercase URL
 # with a 301 so search engines only ever see the one address.
-/Design                          /design                          301
-/Photo                           /photo                           301
-/Video                           /video                           301
-/Case-Studies                    /case-studies                    301
-/Case-Studies/Fender-Studio      /case-studies/fender-studio      301
-/Case-Studies/Namm-2026          /case-studies/namm-2026          301
-/Case-Studies/NAMM-2026          /case-studies/namm-2026          301
-/Case-Studies/Studiolive-Se      /case-studies/studiolive-se      301
-/Case-Studies/StudioLive-SE      /case-studies/studiolive-se      301
+/Design                          /design/                          301
+/Photo                           /photo/                           301
+/Video                           /video/                           301
+/Case-Studies                    /case-studies/                    301
+/Case-Studies/Fender-Studio      /case-studies/fender-studio/      301
+/Case-Studies/Namm-2026          /case-studies/namm-2026/          301
+/Case-Studies/NAMM-2026          /case-studies/namm-2026/          301
+/Case-Studies/Studiolive-Se      /case-studies/studiolive-se/      301
+/Case-Studies/StudioLive-SE      /case-studies/studiolive-se/      301
 /About                           /about                           301
-/Brand-Standards                 /brand-standards                 301
-/Privacy                         /privacy                         301
-/Accessibility                   /accessibility                   301
-/a11y                            /accessibility                   301
-/brand                           /brand-standards                 301
+/Brand-Standards                 /brand-standards/                 301
+/Privacy                         /privacy/                         301
+/Accessibility                   /accessibility/                   301
+/a11y                            /accessibility/                   301
+/brand                           /brand-standards/                 301
 
 # ── Section routes with no file of their own ──────────────────────────
 # /contact and /faq are scroll targets inside the home view, so they have no

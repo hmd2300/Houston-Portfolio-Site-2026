@@ -34,8 +34,8 @@
     } catch(e){}
   })();
 </script>
-<link rel="canonical" href="https://www.houstondragna.com/photo">
-<meta property="og:url" content="https://www.houstondragna.com/photo">
+<link rel="canonical" href="https://www.houstondragna.com/photo/">
+<meta property="og:url" content="https://www.houstondragna.com/photo/">
 <meta property="og:type" content="website">
 <meta property="og:site_name" content="Houston Dragna">
 <meta property="og:title" content="Commercial &amp; Product Photography | Houston Dragna">
@@ -1065,7 +1065,9 @@ footer:hover .foot-mark{opacity:1}
   font-family:var(--font-display);font-weight:900;font-stretch:110%;text-transform:uppercase;
   font-size:clamp(20px,2.4vw,27px);line-height:.95;letter-spacing:-.015em;
 }
-.series-body h3 a{color:var(--chart-tx);text-decoration:none;display:inline-block;transition:color .25s ease}
+/* padded to a 31px target, matching the film card titles; the negative margin
+   keeps the visual spacing where it was */
+.series-body h3 a{color:var(--chart-tx);text-decoration:none;display:inline-block;padding:6px 0;margin:-6px 0;transition:color .25s ease}
 .series-body h3 a:hover,.series-body h3 a:focus-visible{color:var(--blue-hv)}
 .series-body p:not(.mono){color:var(--ink-dim);font-size:15px;line-height:1.55;max-width:62ch}
 .series-body .roles{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
@@ -1583,7 +1585,19 @@ html[data-theme="light"] img.lg-d{display:none}
   .sec-head{margin-bottom:26px}
 }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.houstondragna.com/#website","url":"https://www.houstondragna.com","name":"Houston Dragna","publisher":{"@id":"https://www.houstondragna.com/#houston"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://www.houstondragna.com/photo#page","url":"https://www.houstondragna.com/photo","name":"Commercial & Product Photography | Houston Dragna","description":"Commercial, product, lifestyle, and portrait photography by Houston Dragna. Available worldwide, shooting on location for music and pro audio brands.","isPartOf":{"@id":"https://www.houstondragna.com/#website"},"about":{"@id":"https://www.houstondragna.com/#houston"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://www.houstondragna.com/ASSETS/Social%20Share/Houston%20Dragna%202026%20Portfolio%20Social%20Share%20Image.jpg"},"inLanguage":"en-US"},{"@id":"https://www.houstondragna.com/#houston","@type":"Person","name":"Houston Dragna"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.houstondragna.com/"},{"@type":"ListItem","position":2,"name":"Commercial & Product Photography","item":"https://www.houstondragna.com/photo"}]},{"@type":"ImageGallery","@id":"https://www.houstondragna.com/photo#gallery","name":"Commercial & Product Photography","description":"Commercial, product, lifestyle, and portrait photography by Houston Dragna. Available worldwide, shooting on location for music and pro audio brands.","url":"https://www.houstondragna.com/photo","creator":{"@id":"https://www.houstondragna.com/#houston"}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://www.houstondragna.com/#website","url":"https://www.houstondragna.com","name":"Houston Dragna","publisher":{"@id":"https://www.houstondragna.com/#houston"},"inLanguage":"en-US"},{"@type":"WebPage","@id":"https://www.houstondragna.com/photo/#page","url":"https://www.houstondragna.com/photo/","name":"Commercial & Product Photography | Houston Dragna","description":"Commercial, product, lifestyle, and portrait photography by Houston Dragna. Available worldwide, shooting on location for music and pro audio brands.","isPartOf":{"@id":"https://www.houstondragna.com/#website"},"about":{"@id":"https://www.houstondragna.com/#houston"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://www.houstondragna.com/ASSETS/Social%20Share/Houston%20Dragna%202026%20Portfolio%20Social%20Share%20Image.jpg"},"inLanguage":"en-US"},{"@id":"https://www.houstondragna.com/#houston","@type":"Person","name":"Houston Dragna"},{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://www.houstondragna.com/"},{"@type":"ListItem","position":2,"name":"Commercial & Product Photography","item":"https://www.houstondragna.com/photo/"}]},{"@type":"ImageGallery","@id":"https://www.houstondragna.com/photo/#gallery","name":"Commercial & Product Photography","description":"Commercial, product, lifestyle, and portrait photography by Houston Dragna. Available worldwide, shooting on location for music and pro audio brands.","url":"https://www.houstondragna.com/photo/","creator":{"@id":"https://www.houstondragna.com/#houston"}}]}</script>
+<noscript><style>
+/* Without JavaScript the preloader never cleared and the page stayed blank.
+   This drops the preloader and the scroll lock, shows everything that was
+   waiting to animate in, and puts the right page on screen. */
+#preloader{display:none}
+body.locked{overflow:auto}
+.hero-frame,.hero-name,.morph{opacity:1 !important}
+.reveal,.grid .tile img{opacity:1 !important;transform:none !important}
+.reveal *:not(.cf-bot):not(.cf-bot *){opacity:1 !important}
+.view{display:none !important}
+#view-photo{display:block !important}
+</style></noscript>
 </head>
 <body class="locked" id="top">
 
@@ -1660,8 +1674,8 @@ html[data-theme="light"] img.lg-d{display:none}
   <section class="section" id="design" data-c="chart">
     <div class="sec-head reveal">
       <div><span class="sec-eyebrow mono"><span class="badge">01</span>Brand systems &amp; key art</span>
-        <h2 class="sec-title display"><a href="/design" data-view="design">Design</a></h2></div>
-      <a class="see-more" href="/design" data-view="design">All design work
+        <h2 class="sec-title display"><a href="/design/" data-view="design">Design</a></h2></div>
+      <a class="see-more" href="/design/" data-view="design">All design work
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
     </div>
     <div class="grid grid-design" data-grid data-bare></div>
@@ -1670,8 +1684,8 @@ html[data-theme="light"] img.lg-d{display:none}
   <section class="section" id="photo" data-c="fuch">
     <div class="sec-head reveal">
       <div><span class="sec-eyebrow mono"><span class="badge">02</span>Commercial, product &amp; lifestyle</span>
-        <h2 class="sec-title display"><a href="/photo" data-view="photo">Photo</a></h2></div>
-      <a class="see-more" href="/photo" data-view="photo">All photography
+        <h2 class="sec-title display"><a href="/photo/" data-view="photo">Photo</a></h2></div>
+      <a class="see-more" href="/photo/" data-view="photo">All photography
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
     </div>
     <div class="grid grid-photo" data-grid data-bare></div>
@@ -1680,12 +1694,12 @@ html[data-theme="light"] img.lg-d{display:none}
   <section class="section" id="video" data-c="blue">
     <div class="sec-head reveal">
       <div><span class="sec-eyebrow mono"><span class="badge">03</span>Directed &amp; edited in house</span>
-        <h2 class="sec-title display"><a href="/video" data-view="video">Video</a></h2></div>
-      <a class="see-more" href="/video" data-view="video">All film work
+        <h2 class="sec-title display"><a href="/video/" data-view="video">Video</a></h2></div>
+      <a class="see-more" href="/video/" data-view="video">All film work
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M13 5l7 7-7 7"/></svg></a>
     </div>
     <figure class="tile video-wrap bleed reveal" data-yt="XpN54Uh0eEo">
-      <img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/XpN54Uh0eEo/maxresdefault.jpg" alt="StudioLive Series III SE launch hero film still" width="1280" height="720">
+      <img loading="lazy" decoding="async" data-src="https://i.ytimg.com/vi/XpN54Uh0eEo/maxresdefault.jpg" alt="StudioLive Series III SE launch hero film still" width="1280" height="720">
       <a class="video-open" href="https://www.youtube.com/watch?v=XpN54Uh0eEo" target="_blank" rel="noopener">
         <span class="lbl">Watch with sound
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
@@ -1707,7 +1721,7 @@ html[data-theme="light"] img.lg-d{display:none}
     </div>
     <figure class="portrait reveal" style="--d:.1s">
       <img loading="lazy" decoding="async"
-           src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Houston%20Dragna%202026%20Headshot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Home/Houston%20Dragna%202026%20Headshot.webp'"
+           data-src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Houston%20Dragna%202026%20Headshot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Home/Houston%20Dragna%202026%20Headshot.webp'"
            alt="Houston Dragna" width="1440" height="1800">
       <figcaption>Houston Dragna</figcaption>
     </figure>
@@ -1772,7 +1786,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <section class="section faq" id="faq" data-c="chart">
     <span class="sec-eyebrow mono reveal"><span class="badge">06</span>Questions</span>
     <h2 class="sec-title display reveal" style="--d:.05s">Frequently<br>asked.</h2>
-    <div class="faq-list reveal" style="--d:.1s"><details class="faq-item reveal"><summary><span>What do you do?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>I work across brand design, photography, and video direction. In practice that means brand identity and design systems, campaign key art, product and lifestyle photography, launch films, and the packaging around them: social, retail, and e-commerce. On the largest projects I have run all of it as one pipeline rather than handing pieces to different teams.</p></div></details><details class="faq-item reveal"><summary><span>Where do you work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Anywhere the work is. I am available for global travel and regularly shoot on location, having produced campaigns across multiple cities for international launches. Studio, soundstage, LED volume wall, live venue, or client site. I am based in the United States and travel for the majority of projects.</p></div></details><details class="faq-item reveal"><summary><span>Do you take on freelance and contract work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Yes. Alongside in-house work I run an independent creative practice, taking on project-based engagements and ongoing retainers. That covers a single shoot or deliverable through to a full campaign built and delivered end to end.</p></div></details><details class="faq-item reveal"><summary><span>What kinds of clients do you work with?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Most of my recent work has been with music gear and pro audio brands, where I have led global product launches end to end. The same approach carries into DTC, SaaS and software, and CPG: categories where a product has to be explained and made desirable at the same time. If it needs a coherent visual idea carried across film, photography, and design, it is in scope.</p></div></details><details class="faq-item reveal"><summary><span>Do you handle a project end to end, or one piece of it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Either. I have pitched a campaign, storyboarded it, directed the shoot, shot the stills, mixed the audio, and designed the collateral. I have also been brought in for a single lane, most often photography or direction. Whichever way a project is structured, I am comfortable owning one piece or the whole thing.</p></div></details><details class="faq-item reveal"><summary><span>What is your turnaround?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>It depends on scope, but I plan backwards from your launch date and agree on milestones before anything starts. Smaller projects usually move in days rather than weeks. For a multi-phase campaign, the schedule is built into the production plan up front so nothing lands late in the rollout.</p></div></details><details class="faq-item reveal"><summary><span>How do we start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach.</p><a class="cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="FAQ" aria-label="Email me"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Email me</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a></div></details></div>
+    <div class="faq-list reveal" style="--d:.1s"><details class="faq-item reveal"><summary><span>What do you do?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>I work across brand design, photography, and video direction. In practice that means brand identity and design systems, campaign key art, product and lifestyle photography, launch films, and the packaging around them: social, retail, and e-commerce. On the largest projects I have run all of it as one pipeline rather than handing pieces to different teams.</p></div></details><details class="faq-item reveal"><summary><span>Where do you work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Anywhere the work is. I am available for global travel and regularly shoot on location, having produced campaigns across multiple cities for international launches. Studio, soundstage, LED volume wall, live venue, or client site. I am based in the United States and travel for the majority of projects.</p></div></details><details class="faq-item reveal"><summary><span>Do you take on freelance and contract work?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Yes. I run an independent creative practice, taking on project-based engagements and ongoing retainers. That covers a single shoot or deliverable through to a full campaign built and delivered end to end.</p></div></details><details class="faq-item reveal"><summary><span>What kinds of clients do you work with?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Most of my recent work has been with music gear and pro audio brands, where I have led global product launches end to end. The same approach carries into DTC, SaaS and software, and CPG: categories where a product has to be explained and made desirable at the same time. If it needs a coherent visual idea carried across film, photography, and design, it is in scope.</p></div></details><details class="faq-item reveal"><summary><span>Do you handle a project end to end, or one piece of it?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Either. I have pitched a campaign, storyboarded it, directed the shoot, shot the stills, mixed the audio, and designed the collateral. I have also been brought in for a single lane, most often photography or direction. Whichever way a project is structured, I am comfortable owning one piece or the whole thing.</p></div></details><details class="faq-item reveal"><summary><span>What is your turnaround?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>It depends on scope, but I plan backwards from your launch date and agree on milestones before anything starts. Smaller projects usually move in days rather than weeks. For a multi-phase campaign, the schedule is built into the production plan up front so nothing lands late in the rollout.</p></div></details><details class="faq-item reveal"><summary><span>How do we start?</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary><div class="faq-a"><p>Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach.</p><a class="cta" href="mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com" data-goal="Email Click" data-goal-source="FAQ" aria-label="Email me"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Email me</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a></div></details></div>
   </section>
 
   <footer class="mono site-foot">
@@ -1788,16 +1802,16 @@ html[data-theme="light"] img.lg-d{display:none}
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
       <p class="foot-h">Work</p>
-      <a data-view="design" href="/design">Design</a>
-      <a data-view="photo" href="/photo">Photography</a>
-      <a data-view="video" href="/video">Film</a>
-      <a data-view="case-studies" href="/case-studies">Case studies</a>
+      <a data-view="design" href="/design/">Design</a>
+      <a data-view="photo" href="/photo/">Photography</a>
+      <a data-view="video" href="/video/">Film</a>
+      <a data-view="case-studies" href="/case-studies/">Case studies</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Selected work</p>
-      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
-      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
-      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+      <a data-view="cs-fender" href="/case-studies/fender-studio/">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026/">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se/">StudioLive SE</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Studio</p>
@@ -1844,16 +1858,16 @@ html[data-theme="light"] img.lg-d{display:none}
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
       <p class="foot-h">Work</p>
-      <a data-view="design" href="/design">Design</a>
-      <a data-view="photo" href="/photo">Photography</a>
-      <a data-view="video" href="/video">Film</a>
-      <a data-view="case-studies" href="/case-studies">Case studies</a>
+      <a data-view="design" href="/design/">Design</a>
+      <a data-view="photo" href="/photo/">Photography</a>
+      <a data-view="video" href="/video/">Film</a>
+      <a data-view="case-studies" href="/case-studies/">Case studies</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Selected work</p>
-      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
-      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
-      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+      <a data-view="cs-fender" href="/case-studies/fender-studio/">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026/">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se/">StudioLive SE</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Studio</p>
@@ -1900,16 +1914,16 @@ html[data-theme="light"] img.lg-d{display:none}
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
       <p class="foot-h">Work</p>
-      <a data-view="design" href="/design">Design</a>
-      <a data-view="photo" href="/photo">Photography</a>
-      <a data-view="video" href="/video">Film</a>
-      <a data-view="case-studies" href="/case-studies">Case studies</a>
+      <a data-view="design" href="/design/">Design</a>
+      <a data-view="photo" href="/photo/">Photography</a>
+      <a data-view="video" href="/video/">Film</a>
+      <a data-view="case-studies" href="/case-studies/">Case studies</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Selected work</p>
-      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
-      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
-      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+      <a data-view="cs-fender" href="/case-studies/fender-studio/">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026/">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se/">StudioLive SE</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Studio</p>
@@ -1959,16 +1973,16 @@ html[data-theme="light"] img.lg-d{display:none}
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
       <p class="foot-h">Work</p>
-      <a data-view="design" href="/design">Design</a>
-      <a data-view="photo" href="/photo">Photography</a>
-      <a data-view="video" href="/video">Film</a>
-      <a data-view="case-studies" href="/case-studies">Case studies</a>
+      <a data-view="design" href="/design/">Design</a>
+      <a data-view="photo" href="/photo/">Photography</a>
+      <a data-view="video" href="/video/">Film</a>
+      <a data-view="case-studies" href="/case-studies/">Case studies</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Selected work</p>
-      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
-      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
-      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+      <a data-view="cs-fender" href="/case-studies/fender-studio/">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026/">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se/">StudioLive SE</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Studio</p>
@@ -1998,7 +2012,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <header class="cs-top">
     <img class="cs-bg" loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp'" alt="Fender Studio Pro and Quantum HD at the desk" width="1800" height="1200">
     <div class="cs-top-inner">
-      <a class="back" href="/case-studies" data-view="case-studies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>All case studies</a>
+      <a class="back" href="/case-studies/" data-view="case-studies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>All case studies</a>
       <div class="cs-lockups"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/Fender%20Studio/Fender%20Studio%20Logo%20White%20EAEAEA%20Horizontal.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Logo%20White%20EAEAEA%20Horizontal.webp'" alt="Fender Studio" width="800" height="158"></div>
       <span class="cs-kicker">Fender × PreSonus · Global Brand Launch · Case Study</span>
       <div role="heading" aria-level="1" class="cs-title display">Fender<br>Studio</div>
@@ -2021,16 +2035,16 @@ html[data-theme="light"] img.lg-d{display:none}
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
       <p class="foot-h">Work</p>
-      <a data-view="design" href="/design">Design</a>
-      <a data-view="photo" href="/photo">Photography</a>
-      <a data-view="video" href="/video">Film</a>
-      <a data-view="case-studies" href="/case-studies">Case studies</a>
+      <a data-view="design" href="/design/">Design</a>
+      <a data-view="photo" href="/photo/">Photography</a>
+      <a data-view="video" href="/video/">Film</a>
+      <a data-view="case-studies" href="/case-studies/">Case studies</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Selected work</p>
-      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
-      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
-      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+      <a data-view="cs-fender" href="/case-studies/fender-studio/">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026/">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se/">StudioLive SE</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Studio</p>
@@ -2060,7 +2074,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <header class="cs-top">
     <img class="cs-bg" loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2013.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20NAMM%2013.webp'" alt="Fender Studio booth at NAMM 2026" width="1200" height="1500">
     <div class="cs-top-inner">
-      <a class="back" href="/case-studies" data-view="case-studies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>All case studies</a>
+      <a class="back" href="/case-studies/" data-view="case-studies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>All case studies</a>
       <div class="cs-lockups"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/Fender%20Studio%20Logo%20Horizontal%20White.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/Fender%20Studio%20Logo%20Horizontal%20White.webp'" alt="Fender Studio" width="800" height="158"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/NAMM%202026/The%20NAMM%20Show%20logo.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/NAMM%202026/The%20NAMM%20Show%20logo.webp'" alt="The NAMM Show" width="800" height="548"></div>
       <span class="cs-kicker">Fender Studio · The NAMM Show 2026 · Case Study</span>
       <div role="heading" aria-level="1" class="cs-title display">NAMM<br>2026</div>
@@ -2083,16 +2097,16 @@ html[data-theme="light"] img.lg-d{display:none}
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
       <p class="foot-h">Work</p>
-      <a data-view="design" href="/design">Design</a>
-      <a data-view="photo" href="/photo">Photography</a>
-      <a data-view="video" href="/video">Film</a>
-      <a data-view="case-studies" href="/case-studies">Case studies</a>
+      <a data-view="design" href="/design/">Design</a>
+      <a data-view="photo" href="/photo/">Photography</a>
+      <a data-view="video" href="/video/">Film</a>
+      <a data-view="case-studies" href="/case-studies/">Case studies</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Selected work</p>
-      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
-      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
-      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+      <a data-view="cs-fender" href="/case-studies/fender-studio/">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026/">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se/">StudioLive SE</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Studio</p>
@@ -2122,7 +2136,7 @@ html[data-theme="light"] img.lg-d{display:none}
   <header class="cs-top">
     <img class="cs-bg" loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Case%20Studies/StudioLive%20SE/StudioLive%20SE%20elevated%20family%20shot.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/StudioLive%20SE/StudioLive%20SE%20elevated%20family%20shot.webp'" alt="StudioLive Series III SE elevated family shot" width="1800" height="1440">
     <div class="cs-top-inner">
-      <a class="back" href="/case-studies" data-view="case-studies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>All case studies</a>
+      <a class="back" href="/case-studies/" data-view="case-studies"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M11 19l-7-7 7-7"/></svg>All case studies</a>
       <div class="cs-lockups"><img loading="lazy" decoding="async" src="/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/Case%20Studies/StudioLive%20SE/PreSonus%20Logo%20Icon%20Only%20White%20EAEAEA.webp" onerror="this.onerror=null;this.src='/ASSETS/IMAGES/PAGES/Case%20Studies/StudioLive%20SE/PreSonus%20Logo%20Icon%20Only%20White%20EAEAEA.webp'" alt="PreSonus" width="800" height="643"></div>
       <span class="cs-kicker">PreSonus · Global Product Launch · Case Study</span>
       <div role="heading" aria-level="1" class="cs-title display">StudioLive<br>Series III SE</div>
@@ -2145,16 +2159,16 @@ html[data-theme="light"] img.lg-d{display:none}
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
       <p class="foot-h">Work</p>
-      <a data-view="design" href="/design">Design</a>
-      <a data-view="photo" href="/photo">Photography</a>
-      <a data-view="video" href="/video">Film</a>
-      <a data-view="case-studies" href="/case-studies">Case studies</a>
+      <a data-view="design" href="/design/">Design</a>
+      <a data-view="photo" href="/photo/">Photography</a>
+      <a data-view="video" href="/video/">Film</a>
+      <a data-view="case-studies" href="/case-studies/">Case studies</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Selected work</p>
-      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
-      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
-      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+      <a data-view="cs-fender" href="/case-studies/fender-studio/">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026/">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se/">StudioLive SE</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Studio</p>
@@ -2236,16 +2250,16 @@ html[data-theme="light"] img.lg-d{display:none}
   <nav class="foot-nav" aria-label="Footer">
     <div class="foot-col">
       <p class="foot-h">Work</p>
-      <a data-view="design" href="/design">Design</a>
-      <a data-view="photo" href="/photo">Photography</a>
-      <a data-view="video" href="/video">Film</a>
-      <a data-view="case-studies" href="/case-studies">Case studies</a>
+      <a data-view="design" href="/design/">Design</a>
+      <a data-view="photo" href="/photo/">Photography</a>
+      <a data-view="video" href="/video/">Film</a>
+      <a data-view="case-studies" href="/case-studies/">Case studies</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Selected work</p>
-      <a data-view="cs-fender" href="/case-studies/fender-studio">Fender Studio Pro</a>
-      <a data-view="cs-namm" href="/case-studies/namm-2026">NAMM 2026 booth</a>
-      <a data-view="cs-se" href="/case-studies/studiolive-se">StudioLive SE</a>
+      <a data-view="cs-fender" href="/case-studies/fender-studio/">Fender Studio Pro</a>
+      <a data-view="cs-namm" href="/case-studies/namm-2026/">NAMM 2026 booth</a>
+      <a data-view="cs-se" href="/case-studies/studiolive-se/">StudioLive SE</a>
     </div>
     <div class="foot-col">
       <p class="foot-h">Studio</p>
@@ -2294,10 +2308,10 @@ html[data-theme="light"] img.lg-d{display:none}
     </div>
     <div class="fmenu-items" id="fmenuItems">
       <a class="m-item" style="--i:0" href="/" data-view="home">Home</a>
-      <a class="m-item" style="--i:1" href="/design" data-view="design">Design</a>
-      <a class="m-item" style="--i:2" href="/photo" data-view="photo">Photo</a>
-      <a class="m-item" style="--i:3" href="/video" data-view="video">Video</a>
-      <a class="m-item" style="--i:4" href="/case-studies" data-view="case-studies">Case Studies</a>
+      <a class="m-item" style="--i:1" href="/design/" data-view="design">Design</a>
+      <a class="m-item" style="--i:2" href="/photo/" data-view="photo">Photo</a>
+      <a class="m-item" style="--i:3" href="/video/" data-view="video">Video</a>
+      <a class="m-item" style="--i:4" href="/case-studies/" data-view="case-studies">Case Studies</a>
       <a class="m-item" style="--i:5" href="#about" data-scroll>About</a>
       <a class="m-item" style="--i:6" href="#contact" data-scroll>Contact</a>
       <a class="m-item" style="--i:7" href="#faq" data-scroll>FAQ</a>
@@ -2599,9 +2613,24 @@ const isSpec = src => { try { const f = decodeURIComponent(src).split('/').pop()
 /* portfolio grids shuffle on every load so the work leads differently each visit */
 const shuffle = a => { const b = a.slice(); for (let i=b.length-1;i>0;i--){ const j=Math.floor(Math.random()*(i+1)); [b[i],b[j]]=[b[j],b[i]]; } return b; };
 
+/* Which page did the visitor land on? Every file carries all eight views, and
+   the home view was being fed on every route: sixteen highlight thumbnails at
+   high priority, all five hero slides, and eighteen warm-up thumbnails. On
+   /case-studies that was about 2 MB of images for a page that needs 110 KB.
+   Only the landing page's own images load up front now. */
+const LANDED_HOME = (() => {
+  const homeish = ['', 'home', 'contact', 'faq', 'about'];
+  if (location.protocol === 'file:') return homeish.includes(location.hash.replace(/^#\/?/, '').toLowerCase());
+  const p = (location.pathname.replace(/\/+$/, '') || '/').toLowerCase();
+  if (p === '/' || p === '/index.html') return homeish.includes((location.hash || '').replace(/^#\/?/, '').toLowerCase());
+  return ['/contact', '/faq', '/about'].includes(p);
+})();
+let slidesPending = false;   /* hero slides deferred until home is actually opened */
 const GALLERIES = new Map();
 function fillGrid(el, data){
   GALLERIES.set(el, data);
+  /* the home strips are built on every route; they are only urgent on home */
+  const live = LANDED_HOME || !el.closest('#view-home');
   /* mobile shows 2 across, desktop 3, so nine covers the first three rows
      either way. These load eagerly at high priority; the rest stay lazy. */
   const EAGER = 9;
@@ -2609,7 +2638,7 @@ function fillGrid(el, data){
     `<figure class="tile" tabindex="0" role="button" aria-label="View ${alt}${isSpec(src) ? ', spec work' : ''}">` +
     (() => { const d = dimOf(THUMB(src));
       const wh = d ? ` width="${d.split('x')[0]}" height="${d.split('x')[1]}"` : '';
-      const pri = i < EAGER
+      const pri = (i < EAGER && live)
         ? ' loading="eager" fetchpriority="high"'
         : ' loading="lazy" fetchpriority="low"';
       return `<img${pri} decoding="async"${wh} src="${THUMB(src)}" onerror="${FALLBACK(src)}" alt="${alt}">`; })() +
@@ -2653,13 +2682,16 @@ function fillDeferred(view){
    thumbnail rename (.jpg -> .webp) cannot be reversed by string surgery. */
 /* A grid reads to a screen reader as a run of unrelated buttons with no size
    and no position, so there is no way to tell how far in you are or how much
-   is left. aria-setsize/aria-posinset restore that on ANY role, unlike
-   role=list which would fight the role=button already on each tile. */
+   is left. aria-setsize/aria-posinset looked like the answer but are not
+   allowed on role=button, so readers were free to ignore them. The position
+   goes in the accessible name instead: "View <image>, 3 of 50". */
 function labelGrid(el){
   const tiles = [...el.querySelectorAll('.tile')];
   tiles.forEach((t, i) => {
-    t.setAttribute('aria-setsize', tiles.length);
-    t.setAttribute('aria-posinset', i + 1);
+    t.removeAttribute('aria-setsize');
+    t.removeAttribute('aria-posinset');
+    if (!t.dataset.label) t.dataset.label = t.getAttribute('aria-label') || '';
+    t.setAttribute('aria-label', `${t.dataset.label}, ${i + 1} of ${tiles.length}`);
   });
 }
 function galleryFromDOM(el){
@@ -2708,13 +2740,13 @@ function buildStudyCards(){
   if (host.children.length) return;          /* pre-rendered */
   host.innerHTML = STUDIES.map(c => `
   <article class="cs-card reveal">
-    <a class="thumb" href="#/${c.view}" data-view="${c.view}" aria-label="Open case study: ${c.title}">
+    <a class="thumb" href="${hrefFor(c.view)}" data-view="${c.view}" aria-label="Open case study: ${c.title}">
       <span class="flag">Case study</span>
       <img loading="lazy" decoding="async" src="${THUMB(c.data)}" onerror="${FALLBACK(c.data)}" alt="${c.title}">
     </a>
     <h2 class="cs-card-h">${c.title}</h2>
     <p>${c.line}</p>
-    <a class="cta" href="#/${c.view}" data-view="${c.view}" aria-label="Read the full study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Read the full study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a>
+    <a class="cta" href="${hrefFor(c.view)}" data-view="${c.view}" aria-label="Read the full study"><span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Read the full study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a>
   </article>`).join('');
   syncHrefs();
 }
@@ -2862,7 +2894,7 @@ function buildStudy(key){
   if (open) out += closeBand();
   const i = CS_ORDER.indexOf(key), nxt = CS_ORDER[(i+1) % CS_ORDER.length];
   out += `<section class="cs-band"><div class="cs-inner">` +
-    `<a class="cta" href="#/${nxt}" data-view="${nxt}" aria-label="Next case study">` +
+    `<a class="cta" href="${hrefFor(nxt)}" data-view="${nxt}" aria-label="Next case study">` +
     `<span class="cta-chip start"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span><span class="cta-label">Next case study</span><span class="cta-chip end"><svg viewBox="0 0 12 12" fill="none" aria-hidden="true"><path d="M6 1v10M1 6h10" stroke="currentColor" stroke-width="1.6" stroke-linecap="square"/></svg></span></a></div></section>`;
   host.innerHTML = out;
   st.blocks.filter(b => b.t === 'gallery').forEach((g, n) => {
@@ -2896,7 +2928,9 @@ let lastPct = -1, loaded = false, ready = false, shown = 0;
 
 const firstSlide = document.querySelector('.slide');
 const firstBg = firstSlide && firstSlide.dataset.bg;
-if (firstBg){
+/* the first hero slide gates the preloader on home only: other pages were
+   waiting on an image they never show */
+if (firstBg && LANDED_HOME){
   /* runs before heroSrc is defined, so the swap is inlined here */
   const src = innerWidth < 760
     ? firstBg.replace('/IMAGE-VARIANTS/VIEW/Home/','/IMAGE-VARIANTS/HERO/')
@@ -2910,7 +2944,8 @@ if (firstBg){
   fi.onload = () => paint(src);
   fi.onerror = () => chainFallback(src, firstBg, paint, () => { loaded = true; });
   fi.src = src;
-} else addEventListener('load', () => loaded = true);
+} else if (firstBg) loaded = true;
+else addEventListener('load', () => loaded = true);
 setTimeout(() => loaded = true, 2500);
 const preT0 = performance.now();
 const preTimer = setInterval(() => {
@@ -2926,7 +2961,8 @@ const preTimer = setInterval(() => {
     clearInterval(preTimer);
     prePct.textContent = '100%';
     preRule.style.transform = 'scaleX(1)';
-    lazySlides();
+    if (LANDED_HOME || current === 'home') lazySlides();
+    else slidesPending = true;
     pre.classList.add('glitch');
     setTimeout(() => {
       pre.classList.add('done');
@@ -3005,14 +3041,18 @@ const VIEWS = ['home','design','photo','video','case-studies','cs-fender','cs-na
 const SCROLL_ROUTES = { 'contact': 'contact', 'faq': 'faq', 'about': 'about' };   /* land on home, then scroll */
 const FILE_MODE = location.protocol === 'file:';
 const PATHS = {
-  'home':'/', 'design':'/design', 'photo':'/photo', 'video':'/video',
-  'case-studies':'/case-studies', 'contact':'/contact', 'faq':'/faq',
+  /* Trailing slashes on the pages that are folders on disk. The host answers
+     /video with a redirect to /video/, so the slashed form is the real
+     address; canonicals, the sitemap, and these links all use it now. The
+     three scroll routes have no folder and keep their bare form. */
+  'home':'/', 'design':'/design/', 'photo':'/photo/', 'video':'/video/',
+  'case-studies':'/case-studies/', 'contact':'/contact', 'faq':'/faq',
   'about':'/about',
-  'cs-fender':'/case-studies/fender-studio',
-  'cs-namm':'/case-studies/namm-2026',
-  'cs-se':'/case-studies/studiolive-se'
+  'cs-fender':'/case-studies/fender-studio/',
+  'cs-namm':'/case-studies/namm-2026/',
+  'cs-se':'/case-studies/studiolive-se/'
 };
-const BY_PATH = Object.fromEntries(Object.entries(PATHS).map(([v,p]) => [p.toLowerCase(), v]));
+const BY_PATH = Object.fromEntries(Object.entries(PATHS).map(([v,p]) => [(p.replace(/\/+$/, '') || '/').toLowerCase(), v]));
 const META = {
   'home':         ['HOUSTON DRAGNA | Design, Branding, Photo, Video',
                    'Brand designer, photographer, and video director. US based, available worldwide.'],
@@ -3068,6 +3108,12 @@ let show = function(name, fromHash){
   if (anchor) name = 'home';
   if (!VIEWS.includes(name)) name = 'home';
   current = name;
+  if (name === 'home' && slidesPending){ slidesPending = false; lazySlides(); }
+  /* On every page but home, the two images written into the home view's markup
+     carry data-src instead of src. The home view is on screen for an instant
+     before this script picks the right page, and lazy images inside it were
+     winning that race and downloading anyway. */
+  if (name === 'home') document.querySelectorAll('#view-home img[data-src]').forEach(i => { i.src = i.dataset.src; i.removeAttribute('data-src'); });
   VIEWS.forEach(v => document.getElementById('view-' + v).classList.toggle('on', v === name));
   document.querySelectorAll('.m-item[data-view]').forEach(a =>
     a.classList.toggle('here', a.dataset.view === name));
@@ -3118,7 +3164,7 @@ let show = function(name, fromHash){
       if (location.hash !== h) location.hash = h;
     } else {
       const at = location.pathname.replace(/\/+$/,'') || '/';
-      if (at !== h) history.pushState(null, '', h + CAMPAIGN);
+      if (at !== (h.replace(/\/+$/, '') || '/')) history.pushState(null, '', h + CAMPAIGN);
     }
   }
 }
@@ -3544,6 +3590,15 @@ function lazySlides(){
   if (typeof requestIdleCallback === 'function') requestIdleCallback(kick, { timeout: 2200 });
   else setTimeout(kick, 1100);
 }
+/* Away from home the hero is not fetched at all. Opening the menu or reaching
+   for a home link is the cue to fetch the first slide, so the hero is already
+   painted when the view swaps. */
+function warmHome(){ if (slidesPending && slides[0]) loadSlide(slides[0]); }
+document.querySelectorAll('a[data-view="home"]').forEach(a => {
+  a.addEventListener('pointerenter', warmHome, { passive:true });
+  a.addEventListener('touchstart', warmHome, { passive:true });
+  a.addEventListener('focus', warmHome);
+});
 new IntersectionObserver(en => heroInView = en[0].isIntersecting).observe(hero);
 setInterval(() => {
   if (!ready || !heroInView || document.hidden || current !== 'home') return;
@@ -3705,8 +3760,14 @@ function warmGrids(){
     setTimeout(() => { const im = new Image(); im.decoding = 'async'; im.src = u; }, i * 90);
   });
 }
-if (typeof requestIdleCallback === 'function') requestIdleCallback(warmGrids, { timeout: 4000 });
-else setTimeout(warmGrids, 2600);
+/* Only from home, where those two pages are the likely next click, and never
+   for a visitor who has asked the browser to save data or is on a 2G link. */
+const netInfo = navigator.connection || {};
+const thrifty = netInfo.saveData || /(^|-)2g$/.test(netInfo.effectiveType || '');
+if (LANDED_HOME && !thrifty){
+  if (typeof requestIdleCallback === 'function') requestIdleCallback(warmGrids, { timeout: 4000 });
+  else setTimeout(warmGrids, 2600);
+}
 
 /* ---------- pinned horizontal reels ---------- */
 const pinnable = () => innerWidth >= 760 && matchMedia('(pointer: fine)').matches;
@@ -3823,10 +3884,17 @@ function lbOpen(grid, i){
   lbRender();
   lb.classList.add('on');
   document.body.classList.add('locked');
+  /* aria-modal alone is a promise, not a mechanism: Tab walked straight out
+     to the page behind. Everything else goes inert while the viewer is up. */
+  [...document.body.children].forEach(n => {
+    if (n === lb || /^(SCRIPT|STYLE|LINK|NOSCRIPT)$/.test(n.tagName) || n.inert) return;
+    n.inert = true; n.dataset.lbInert = '1';
+  });
   document.getElementById('lbClose').focus();
 }
 function lbClose(){
   lb.classList.remove('on');
+  document.querySelectorAll('[data-lb-inert]').forEach(n => { n.inert = false; delete n.dataset.lbInert; });
   document.body.classList.remove('locked');
   lbImg.removeAttribute('src');
   if (lbPrevFocus) lbPrevFocus.focus();
@@ -3854,6 +3922,16 @@ addEventListener('keydown', e => {
     return;
   }
   if (!lb.classList.contains('on')) return;
+  if (e.key === 'Tab'){
+    /* wrap inside the viewer rather than escaping to the browser chrome */
+    const f = [...lb.querySelectorAll('button')].filter(b => !b.disabled && b.offsetParent !== null);
+    if (f.length){
+      const i = f.indexOf(document.activeElement);
+      e.preventDefault();
+      f[i < 0 ? 0 : (i + (e.shiftKey ? -1 : 1) + f.length) % f.length].focus();
+    }
+    return;
+  }
   if (e.key === 'Escape') lbClose();
   if (e.key === 'ArrowLeft') lbStep(-1);
   if (e.key === 'ArrowRight') lbStep(1);
@@ -3879,6 +3957,7 @@ document.querySelectorAll('.m-item').forEach(item => {
 function setMenu(open){
   if (!open && fmenu.classList.contains('open') && document.getElementById('fmenuItems').contains(document.activeElement)) fbar.focus();
   fmenu.classList.toggle('open', open); fbar.setAttribute('aria-expanded', String(open));
+  if (open && typeof warmHome === 'function') warmHome();
 }
 function closeMenu(){ setMenu(false); }
 fbox.addEventListener('click', () => { if (!fmenu.classList.contains('open')) setMenu(true); });

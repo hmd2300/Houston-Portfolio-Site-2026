@@ -128,6 +128,8 @@ html img.lg-d{display:block}
 html[data-theme="light"] img.lg-l{display:block}
 html[data-theme="light"] img.lg-d{display:none}
 .back{
+  /* 17px tall was under the 24px target minimum */
+  display:inline-block;padding:9px 0;margin:-9px 0;
   font-family:var(--font-mono);font-size:10px;letter-spacing:.12em;
   text-transform:uppercase;text-decoration:none;color:var(--ink-dim);
   transition:color .22s ease;
@@ -167,7 +169,7 @@ footer{
   font-family:var(--font-mono);font-size:10px;letter-spacing:.1em;
   text-transform:uppercase;color:var(--ink-dim);
 }
-footer a{text-decoration:none;transition:color .22s ease}
+footer a{text-decoration:none;transition:color .22s ease;display:inline-block;padding:6px 0;margin:-6px 0}
 footer a:hover{color:var(--accent-tx)}
 
 @media (prefers-reduced-motion:reduce){
@@ -189,6 +191,7 @@ footer a:hover{color:var(--accent-tx)}
 .social-btn:hover,.social-btn:focus-visible{background:var(--fuch);border-color:var(--fuch);color:var(--snow);transform:translateY(-2px)}
 .social-btn:focus-visible{outline:2px solid var(--ink);outline-offset:3px}
 footer .social-links{margin-left:auto}
+footer .social-btn{padding:0;margin:0;display:inline-flex}
 </style>
 </head>
 <body>
@@ -206,7 +209,7 @@ footer .social-links{margin-left:auto}
 <main id="main" tabindex="-1">
   <p class="eyebrow">Houston Dragna &middot; Legal</p>
   <h1>Privacy</h1>
-  <p class="stamp">Last updated <span id="upd">August 2026</span></p>
+  <p class="stamp">Last updated <span id="upd">November 2026</span></p>
 
   <p class="lede">Short version: this site runs privacy-friendly analytics that cannot identify you, and it stores nothing about you unless you fill in the contact form or email me.</p>
 
@@ -232,7 +235,7 @@ footer .social-links{margin-left:auto}
   </ul>
 
   <h2>Where it is hosted</h2>
-  <p>The site is served by Netlify, which keeps standard server logs including IP addresses for security and abuse prevention. Fonts are served by Google Fonts, which receives the request needed to deliver the font files. Images and video thumbnails may be requested from GitHub and YouTube when you view those pages.</p>
+  <p>The site is served by Netlify, which keeps standard server logs including IP addresses for security and abuse prevention. Fonts are served by Google Fonts, which receives the request needed to deliver the font files. Video thumbnails and embedded players are loaded from YouTube, in its privacy-enhanced no-cookie mode, on pages that show film. Some of those players start on their own as muted previews.</p>
 
   <h2>Your choices</h2>
   <p>You can ask me what I hold about you, ask for it to be corrected, or ask for it to be deleted, and I will do it. There is not much to hold: for most visitors the honest answer is nothing at all.</p>
