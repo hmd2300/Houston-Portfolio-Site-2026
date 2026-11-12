@@ -947,6 +947,20 @@ footer:hover .foot-mark{opacity:1}
 .hero-film-cap{display:flex;flex-direction:column;gap:10px;margin-top:18px;align-items:flex-start}
 .hero-film-cap h3{font-family:var(--font-display);font-weight:900;font-stretch:110%;text-transform:uppercase;font-size:clamp(16px,1.7vw,21px);line-height:1;letter-spacing:-.015em}
 
+/* ---------- featured pair ----------
+   Two most-recent films share the top of the page at equal weight. Each one
+   fills its column, so the 68% rule for a single hero above does not apply. */
+.film-pair{display:grid;gap:clamp(26px,3.4vw,30px) clamp(18px,3vw,30px)}
+@media (min-width:760px){.film-pair{grid-template-columns:repeat(2,minmax(0,1fr))}}
+#view-video .film-pair .video-wrap{width:100%}
+.film-feat .hero-film-cap{margin-top:16px}
+.film-feat h2{
+  font-family:var(--font-display);font-weight:900;font-stretch:110%;text-transform:uppercase;
+  font-size:clamp(16px,1.7vw,21px);line-height:1.04;letter-spacing:-.012em;
+}
+.film-feat h2 a{color:var(--chart-tx);text-decoration:none;display:inline-block;padding:4px 0;transition:color .25s ease}
+.film-feat h2 a:hover,.film-feat h2 a:focus-visible{color:var(--blue-hv)}
+
 /* ---------- video cards ---------- */
 .vgrid{display:grid;gap:clamp(18px,3vw,30px);grid-template-columns:1fr}
 @media (min-width:760px){.vgrid{grid-template-columns:repeat(2,1fr)}}
@@ -2229,16 +2243,33 @@ body.locked{overflow:auto}
     <p class="page-lede">Brand film and campaign video, directed and produced in house from concept through final grade. Launch films, artist features, short-form social content, and technical demo work, including LED volume wall virtual production, traditional soundstage shoots, and documentary capture on location.</p>
   </header>
   <section class="section" data-c="blue">
-    <figure class="tile video-wrap reveal" data-yt="lA7f6GV6NAo">
-      <span class="flag">Most recent</span>
-      <img loading="lazy" decoding="async" src="/ASSETS/IMAGES/PAGES/Video/Fender%20Motion%20Launch%20Hero%20YT%20Thumb.webp" alt="Fender Motion controllers launch hero film key art" width="1920" height="1080">
-      <a class="video-open" href="https://www.youtube.com/watch?v=lA7f6GV6NAo" target="_blank" rel="noopener">
-        <span class="lbl">Watch with sound
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
-    </figure>
-    <div class="hero-film-cap reveal">
-      <h2><a href="https://www.youtube.com/watch?v=lA7f6GV6NAo" target="_blank" rel="noopener">Fender Motion Controllers &#8211; Launch Hero</a></h2>
-      <div class="roles"><span class="role">Lighting Design</span><span class="role">Set Design</span><span class="role">Producer</span><span class="role">Photographer</span><span class="role">Key Art</span></div>
+    <div class="film-pair">
+      <div class="film-feat">
+        <figure class="tile video-wrap reveal" data-yt="LKlLRwI62Iw">
+          <span class="flag">Most recent</span>
+          <img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/LKlLRwI62Iw/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/LKlLRwI62Iw/hqdefault.jpg'" alt="Switchfoot performing Wake Up, Mr. Crow, live session video thumbnail" width="1280" height="720">
+          <a class="video-open" href="https://www.youtube.com/watch?v=LKlLRwI62Iw" target="_blank" rel="noopener" aria-label="Watch with sound: Switchfoot - Wake Up, Mr. Crow | Recorded Live at the Fender Nashville Showroom in Fender Studio Pro (opens in a new tab)">
+            <span class="lbl">Watch with sound
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
+        </figure>
+        <div class="hero-film-cap reveal">
+          <h2><a href="https://www.youtube.com/watch?v=LKlLRwI62Iw" target="_blank" rel="noopener">Switchfoot - Wake Up, Mr. Crow | Recorded Live at the Fender Nashville Showroom in Fender Studio Pro</a></h2>
+          <div class="roles"><span class="role">Director</span><span class="role">Producer</span><span class="role">Lighting Design</span><span class="role">Photographer</span><span class="role">Pre-Production</span><span class="role">Scripting</span><span class="role">Logistics</span></div>
+        </div>
+      </div>
+      <div class="film-feat">
+        <figure class="tile video-wrap reveal" data-yt="Fpujj5avFmc">
+          <span class="flag">Most recent</span>
+          <img loading="lazy" decoding="async" src="https://i.ytimg.com/vi/Fpujj5avFmc/maxresdefault.jpg" onerror="this.onerror=null;this.src='https://i.ytimg.com/vi/Fpujj5avFmc/hqdefault.jpg'" alt="Behind the scenes with Joey Burcham recording Switchfoot, video thumbnail" width="1280" height="720">
+          <a class="video-open" href="https://www.youtube.com/watch?v=Fpujj5avFmc" target="_blank" rel="noopener" aria-label="Watch with sound: Behind the Scenes | Joey Burcham recording Switchfoot live in Fender Studio Pro (opens in a new tab)">
+            <span class="lbl">Watch with sound
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M9 7h8v8"/></svg></span></a>
+        </figure>
+        <div class="hero-film-cap reveal">
+          <h2><a href="https://www.youtube.com/watch?v=Fpujj5avFmc" target="_blank" rel="noopener">Behind the Scenes | Joey Burcham recording Switchfoot live in Fender Studio Pro</a></h2>
+          <div class="roles"><span class="role">Director</span><span class="role">Producer</span><span class="role">Lighting Design</span><span class="role">Photographer</span><span class="role">Pre-Production</span><span class="role">Scripting</span><span class="role">Logistics</span><span class="role">Post Audio Mix</span></div>
+        </div>
+      </div>
     </div>
 
     <div class="sub-head reveal">
@@ -2548,6 +2579,8 @@ const HOME_PHOTO = [
 
 /* Films: titles, roles and YouTube ids pulled from houstondragna.com/video. */
 const FILMS = [
+  { yt:'lA7f6GV6NAo', title:'Fender Motion Controllers – Launch Hero',
+    roles:['Lighting Design','Set Design','Producer','Photographer','Key Art'] },
   { yt:'XpN54Uh0eEo', title:'PreSonus StudioLive Series III SE Digital Mixers - Launch Hero',
     roles:['Director','Producer','Lighting Designer','Photographer','Audio Mixer','Talent'] },
   { yt:'N2W3E1ThYuw', title:'Introducing The New Quantum LT Audio Interfaces | Fender Studio',
