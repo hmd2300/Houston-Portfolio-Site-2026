@@ -1,0 +1,167 @@
+{
+  "slides": [
+    {
+      "image": "/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Fender+Motion+Elevated-1-3000px.webp"
+    },
+    {
+      "image": "/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/Chad+Smith+Portrait+BW.webp",
+      "focusY": "21%"
+    },
+    {
+      "image": "/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/fender-studio-pro-nyc-lifestyle-9.webp"
+    },
+    {
+      "image": "/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/PreSonus%20Quantum%20Launch%20Mad%20Keys%20Lifestyle%20Image.webp"
+    },
+    {
+      "image": "/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/quantum_lt_lifestyle_4-v2.webp"
+    }
+  ],
+  "heroMeta": {
+    "location": "Baton Rouge, LA",
+    "mark": "HD © 2026",
+    "since": "Est. 2015 · 11 yrs"
+  },
+  "design": {
+    "eyebrow": "Brand systems & key art",
+    "title": "Design",
+    "more": "All design work",
+    "picks": [
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/Kota+The+Friend-She%27s+Gone-Album+Art-Houston+Dragna.webp",
+        "alt": "Kota The Friend-She's Gone-Album Art-Houston Dragna"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/Wildfire+16x9+Brand+Card.webp",
+        "alt": "Wildfire Made brand card in 16x9 format showing identity system"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/PreSonus+Rebrand+Spec+Option+-+Houston+Dragna.webp",
+        "alt": "Speculative PreSonus rebrand concept board with logo and identity system"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/Fender+Studio+Key+Art+A+-+16x9.webp",
+        "alt": "Fender Studio campaign key art in 16x9 format"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/Fender+Quantum+LT+Social+Carousel+Card.webp",
+        "alt": "Fender Quantum LT social carousel card with product and feature typography"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Design/PreSonus+StudioLive+SE+Infogrphics+Card.webp",
+        "alt": "StudioLive Series III SE dealer infographic card explaining console features"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/DJ%20Jazzy%20Jeff%20Studio%20One%20Pro%207%20Key%20Hero%20Image.webp",
+        "alt": "Key art for the Studio One Pro 7 launch featuring DJ Jazzy Jeff"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/SOP+7.2+Social+Carousel+card.webp",
+        "alt": "Studio One Pro 7.2 social carousel card with feature callouts"
+      }
+    ]
+  },
+  "photo": {
+    "eyebrow": "Commercial, product & lifestyle",
+    "title": "Photo",
+    "more": "All photography",
+    "picks": [
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/fender-studio-pro-nyc-lifestyle-9.webp",
+        "alt": "Session in progress at a New York studio for the Fender Studio Pro launch"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/Fender+Motion+Elevated-1-3000px.webp",
+        "alt": "Fender Motion 16 pad controller lit with coloured light streaks against a deep teal backdrop"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/Fender+Studio+Lifestyle+14.webp",
+        "alt": "Fender Studio Lifestyle 14"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/Chad+Smith+Portrait+BW.webp",
+        "alt": "Black and white portrait of drummer Chad Smith seated at a recording console"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/PreSonus%20Quantum%20Launch%20Mad%20Keys%20Lifestyle%20Image.webp",
+        "alt": "Mad Keys producing at a desk workstation lit in warm tones for the Quantum launch campaign"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/quantum_lt_lifestyle_4-v2.webp",
+        "alt": "Fender Quantum LT audio interface on a studio desk in a working session"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/PreSonus%20Quantum%20HD2%20Elevated%20Photo%20shutter%20drag%20hero%20image.webp",
+        "alt": "PreSonus Quantum HD2 interface shot with a shutter drag light trail effect"
+      },
+      {
+        "image": "/ASSETS/IMAGES/PAGES/Home/DJ%20Jazzy%20Jeff%20Soundstage%20Gradient%20image%20for%20Studio%20One%20Pro%207%20Launch.webp",
+        "alt": "DJ Jazzy Jeff performing on a soundstage lit with a purple and blue gradient for the Studio One Pro 7 launch"
+      }
+    ]
+  },
+  "video": {
+    "eyebrow": "Directed & edited in house",
+    "title": "Video",
+    "more": "All film work",
+    "feature": {
+      "youtube": "XpN54Uh0eEo",
+      "alt": "StudioLive Series III SE launch hero film still"
+    }
+  },
+  "about": {
+    "eyebrow": "About me",
+    "title": "Hello there",
+    "paragraphs": [
+      "My name is Houston. I design brand systems and then build the best content possible inside them. Key art, identity, layout, and the photography that goes with it.",
+      "11 years of it and counting, most recently at Fender, where I've taken work from a global software launch to trade show floors. I'm a photographer by trade and a working audio engineer, so a project can go a long way before I have to hand it off.",
+      "Whether it's a launch campaign or snapshots at my daughters' birthday party, I can't help but get invested in the craft. Every image, every layout, every bit of emotion deserves the same care.",
+      "I work with kindness, excellence, and a little fun along the way. If that sounds like your bag, let's talk."
+    ],
+    "cta": "Contact me",
+    "portrait": {
+      "image": "/ASSETS/IMAGES/PAGES/Home/Houston%20Dragna%202026%20Headshot.webp",
+      "alt": "Houston Dragna",
+      "caption": "Houston Dragna"
+    }
+  },
+  "contact": {
+    "eyebrow": "Get in touch",
+    "heading": "Let's talk"
+  },
+  "faq": {
+    "eyebrow": "Questions",
+    "title": "Frequently<br>asked.",
+    "items": [
+      {
+        "question": "What do you do?",
+        "answer": "I work across brand design, photography, and video direction. In practice that means brand identity and design systems, campaign key art, product and lifestyle photography, launch films, and the packaging around them: social, retail, and e-commerce. On the largest projects I have run all of it as one pipeline rather than handing pieces to different teams."
+      },
+      {
+        "question": "Where do you work?",
+        "answer": "Anywhere the work is. I am available for global travel and regularly shoot on location, having produced campaigns across multiple cities for international launches. Studio, soundstage, LED volume wall, live venue, or client site. I am based in the United States and travel for the majority of projects."
+      },
+      {
+        "question": "Do you take on freelance and contract work?",
+        "answer": "Yes. I run an independent creative practice, taking on project-based engagements and ongoing retainers. That covers a single shoot or deliverable through to a full campaign built and delivered end to end."
+      },
+      {
+        "question": "What kinds of clients do you work with?",
+        "answer": "Most of my recent work has been with music gear and pro audio brands, where I have led global product launches end to end. The same approach carries into DTC, SaaS and software, and CPG: categories where a product has to be explained and made desirable at the same time. If it needs a coherent visual idea carried across film, photography, and design, it is in scope."
+      },
+      {
+        "question": "Do you handle a project end to end, or one piece of it?",
+        "answer": "Either. I have pitched a campaign, storyboarded it, directed the shoot, shot the stills, mixed the audio, and designed the collateral. I have also been brought in for a single lane, most often photography or direction. Whichever way a project is structured, I am comfortable owning one piece or the whole thing."
+      },
+      {
+        "question": "What is your turnaround?",
+        "answer": "It depends on scope, but I plan backwards from your launch date and agree on milestones before anything starts. Smaller projects usually move in days rather than weeks. For a multi-phase campaign, the schedule is built into the production plan up front so nothing lands late in the rollout."
+      },
+      {
+        "question": "How do we start?",
+        "answer": "Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach.",
+        "html": "<p>Send me an email with what you are trying to make and when you need it. If it is a role, a job description is plenty. I will come back with questions, an honest read on fit, and what I would suggest as an approach.</p><a class=\"cta\" href=\"mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com\" data-goal=\"Email Click\" data-goal-source=\"FAQ\" aria-label=\"Email me\"><span class=\"cta-chip start\"><svg viewBox=\"0 0 12 12\" fill=\"none\" aria-hidden=\"true\"><path d=\"M6 1v10M1 6h10\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"square\"/></svg></span><span class=\"cta-label\">Email me</span><span class=\"cta-chip end\"><svg viewBox=\"0 0 12 12\" fill=\"none\" aria-hidden=\"true\"><path d=\"M6 1v10M1 6h10\" stroke=\"currentColor\" stroke-width=\"1.6\" stroke-linecap=\"square\"/></svg></span></a>"
+      }
+    ]
+  }
+}

@@ -1,0 +1,188 @@
+{
+  "featured": [
+    {
+      "youtube": "LKlLRwI62Iw",
+      "flag": "Most recent",
+      "title": "Switchfoot - Wake Up, Mr. Crow | Recorded Live at the Fender Nashville Showroom in Fender Studio Pro",
+      "alt": "Switchfoot performing Wake Up, Mr. Crow, live session video thumbnail",
+      "roles": [
+        "Director",
+        "Producer",
+        "Lighting Design",
+        "Photographer",
+        "Pre-Production",
+        "Scripting",
+        "Logistics"
+      ]
+    },
+    {
+      "youtube": "Fpujj5avFmc",
+      "flag": "Most recent",
+      "title": "Behind the Scenes | Joey Burcham recording Switchfoot live in Fender Studio Pro",
+      "alt": "Behind the scenes with Joey Burcham recording Switchfoot, video thumbnail",
+      "roles": [
+        "Director",
+        "Producer",
+        "Lighting Design",
+        "Photographer",
+        "Pre-Production",
+        "Scripting",
+        "Logistics",
+        "Post Audio Mix"
+      ]
+    }
+  ],
+  "filmsHeading": "Selected films",
+  "filmsNote": "Title / role / scope",
+  "films": [
+    {
+      "youtube": "lA7f6GV6NAo",
+      "title": "Fender Motion Controllers – Launch Hero",
+      "roles": [
+        "Lighting Design",
+        "Set Design",
+        "Producer",
+        "Photographer",
+        "Key Art"
+      ]
+    },
+    {
+      "youtube": "XpN54Uh0eEo",
+      "title": "PreSonus StudioLive Series III SE Digital Mixers - Launch Hero",
+      "roles": [
+        "Director",
+        "Producer",
+        "Lighting Designer",
+        "Photographer",
+        "Audio Mixer",
+        "Talent"
+      ]
+    },
+    {
+      "youtube": "N2W3E1ThYuw",
+      "title": "Introducing The New Quantum LT Audio Interfaces | Fender Studio",
+      "roles": [
+        "Gaffer / Lighting Designer",
+        "Photographer",
+        "Producer",
+        "Audio Mix Engineer",
+        "AC",
+        "Set Design"
+      ]
+    },
+    {
+      "youtube": "DGMJl-kagZc",
+      "title": "Fender Studio Pro 8.1 is here: See what’s new! | Fender Studio",
+      "roles": [
+        "Producer",
+        "Script Supervisor",
+        "Photographer",
+        "Key Art",
+        "Set Design",
+        "Lighting Design",
+        "Post Audio Mix"
+      ]
+    },
+    {
+      "youtube": "5ccqyo4J3KA",
+      "title": "Introducing Fender Studio Pro with Alissia & Nile Rodgers - Creativity Amplified",
+      "roles": [
+        "Photographer",
+        "AC",
+        "Gaffer",
+        "Producer",
+        "Audio Mixer",
+        "Graphic Designer"
+      ]
+    },
+    {
+      "youtube": "a9FE2Wr-YRg",
+      "title": "Fender Studio: The all-new app to record, jam, and create | Fender",
+      "roles": [
+        "Photographer",
+        "Producer",
+        "Gaffer",
+        "Music Composer",
+        "Audio Editor"
+      ]
+    },
+    {
+      "youtube": "peRrvF6eB4E",
+      "title": "We built Chad Smith a new studio - Check it out! | PreSonus",
+      "roles": [
+        "Cam Op",
+        "Photographer",
+        "Graphic Designer",
+        "Producer"
+      ]
+    },
+    {
+      "youtube": "jw3yfwFyqVo",
+      "title": "Studio One Pro 7 - Launch Hero - DJ Jazzy Jeff",
+      "roles": [
+        "Producer",
+        "Gaffer",
+        "Photographer",
+        "Audio Editor"
+      ]
+    },
+    {
+      "youtube": "JFEcmCfVWW0",
+      "title": "Mad Keys | Take the Leap | Quantum Audio Interfaces | PreSonus",
+      "roles": [
+        "Photographer",
+        "Cam Op",
+        "Gaffer",
+        "Producer",
+        "Audio Engineer"
+      ]
+    },
+    {
+      "youtube": "V_MDt1NbnKQ",
+      "title": "John Finch - I Will Give Thanks (Official Acoustic Video) [Live Sessions]",
+      "roles": [
+        "Director",
+        "Exec Producer",
+        "Cam Op",
+        "Editor",
+        "Audio Engineer",
+        "Mix Engineer"
+      ]
+    },
+    {
+      "youtube": "b72CeFlhloA",
+      "title": "Journey Music Collective - Faithfulness To Me (feat. Nathaniel Kimball) [Live]",
+      "roles": [
+        "Director",
+        "Cam Op",
+        "Editor",
+        "Colorist"
+      ]
+    }
+  ],
+  "seriesHeading": "Tutorial series",
+  "seriesNote": "Series / role / scope",
+  "series": [
+    {
+      "id": "seriesSnapshots",
+      "title": "StudioLive Snapshots",
+      "url": "https://www.youtube.com/playlist?list=PLcJ31ytB086Y",
+      "brand": "PreSonus",
+      "count": 84,
+      "blurb": "Bite-size tutorials covering the features and workflows of the StudioLive mixer line. Lit, produced, and camera-operated across nearly the entire series, with script support along the way. Thumbnails and series key art designed in house.",
+      "thumbs": [
+        "8cQmcT-5qMg",
+        "ZUPcwWN-h10",
+        "EASpZvDUxHc",
+        "eqdTBjNP7S4"
+      ],
+      "roles": [
+        "Producer",
+        "Lighting Designer",
+        "Cam Op",
+        "Thumbnail Design",
+        "Key Art"
+      ]
+    }
+  ]
+}
