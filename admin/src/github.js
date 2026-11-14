@@ -22,7 +22,7 @@ async function gh(method, path, body, accept) {
   if (r.status === 204) return null;
   if (!r.ok) { let m = ''; try { m = (await r.json()).message || ''; } catch (e) {}
     const x = new Error(r.status === 401 ? 'GitHub did not accept the key. It may have expired or been deleted.' : r.status === 403 && /rate limit/i.test(m) ? 'GitHub asked us to slow down. Wait a minute and try again.'
-      : r.status === 403 ? 'The key is missing a permission. It needs Contents and Pull requests set to Read and write, plus Checks and Commit statuses set to Read.'
+      : r.status === 403 ? 'The key is missing a permission. It needs Contents and Pull requests set to Read and write, plus Commit statuses and Actions set to Read-only.'
       : r.status === 404 && path.startsWith('{repo}') && !/\/(ref|contents|pulls\/\d|git\/refs)/.test(path) ? `The key cannot see ${REPO.owner}/${REPO.name}. Make sure that repository is selected for it.` : `GitHub said: ${m || r.status}`);
     x.status = r.status; x.gh = m; throw x; }
   return accept === 'raw' ? r.arrayBuffer() : r.json(); }
@@ -111,7 +111,7 @@ setInterval(savedLine, 30000);
 /* ---------- publishing ---------- */
 const STEP = { save: 'Saving your changes', up: n => `Uploading ${plural(n, 'image')}`, rules: 'Checking the content rules', preview: 'Building a private preview', layout: 'Checking layout at phone and desktop sizes', live: 'Publishing to houstondragna.com' };
 const fixMsg = { 'Build and content rules': 'a content rule', 'Browser checks (site)': 'the layout check', 'Browser checks (sync)': 'the page check', preview: 'the preview build' };
-function headline(list) { const t = list.filter(c => !c.note).map(c => c.s ? `${c.s.label}, ${c.t.charAt(0).toLowerCase()}${c.t.slice(1)}` : c.t); return t.length ? (t[0].length > 60 ? t[0].slice(0, 57).replace(/\s\S*$/, '') + '…' : t[0]) + (t.length > 1 ? ` (+${t.length - 1} more)` : '') : 'Admin changes'; }
+function headline(list) { const t = list.filter(c => !c.note).map(c => c.s ? `${c.s.label}, ${c.t.charAt(0).toLowerCase()}${c.t.slice(1)}` : c.t).map(s => s.replace(/\[\s*(skip|ci|no)\b[^\]]*\]/gi, '')); return t.length ? (t[0].length > 60 ? t[0].slice(0, 57).replace(/\s\S*$/, '') + '…' : t[0]) + (t.length > 1 ? ` (+${t.length - 1} more)` : '') : 'Admin changes'; }
 async function publishGH() {
   refresh(); if (S.pr.length) return showProblem(S.pr[0]);
   const imgs = newImages(), steps = [STEP.save, ...(imgs.length ? [STEP.up(imgs.length)] : []), STEP.rules, STEP.preview, STEP.layout, STEP.live];
@@ -129,7 +129,8 @@ async function publishGH() {
     for (const p of imgs) { const u = cur._up[p], v = variantPaths(p, true), put = (path, sha) => sha && tree.push({ path: path.slice(1), mode: '100644', type: 'blob', sha });
       put(p, u.files.full); put(v.view, u.files.view); put(v.thumb, u.files.thumb); if (u.files.hero) put(v.hero, u.files.hero); }
     const t = await gh('POST', '{repo}/git/trees', { base_tree: mainTree, tree }), list = S.ch;
-    const body = list.map(c => `- ${c.t}`).join('\n') + (imgs.length ? `\n- ${plural(imgs.length, 'new image')}` : '') + `\n\nPublished from the site admin by ${GH.user}.`;
+    /* words like [skip ci] in a commit tell GitHub and Netlify not to check it; a publish must always be checked */
+    const body = list.map(c => `- ${c.t.replace(/\[\s*(skip|ci|no)\b[^\]]*\]/gi, '')}`).join('\n') + (imgs.length ? `\n- ${plural(imgs.length, 'new image')}` : '') + `\n\nPublished from the site admin by ${GH.user}.`;
     const c = await gh('POST', '{repo}/git/commits', { message: `Admin: ${headline(list)}\n\n${body}`, tree: t.sha, parents: [main] });
     for (const old of await openPublishes()) { await gh('PATCH', `{repo}/pulls/${old.number}`, { state: 'closed' }).catch(() => {}); await dropRef(old.head.ref).catch(() => {}); }
     const branch = PUB + stamp(); await setRef(branch, c.sha);
@@ -148,7 +149,10 @@ function fail(msg, kind, link) { pub = { ...(pub || { steps: [], kinds: [] }), r
 async function watch() {
   const t0 = Date.now();
   while (pub && pub.running && pub.head) {
-    let runs, st; try { runs = (await gh('GET', `{repo}/commits/${pub.head}/check-runs?per_page=100`)).check_runs; st = (await gh('GET', `{repo}/commits/${pub.head}/status`)).statuses; }
+    /* the site's checks are GitHub Actions jobs; personal keys read them through Actions (they cannot be given Checks) */
+    let runs = [], st; try { const wr = (await gh('GET', `{repo}/actions/runs?head_sha=${pub.head}&per_page=20`)).workflow_runs || [];
+      for (const w of wr) runs.push(...((await gh('GET', `{repo}/actions/runs/${w.id}/jobs?per_page=100`)).jobs || []));
+      st = (await gh('GET', `{repo}/commits/${pub.head}/status`)).statuses; }
     catch (e) { if (e.offline) { await sleep(10000); continue; } throw e; }
     const run = n => runs.filter(r => r.name === n).sort((a, b) => (b.started_at || '').localeCompare(a.started_at || ''))[0];
     const prev = st.find(s => /deploy-preview$/.test(s.context));
@@ -189,7 +193,7 @@ function signInHTML(err) { return `<div class="signin"><div class="sec-head"><h1
   <p>The admin publishes through GitHub, where the site lives. It needs a key from your GitHub account that can change this one repository and nothing else.</p>
   <ol class="howto"><li>Open <a href="${NEW_KEY}" target="_blank" rel="noopener">GitHub, new fine-grained token</a>. Name it <b>Site admin</b> and pick an expiry.</li>
     <li>Under Repository access choose <b>Only select repositories</b> and pick <b>${esc(REPO.owner)}/${esc(REPO.name)}</b>.</li>
-    <li>Under Permissions set <b>Contents</b> and <b>Pull requests</b> to Read and write, and <b>Checks</b> and <b>Commit statuses</b> to Read.</li>
+    <li>In Permissions, open the <b>Repositories</b> tab and use <b>Add permissions</b>: set <b>Contents</b> and <b>Pull requests</b> to Read and write, and <b>Commit statuses</b> and <b>Actions</b> to Read-only.</li>
     <li>Create it, copy it, and paste it here.</li></ol>
   <form id="si-form" class="card" novalidate><div class="field${err ? ' bad' : ''}"><div class="lab"><label class="mono" for="si-key">GitHub key</label></div>
     <input type="password" id="si-key" autocomplete="off" autocapitalize="none" spellcheck="false" placeholder="github_pat_…" required>${err ? `<p class="msg">${esc(err)}</p>` : ''}
