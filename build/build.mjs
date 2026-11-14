@@ -8,6 +8,7 @@ import { loadContent } from './lib/content.mjs';
 import { esc } from './lib/html.mjs';
 import * as R from './lib/render.mjs';
 import { validate, checkLinks } from './lib/validate.mjs';
+import { adminFiles, headersFile } from './lib/admin.mjs';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const DIST = path.join(ROOT, 'dist');
@@ -82,6 +83,12 @@ if (c.redirects.length) redirects += `\n# ── Added from the admin ───�
   c.redirects.map(x => `${x.from.padEnd(32)} ${x.to.padEnd(32)} 301`).join('\n') + '\n';
 write('_redirects', redirects);
 
+/* ---------- admin settings and security headers ---------- */
+c.staticDirs = fs.readdirSync(path.join(ROOT, 'src/static'), { withFileTypes: true })
+  .filter(d => d.isDirectory() && fs.existsSync(path.join(ROOT, 'src/static', d.name, 'index.html'))).map(d => `/${d.name}/`);
+for (const [name, text] of Object.entries(adminFiles(ROOT))) write('admin/' + name, text);
+write('_headers', headersFile(c, routes));
+
 /* ---------- files that ship as they are ---------- */
 const copyDir = (from, to) => fs.existsSync(from) && fs.cpSync(from, to, { recursive: true, filter: f => path.basename(f) !== '.DS_Store' });
 copyDir(path.join(ROOT, 'src/static'), DIST);
@@ -96,8 +103,7 @@ const broken = checkLinks(DIST, redirects);
 if (broken.length) { fs.rmSync(DIST, { recursive: true, force: true }); stop(`${broken.length} broken link${broken.length > 1 ? 's' : ''}`, broken); }
 
 /* remember every address that has ever been published, so none can vanish later */
-const known = new Set(c.published); routes.forEach(r => known.add(r.page.path));
-for (const d of fs.readdirSync(path.join(ROOT, 'src/static'), { withFileTypes: true })) if (d.isDirectory() && fs.existsSync(path.join(ROOT, 'src/static', d.name, 'index.html'))) known.add(`/${d.name}/`);
+const known = new Set(c.published); routes.forEach(r => known.add(r.page.path)); c.staticDirs.forEach(d => known.add(d)); known.add('/admin/');
 if (known.size !== c.published.length) fs.writeFileSync(path.join(ROOT, 'build/published-paths.json'), JSON.stringify([...known].sort(), null, 2) + '\n');
 
 if (warnings.length) { console.log(`\n${warnings.length} note${warnings.length > 1 ? 's' : ''}:`); warnings.slice(0, 12).forEach(w => console.log('  • ' + w)); if (warnings.length > 12) console.log(`  • and ${warnings.length - 12} more`); }

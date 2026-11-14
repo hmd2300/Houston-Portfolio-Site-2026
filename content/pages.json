@@ -1,67 +1,62 @@
 {
-  "pages": [
-    {
-      "id": "home",
-      "path": "/",
+  "pages": {
+    "home": {
       "seoTitle": "HOUSTON DRAGNA | Design, Branding, Photo, Video",
       "seoDescription": "Brand designer, photographer, and video director. Campaign key art, brand systems, and global launch creative for Fender and PreSonus. Available worldwide.",
       "shortDescription": "Brand designer, photographer, and video director. US based, available worldwide.",
       "lastmod": "2026-11-10",
-      "priority": "1.0"
+      "priority": "1.0",
+      "path": "/"
     },
-    {
-      "id": "design",
+    "design": {
       "path": "/design/",
+      "heading": "Design",
+      "lede": "Brand identity, design systems, campaign key art, and launch creative. Eleven years of graphic design across Fender, PreSonus, and independent clients, working on global launches and available for travel. The work spans logo and identity systems, album art, packaging, social and campaign graphics, trade show environmental design, YouTube packaging, and e-commerce merchandising for global product launches.",
+      "accent": "chart",
+      "showCount": true,
       "seoTitle": "Brand Design & Key Art Portfolio | Houston Dragna",
       "seoDescription": "Brand identity, design systems, album art, and campaign key art by Houston Dragna, working on global launches for Fender, PreSonus, and independent clients.",
       "shortDescription": "Brand identity, design systems, campaign key art, and launch creative across Fender and PreSonus.",
       "lastmod": "2026-11-10",
-      "priority": "0.9",
-      "accent": "chart",
-      "heading": "Design",
-      "showCount": true,
-      "lede": "Brand identity, design systems, campaign key art, and launch creative. Eleven years of graphic design across Fender, PreSonus, and independent clients, working on global launches and available for travel. The work spans logo and identity systems, album art, packaging, social and campaign graphics, trade show environmental design, YouTube packaging, and e-commerce merchandising for global product launches."
+      "priority": "0.9"
     },
-    {
-      "id": "photo",
+    "photo": {
       "path": "/photo/",
+      "heading": "Photo",
+      "lede": "Commercial, product, lifestyle, and portrait photography, shot and finished in house. US based and available worldwide, shooting from studio product tables to touring stages: campaign and lifestyle imagery, high-end transactional product shots, artist portraits, live music and event coverage, and on-location documentary work for national brands.",
+      "accent": "fuch",
+      "showCount": true,
       "seoTitle": "Commercial & Product Photography | Houston Dragna",
       "seoDescription": "Commercial, product, lifestyle, and portrait photography by Houston Dragna. Available worldwide, shooting on location for music and pro audio brands.",
       "shortDescription": "Product, campaign, and lifestyle photography for pro audio and music brands.",
       "lastmod": "2026-11-10",
-      "priority": "0.9",
-      "accent": "fuch",
-      "heading": "Photo",
-      "showCount": true,
-      "lede": "Commercial, product, lifestyle, and portrait photography, shot and finished in house. US based and available worldwide, shooting from studio product tables to touring stages: campaign and lifestyle imagery, high-end transactional product shots, artist portraits, live music and event coverage, and on-location documentary work for national brands."
+      "priority": "0.9"
     },
-    {
-      "id": "video",
+    "video": {
       "path": "/video/",
+      "heading": "Video",
+      "lede": "Brand film and campaign video, directed and produced in house from concept through final grade. Launch films, artist features, short-form social content, and technical demo work, including LED volume wall virtual production, traditional soundstage shoots, and documentary capture on location.",
+      "accent": "blue",
+      "showCount": false,
       "seoTitle": "Brand Film & Video Direction | Houston Dragna",
       "seoDescription": "Launch films, brand video, and short-form content directed and produced by Houston Dragna, from concept through final grade.",
       "shortDescription": "Launch films, brand video, and short-form content produced and directed by Houston Dragna.",
       "lastmod": "2026-11-12",
-      "priority": "0.8",
-      "accent": "blue",
-      "heading": "Video",
-      "showCount": false,
-      "lede": "Brand film and campaign video, directed and produced in house from concept through final grade. Launch films, artist features, short-form social content, and technical demo work, including LED volume wall virtual production, traditional soundstage shoots, and documentary capture on location."
+      "priority": "0.8"
     },
-    {
-      "id": "case-studies",
+    "case-studies": {
       "path": "/case-studies/",
+      "heading": "Case Studies",
+      "lede": "Three campaign breakdowns from Fender and PreSonus: a global software and hardware launch, the physical debut of a new brand identity at the NAMM Show, and a flagship console launch I pitched and directed end to end. Each covers the brief, the creative platform, the production, and what I personally owned across film, photography, sound, and design.",
+      "accent": "chart",
+      "showCount": false,
       "seoTitle": "Campaign Case Studies | Houston Dragna",
       "seoDescription": "Three campaign breakdowns: the Fender Studio Pro launch, the NAMM 2026 brand debut, and the StudioLive Series III SE launch, directed end to end.",
       "shortDescription": "Global launch work for Fender Studio Pro, the NAMM 2026 brand debut, and StudioLive Series III SE.",
       "lastmod": "2026-11-10",
-      "priority": "0.8",
-      "accent": "chart",
-      "heading": "Case Studies",
-      "showCount": false,
-      "lede": "Three campaign breakdowns from Fender and PreSonus: a global software and hardware launch, the physical debut of a new brand identity at the NAMM Show, and a flagship console launch I pitched and directed end to end. Each covers the brief, the creative platform, the production, and what I personally owned across film, photography, sound, and design."
+      "priority": "0.8"
     }
-  ],
+  },
   "staticPages": [
     {
       "path": "/privacy/",

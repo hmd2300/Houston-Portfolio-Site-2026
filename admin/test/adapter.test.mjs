@@ -1,0 +1,35 @@
+// Proves the promise in adapter.mjs: nothing changes unless something was edited, and each kind of edit lands where it should.
+import fs from 'node:fs'; import path from 'node:path'; import assert from 'node:assert/strict';
+import { toAdmin, toFiles, changed, serialize } from '../adapter.mjs';
+const ROOT = path.resolve(import.meta.dirname, '../..'), read = f => fs.readFileSync(path.join(ROOT, f), 'utf8');
+const NAMES = ['home', 'design', 'photo', 'video', 'navigation', 'pages', 'site', 'redirects'];
+const F0 = Object.fromEntries(NAMES.map(n => [n, JSON.parse(read(`content/${n}.json`))]));
+F0.studies = JSON.parse(read('content/case-studies.json')).order.map(s => { const d = JSON.parse(read(`content/studies/${s}.json`)); return { id: d.id, title: d.card.title, path: d.path }; });
+const has = p => fs.existsSync(path.join(ROOT, p)), load = () => JSON.parse(JSON.stringify(toAdmin(F0, has))), save = M => toFiles(M, F0, { today: '2030-01-02', has });
+let n = 0; const ok = (name, fn) => { fn(); n++; console.log('  ok', name); };
+
+ok('files are stored the way the admin writes them', () => NAMES.forEach(k => assert.equal(serialize(F0[k]), read(`content/${k}.json`), k)));
+ok('no edit, no change, byte for byte', () => assert.deepEqual(changed(save(load()), F0), {}));
+ok('hero slides show their full-size originals', () => assert.ok(load().home.slides.every(s => s.image.includes('/PAGES/Home/'))));
+ok('reorder only moves items', () => { const M = load(); M.design.items.reverse(); const F = save(M), c = changed(F, F0);
+  assert.deepEqual(Object.keys(c), ['content/design.json', 'content/pages.json']); assert.deepEqual(F.design.items, [...F0.design.items].reverse());
+  assert.equal(F.pages.pages.design.lastmod, '2030-01-02'); assert.equal(F.pages.pages.photo.lastmod, F0.pages.pages.photo.lastmod); });
+ok('add, edit, remove', () => { const M = load(); M.photo.items.splice(1, 1); M.photo.items[0].alt = 'Changed'; M.photo.items.unshift({ image: '/ASSETS/IMAGES/PAGES/Photo/new.webp', alt: 'New', spec: true });
+  const F = save(M); assert.equal(F.photo.items.length, F0.photo.items.length); assert.deepEqual(F.photo.items[0], { image: '/ASSETS/IMAGES/PAGES/Photo/new.webp', alt: 'New', spec: true });
+  assert.deepEqual(F.photo.items[1], { ...F0.photo.items[0], alt: 'Changed' }); assert.deepEqual(F.photo.items[2], F0.photo.items[2]); });
+ok('a changed address leaves a redirect and no chain', () => { const M = load(); M.pages.photo.path = '/photography/'; let F = save(M);
+  assert.deepEqual(F.redirects.redirects, [...F0.redirects.redirects, { from: '/photo/', to: '/photography/' }]); assert.equal(F.pages.pages.photo.path, '/photography/'); });
+ok('hero: new image, focus, and back to centre', () => { const M = load(); M.home.slides[0].focus = 30; M.home.slides[1].focus = 50; M.home.slides[2].image = '/ASSETS/IMAGES/PAGES/Home/new-slide.webp'; M.home.slides[2].phone = 80;
+  const F = save(M).home.slides; assert.equal(F[0].focusY, '30%'); assert.equal(F[0].image, F0.home.slides[0].image); assert.ok(!('focusY' in F[1]));
+  assert.equal(F[2].image, '/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/new-slide.webp'); assert.equal(F[2].phoneX, 80); });
+ok('FAQ: line breaks, the email button, a new question', () => { const M = load(), q = M.home.faq.items; assert.ok(M.home.faq.title.includes('\n')); assert.equal(q[q.length - 1].emailButton, true);
+  q[q.length - 1].emailButton = false; q[0].emailButton = true; q.push({ question: 'New?', answer: 'Yes.', emailButton: false });
+  const F = save(M).home.faq; assert.equal(F.title, F0.home.faq.title); assert.ok(!('emailButton' in F.items[F.items.length - 2])); assert.equal(F.items[0].emailButton, true); assert.deepEqual(F.items[F.items.length - 1], { question: 'New?', answer: 'Yes.' }); });
+ok('video: pasted links become IDs, a new playlist gets an id', () => { const M = load(); M.video.films.unshift({ youtube: 'https://youtu.be/dQw4w9WgXcQ?t=3', title: 'T', roles: ['Director'] });
+  M.video.series.push({ title: 'My new series!', url: 'https://www.youtube.com/playlist?list=x', brand: 'B', count: 3, blurb: 'b', thumbs: ['https://www.youtube.com/watch?v=dQw4w9WgXcQ', 'aaaaaaaaaaa', 'bbbbbbbbbbb', 'ccccccccccc'], roles: ['Producer'] });
+  const F = save(M).video; assert.deepEqual(F.films[0], { youtube: 'dQw4w9WgXcQ', title: 'T', roles: ['Director'] }); assert.equal(F.series[1].id, 'seriesMyNewSeries'); assert.equal(F.series[1].thumbs[0], 'dQw4w9WgXcQ'); assert.deepEqual(F.series[0], F0.video.series[0]); });
+ok('menu, footer, settings', () => { const M = load(); M.navigation.menu.reverse(); M.navigation.footer[0].links.pop(); M.settings.links.email = 'new@example.com'; M.settings.search.knowsAbout.push('Live sound');
+  const F = save(M); assert.deepEqual(F.navigation.menu, [...F0.navigation.menu].reverse()); assert.equal(F.navigation.footer[0].links.length, F0.navigation.footer[0].links.length - 1); assert.deepEqual(F.navigation.footer[1], F0.navigation.footer[1]);
+  assert.equal(F.site.emailLink, 'mailto:new@example.com?subject=Inquiry%20via%20houstondragna.com'); assert.equal(F.site.knowsAbout.at(-1), 'Live sound'); assert.equal(F.site.url, F0.site.url); });
+ok('page heading and intro go to the right page', () => { const M = load(); M.video.page.heading = 'Film'; const F = save(M); assert.equal(F.pages.pages.video.heading, 'Film'); assert.equal(F.pages.pages.video.lastmod, '2030-01-02'); assert.deepEqual(Object.keys(changed(F, F0)), ['content/pages.json']); });
+console.log(`${n} adapter checks passed`);

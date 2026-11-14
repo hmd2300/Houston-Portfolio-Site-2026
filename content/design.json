@@ -1,84 +1,104 @@
 {
   "items": [
     {
-      "image": "/ASSETS/IMAGES/PAGES/Design/Back%20To%20Your%20Heart%20Album%20Art%20Design%20-%20Novum%20Records.webp",
-      "alt": "Back to Your Heart album art for Novum Records, live recording setup with serif title lockup"
+      "image": "/ASSETS/IMAGES/PAGES/Design/Back To Your Heart Album Art Design - Novum Records.webp",
+      "alt": "Back to Your Heart album art for Novum Records, live recording setup with serif title lockup",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/Dad+Casual+Brand+Card.webp",
-      "alt": "Dad Casual brand identity card showing logo and colour palette"
+      "alt": "Dad Casual brand identity card showing logo and colour palette",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/Jamie+Benn+Graphic+Spec.webp",
-      "alt": "Jamie Benn hockey spec sports graphic with bold display type"
+      "alt": "Jamie Benn hockey spec sports graphic with bold display type",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/PreSonus+Sphere+Social+Graphic+Stack.webp",
-      "alt": "PreSonus Sphere social graphic stack showing layered campaign layouts"
+      "alt": "PreSonus Sphere social graphic stack showing layered campaign layouts",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Design/PreSonus%20Studio+24c+Swish+4x5.webp",
-      "alt": "PreSonus Studio 24c interface graphic with a motion swish treatment"
+      "image": "/ASSETS/IMAGES/PAGES/Design/PreSonus Studio+24c+Swish+4x5.webp",
+      "alt": "PreSonus Studio 24c interface graphic with a motion swish treatment",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/PreSonus+AudioBox+GO+Social+Graphics.webp",
-      "alt": "PreSonus AudioBox GO social graphic set with product and typography"
+      "alt": "PreSonus AudioBox GO social graphic set with product and typography",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/FS+Hero+with+BG.webp",
-      "alt": "Fender Studio hero key art composition with layered background artwork"
+      "alt": "Fender Studio hero key art composition with layered background artwork",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Design/Kota+The+Friend-She%27s+Gone-Album+Art-Houston+Dragna.webp",
-      "alt": "Kota The Friend-She's Gone-Album Art-Houston Dragna"
+      "image": "/ASSETS/IMAGES/PAGES/Design/Kota+The+Friend-She's+Gone-Album+Art-Houston+Dragna.webp",
+      "alt": "Kota The Friend-She's Gone-Album Art-Houston Dragna",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/PreSonus+Rebrand+Spec+Option+-+Houston+Dragna.webp",
-      "alt": "Speculative PreSonus rebrand concept board with logo and identity system"
+      "alt": "Speculative PreSonus rebrand concept board with logo and identity system",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/SOP+7.2+Social+Carousel+card.webp",
-      "alt": "Studio One Pro 7.2 social carousel card with feature callouts"
+      "alt": "Studio One Pro 7.2 social carousel card with feature callouts",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/Shoe+Podcast+Brand+Card.webp",
-      "alt": "Shoe podcast brand identity card with logo and type system"
+      "alt": "Shoe podcast brand identity card with logo and type system",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/Eris+Accent+Amazon+Listing+Card.webp",
-      "alt": "PreSonus Eris speaker Amazon listing card with feature callouts"
+      "alt": "PreSonus Eris speaker Amazon listing card with feature callouts",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/Fender+Studio+Key+Art+A+-+16x9.webp",
-      "alt": "Fender Studio campaign key art in 16x9 format"
+      "alt": "Fender Studio campaign key art in 16x9 format",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/Fender+Quantum+LT+Social+Carousel+Card.webp",
-      "alt": "Fender Quantum LT social carousel card with product and feature typography"
+      "alt": "Fender Quantum LT social carousel card with product and feature typography",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Design/DJ%20Jazzy%20Jeff%20Studio%20One%20Pro%207%20Key%20Hero%20Image.webp",
-      "alt": "Key art for the Studio One Pro 7 launch featuring DJ Jazzy Jeff"
+      "image": "/ASSETS/IMAGES/PAGES/Design/DJ Jazzy Jeff Studio One Pro 7 Key Hero Image.webp",
+      "alt": "Key art for the Studio One Pro 7 launch featuring DJ Jazzy Jeff",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/PreSonus+StudioLive+SE+Infogrphics+Card.webp",
-      "alt": "StudioLive Series III SE dealer infographic card explaining console features"
+      "alt": "StudioLive Series III SE dealer infographic card explaining console features",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Design/NAMM%202026%20LIVE%20FROM%20NAMM%20Keynote%20with%20DJ%20Jazzy%20Jeff%20Thumb.webp",
-      "alt": "YouTube thumbnail for the Live from NAMM 2026 keynote with DJ Jazzy Jeff"
+      "image": "/ASSETS/IMAGES/PAGES/Design/NAMM 2026 LIVE FROM NAMM Keynote with DJ Jazzy Jeff Thumb.webp",
+      "alt": "YouTube thumbnail for the Live from NAMM 2026 keynote with DJ Jazzy Jeff",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/Tunecore-Kota-RMB-Thumbnail-YT.webp",
-      "alt": "TuneCore YouTube thumbnail featuring Kota the Friend"
+      "alt": "TuneCore YouTube thumbnail featuring Kota the Friend",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/FSP-Hero_16x9.webp",
-      "alt": "Fender Studio Pro 16x9 hero key art for the global launch"
+      "alt": "Fender Studio Pro 16x9 hero key art for the global launch",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Design/Wildfire+16x9+Brand+Card.webp",
-      "alt": "Wildfire Made brand card in 16x9 format showing identity system"
+      "alt": "Wildfire Made brand card in 16x9 format showing identity system",
+      "spec": false
     }
   ]
 }

@@ -2,6 +2,7 @@
 // The output is byte-for-byte what the hand-built pages contained, so a change
 // in a content file is the only thing that can change a page.
 import { studyBody } from './study.mjs';
+import { SECTIONS } from './content.mjs';
 
 import { esc, attr, dash, THUMB, VIEW, FALLBACK, YT_THUMB, YT_FALLBACK, YT_WATCH, CTA_CHIP, CTA_CHIP_DOM, roles, tiles, grid, bakeDims } from './html.mjs';
 
@@ -40,7 +41,7 @@ export const home = {
   },
   faqList: c => `    <div class="faq-list reveal" style="--d:.1s">` + c.home.faq.items.map(it =>
     `<details class="faq-item reveal"><summary><span>${esc(it.question)}</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg></summary>` +
-    `<div class="faq-a">${it.html || it.answer.split(/\n\n+/).map(p => `<p>${esc(p)}</p>`).join('')}</div></details>`).join('') + `</div>`,
+    `<div class="faq-a">${it.html || it.answer.split(/\n\n+/).map(p => `<p>${esc(p)}</p>`).join('') + (it.emailButton ? `<a class="cta" href="${c.site.emailLink}" data-goal="Email Click" data-goal-source="FAQ" aria-label="Email me">${CTA_CHIP('start')}<span class="cta-label">Email me</span>${CTA_CHIP('end')}</a>` : '')}</div></details>`).join('') + `</div>`,
 };
 
 /* ---------- portfolio page headers ---------- */
@@ -141,19 +142,18 @@ export const studies = {
 
 /* ---------- menu and footer ---------- */
 export function menuItems(c) {
-  return c.nav.menu.map((m, i) => m.page
-    ? `      <a class="m-item" style="--i:${i}" href="${c.page(m.page).path}" data-view="${m.page}">${esc(m.label)}</a>`
-    : `      <a class="m-item" style="--i:${i}" href="#${m.section}" data-scroll>${esc(m.label)}</a>`).join('\n');
+  return c.nav.menu.map((m, i) => SECTIONS.includes(m.to)
+    ? `      <a class="m-item" style="--i:${i}" href="#${m.to}" data-scroll>${esc(m.label)}</a>`
+    : `      <a class="m-item" style="--i:${i}" href="${c.page(m.to).path}" data-view="${m.to}">${esc(m.label)}</a>`).join('\n');
 }
 export function footerNav(c) {
   const link = l => {
-    if (l.page)    return `<a data-view="${l.page}" href="${c.page(l.page).path}">${esc(l.label)}</a>`;
-    if (l.section) return `<a data-view="${l.section}" href="/${l.section}">${esc(l.label)}</a>`;
-    if (l.link === 'email')      return `<a href="${c.site.emailLink}" data-goal="Email Click" data-goal-source="Footer">${esc(l.label)}</a>`;
-    if (l.link === 'instagram')  return `<a href="${c.site.instagram}" target="_blank" rel="noopener" data-goal="Instagram Click">${esc(l.label)}</a>`;
-    if (l.link === 'linkedin')   return `<a href="${c.site.linkedin}" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">${esc(l.label)}</a>`;
-    if (l.link === 'latestFilm') return `<a href="${YT_WATCH(c.site.latestFilm)}" target="_blank" rel="noopener">${esc(l.label)}</a>`;
-    throw new Error('Unknown footer link: ' + JSON.stringify(l));
+    if (SECTIONS.includes(l.to)) return `<a data-view="${l.to}" href="/${l.to}">${esc(l.label)}</a>`;
+    if (l.to === 'email')      return `<a href="${c.site.emailLink}" data-goal="Email Click" data-goal-source="Footer">${esc(l.label)}</a>`;
+    if (l.to === 'instagram')  return `<a href="${c.site.instagram}" target="_blank" rel="noopener" data-goal="Instagram Click">${esc(l.label)}</a>`;
+    if (l.to === 'linkedin')   return `<a href="${c.site.linkedin}" target="_blank" rel="noopener" data-goal="LinkedIn Click" data-goal-source="Footer">${esc(l.label)}</a>`;
+    if (l.to === 'latestFilm') return `<a href="${YT_WATCH(c.site.latestFilm)}" target="_blank" rel="noopener">${esc(l.label)}</a>`;
+    return `<a data-view="${l.to}" href="${c.page(l.to).path}">${esc(l.label)}</a>`;
   };
   return c.nav.footer.map(col => `    <div class="foot-col">\n      <p class="foot-h">${esc(col.heading)}</p>\n` +
     col.links.map(l => '      ' + link(l)).join('\n') + `\n    </div>`).join('\n');
