@@ -1,0 +1,379 @@
+{
+  "id": "cs-fender",
+  "path": "/case-studies/fender-studio/",
+  "seoTitle": "Fender Studio Pro Launch | Houston Dragna",
+  "seoDescription": "Repositioning an icon of the stage as a powerhouse of the studio: the global launch of Fender Studio Pro and Quantum LT.",
+  "shortDescription": "Repositioning an icon of the stage as a powerhouse of the studio: the global launch of Fender Studio Pro and Quantum LT.",
+  "lastmod": "2026-11-10",
+  "priority": "0.7",
+  "datePublished": "2026-01-13",
+  "about": "Brand and product launch creative",
+  "card": {
+    "image": "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio%20Brand%20Launch%20Case%20Study%20Thumb.jpg",
+    "title": "Fender Studio · Global Launch",
+    "line": "A global software launch past a billion impressions."
+  },
+  "accent": "chart",
+  "kicker": "Fender × PreSonus · Global Brand Launch · Case Study",
+  "title": "Fender<br>Studio",
+  "hero": "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp",
+  "heroAlt": "Fender Studio Pro and Quantum HD at the desk",
+  "lockups": [
+    [
+      "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Logo%20White%20EAEAEA%20Horizontal.webp",
+      "Fender Studio"
+    ]
+  ],
+  "tagline": "Repositioning an icon of the stage as a powerhouse of the studio: the visual launch of Fender Studio Pro and the Quantum LT interfaces.",
+  "facts": [
+    [
+      "Role",
+      "Producer · Lighting · Photo · Mix"
+    ],
+    [
+      "Scope",
+      "Film · Photo · Sound · Web · Retail"
+    ],
+    [
+      "Product",
+      "Fender Studio Pro · Quantum LT"
+    ],
+    [
+      "Date",
+      "January 2026"
+    ]
+  ],
+  "blocks": [
+    {
+      "t": "sec",
+      "id": "overview",
+      "n": "01",
+      "kicker": "The Challenge",
+      "h": "Not just guitars<br>and amps anymore.",
+      "p": [
+        "Fender is a name built on the stage. Fender Studio Pro, the rebranded PreSonus Studio One Pro, and the new Quantum LT interfaces move that name into professional audio production. The brief was simple and hard: prove Fender belongs in the control room as much as under the spotlight.",
+        "Production spanned five shoots across three cities: the NYC hero film, three Nashville shoots for product demo, the Quantum LT launch and brand collateral, and a New Orleans shoot for the Fender Studio app that folded an earlier launch into the same family. Casting leaned young for a vintage-meets-modern aesthetic. The mission: hold the existing PreSonus demographic while drawing in a younger, more diverse crowd, the next generation of producers who find sanctuary in their studio."
+      ]
+    },
+    {
+      "t": "owned",
+      "h": "What I owned",
+      "cards": [
+        [
+          "Launch",
+          "Films",
+          "Concept, production, and direction of the NYC hero film and the Quantum LT hardware film."
+        ],
+        [
+          "Lighting",
+          "Design",
+          "Gaffer and lighting design across shoots, lit to feel like the room, not an ad."
+        ],
+        [
+          "Photo",
+          "graphy",
+          "Campaign and product photography, plus key art and YouTube thumbnails."
+        ],
+        [
+          "Audio",
+          "Mix",
+          "Mix engineering for the hardware film, including a remix of Nicole Alexis' original song for the cut."
+        ],
+        [
+          "Graphic",
+          "Design",
+          "Key art, thumbnails, social carousels, and campaign collateral."
+        ],
+        [
+          "Web &",
+          "Retail",
+          "Fender.com wireframing plus the Amazon storefront and A+ merchandising."
+        ]
+      ]
+    },
+    {
+      "t": "stats",
+      "h": "Production scale",
+      "wide": true,
+      "items": [
+        [
+          "5",
+          "shoots across three cities"
+        ],
+        [
+          "5,000+",
+          "photos shot (150+ final)"
+        ],
+        [
+          "2",
+          "hero films produced"
+        ],
+        [
+          "10",
+          "key art systems"
+        ],
+        [
+          "200+",
+          "static graphic assets"
+        ]
+      ]
+    },
+    {
+      "t": "sec",
+      "id": "film",
+      "n": "02",
+      "kicker": "The Launch Film",
+      "h": "A legend and<br>a virtuoso.",
+      "p": [
+        "The hero film pairs Nile Rodgers with Alissia inside a working studio: proof that Fender Studio Pro is where real records get made. Shot at the legendary Power Station in Hell's Kitchen, NYC, a room Nile told us was built around Chic in the '70s. The keystone shoot of the whole campaign, and the one true hero film of the launch."
+      ]
+    },
+    {
+      "t": "video",
+      "yt": "5ccqyo4J3KA",
+      "title": "Fender Studio Pro · Nile Rodgers & Alissia",
+      "sub": "Power Station, NYC · the hero film",
+      "chips": [
+        [
+          "Produced",
+          "Full production & direction"
+        ],
+        [
+          "Lighting",
+          "Lighting design on set"
+        ],
+        [
+          "Photography",
+          "Stills & campaign key art"
+        ],
+        [
+          "Key Art",
+          "Thumbnails & graphic design"
+        ]
+      ]
+    },
+    {
+      "t": "bleed",
+      "img": "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp",
+      "alt": "Nile Rodgers at Power Station, New York",
+      "kicker": "The room, not an ad",
+      "h": "Built around<br>Chic.",
+      "p": "We shot in a room with real history, the same walls that shaped decades of records. Lit and produced to feel authentic, not advertised: the console in the hands of the people who actually make the music."
+    },
+    {
+      "t": "sec",
+      "n": "03",
+      "kicker": "Hardware Launch · Quantum LT",
+      "h": "The signal chain<br>gets a Fender.",
+      "p": [
+        "The Quantum LT family launch film features Nicole Alexis, cut to her own original song, which I remixed for the film."
+      ]
+    },
+    {
+      "t": "video",
+      "yt": "N2W3E1ThYuw",
+      "title": "Fender Quantum LT · Official Launch",
+      "sub": "Nashville · featuring Nicole Alexis",
+      "chips": [
+        [
+          "Gaffer",
+          "Lighting design & grip"
+        ],
+        [
+          "Producer",
+          "Set design & on-site AC"
+        ],
+        [
+          "Mix",
+          "Audio mix & the remix of Nicole's track"
+        ],
+        [
+          "Photo",
+          "Stills & graphic design"
+        ]
+      ]
+    },
+    {
+      "t": "sec",
+      "id": "talent",
+      "n": "04",
+      "kicker": "The Talent",
+      "h": "Casting<br>credibility."
+    },
+    {
+      "t": "people",
+      "items": [
+        [
+          "Nile",
+          "Rodgers",
+          "Chic · Daft Punk",
+          "A funk and pop legend and one of the most sampled musicians alive, the living link between disco, funk, and modern pop. Instant authority for a pro-audio story.",
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp"
+        ],
+        [
+          "Alissia",
+          "",
+          "Producer · Bassist · DJ",
+          "Grammy-winning Producer of the Year and a killer bassist and DJ, the next-generation virtuoso bridging serious musicianship and the dance floor. The future of the brand.",
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Nile%20Rodgers%20and%20Alissa%20Hero.webp"
+        ],
+        [
+          "Nicole",
+          "Alexis",
+          "Artist · Quantum LT launch",
+          "Featured in the Quantum LT family launch film, cut to her own original song. I remixed the track for the film.",
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%20Nicole%20Alexis%20Wide%201.webp"
+        ],
+        [
+          "Joey",
+          "Burcham",
+          "Owner · Roo Studios, Nashville",
+          "Studio owner and engineer, featured in the HiFi demo content that carried the technical proof layer of the campaign.",
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Joey%20Burcham%20Fender%20Studio%20Hero%20Image%201.webp"
+        ]
+      ]
+    },
+    {
+      "t": "reel",
+      "h": "The Frame Reel",
+      "items": [
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Nile%20Rodgers%20Fender%20Studio%20Pro%20Lifestyle%20NYC%201.webp",
+          "Nile Rodgers · Power Station, NYC"
+        ],
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Nashville%20Brand%20Lifestyle%201.webp",
+          "Quantum LT · Nashville session"
+        ],
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Lifestyle%201.webp",
+          "Fender Studio Pro & Quantum HD · the desk"
+        ],
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Quantum%20LT%20Family%20Elevated%20Studio%20Photography.webp",
+          "Quantum LT family · LT2, LT4, LT16"
+        ],
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Lifestyle%20Keyart%20Family%20shot.webp",
+          "Quantum LT · lifestyle key art"
+        ],
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Pro%20Youtube%20Thumb.webp",
+          "Launch film thumbnail design"
+        ]
+      ]
+    },
+    {
+      "t": "sec",
+      "n": "05",
+      "kicker": "Digital & Brand Identity",
+      "h": "Living on<br>Fender.com.",
+      "p": [
+        "The films needed a home. I played a key role in wireframing and shaping the design, flow, and visual identity of the Fender Studio experience on Fender.com, defining how the ecosystem is introduced, navigated, and shopped.",
+        "Across 11 marketing landing pages: the Fender Studio brand page, the Fender Studio Pro launch page and its seven sub-pages, and the pages for Audio Interfaces, Notion, and Universal Control."
+      ]
+    },
+    {
+      "t": "stats",
+      "h": "",
+      "items": [
+        [
+          "11",
+          "marketing landing pages shaped end to end"
+        ],
+        [
+          "7",
+          "sub-pages under the Fender Studio Pro launch page"
+        ],
+        [
+          "3",
+          "product ecosystems introduced: interfaces, Notion, Universal Control"
+        ]
+      ]
+    },
+    {
+      "t": "bleed",
+      "img": "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Website.webp",
+      "alt": "Fender Studio on Fender.com",
+      "cap": "Fender Studio on Fender.com · hero, navigation & brand story"
+    },
+    {
+      "t": "sec",
+      "id": "retail",
+      "n": "06",
+      "kicker": "Retail & Merchandising",
+      "h": "Owning the<br>digital shelf.",
+      "p": [
+        "I designed and executed the Fender Studio Amazon storefront and led merchandising across every buildout: A+ content, Brand Stories, and enhanced product pages that carry Fender's voice all the way to checkout."
+      ]
+    },
+    {
+      "t": "gallery",
+      "h": "",
+      "wide": true,
+      "items": [
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20Cards.webp",
+          "Brand store · recording"
+        ],
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Studio%20Amazon%20Brand%20Store%20iPhone%20Screenshot.webp",
+          "Brand store · mobile"
+        ],
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Quantum%20LT%20Amazon%20A+%20Premium%20Layout.webp",
+          "A+ · from the manufacturer"
+        ],
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%202%20Amazon%20PDP.webp",
+          "Quantum LT2 · product page"
+        ],
+        [
+          "/ASSETS/IMAGES/PAGES/Case%20Studies/Fender%20Studio/Fender%20Quantum%20LT%20Amazon%20Brand%20Story.webp",
+          "Brand Story · carousel"
+        ]
+      ]
+    },
+    {
+      "t": "sec",
+      "id": "results",
+      "n": "07",
+      "kicker": "Outcome",
+      "h": "The launch<br>landed.",
+      "p": [
+        "Film, photography, sound, web, and retail all speaking the same language. Fender's name carried convincingly from the stage into the control room, on brand and on time across every channel.",
+        "The launch met its internal targets across traffic, conversion, and revenue. Those figures are Fender's to share rather than mine, so this page stays on the creative."
+      ]
+    },
+    {
+      "t": "stats",
+      "h": "What shipped",
+      "items": [
+        [
+          "2",
+          "hero films, concepted and produced"
+        ],
+        [
+          "150+",
+          "final images delivered from five shoots"
+        ],
+        [
+          "11",
+          "landing pages on Fender.com"
+        ],
+        [
+          "5",
+          "Amazon buildouts: brand store, A+, Brand Story, PDPs"
+        ]
+      ]
+    },
+    {
+      "t": "note",
+      "p": "Performance data for this launch belongs to Fender and is not published here. The work above is the creative I owned. I am happy to talk through the results, and my contribution to them, in conversation."
+    },
+    {
+      "t": "note",
+      "p": "I worked under the Creative Director on this launch. The lanes above are mine; overall visual creative direction was not."
+    }
+  ]
+}

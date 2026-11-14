@@ -1,0 +1,114 @@
+{
+  "menu": [
+    {
+      "page": "home",
+      "label": "Home"
+    },
+    {
+      "page": "design",
+      "label": "Design"
+    },
+    {
+      "page": "photo",
+      "label": "Photo"
+    },
+    {
+      "page": "video",
+      "label": "Video"
+    },
+    {
+      "page": "case-studies",
+      "label": "Case Studies"
+    },
+    {
+      "section": "about",
+      "label": "About"
+    },
+    {
+      "section": "contact",
+      "label": "Contact"
+    },
+    {
+      "section": "faq",
+      "label": "FAQ"
+    }
+  ],
+  "footer": [
+    {
+      "heading": "Work",
+      "links": [
+        {
+          "page": "design",
+          "label": "Design"
+        },
+        {
+          "page": "photo",
+          "label": "Photography"
+        },
+        {
+          "page": "video",
+          "label": "Film"
+        },
+        {
+          "page": "case-studies",
+          "label": "Case studies"
+        }
+      ]
+    },
+    {
+      "heading": "Selected work",
+      "links": [
+        {
+          "page": "cs-fender",
+          "label": "Fender Studio Pro"
+        },
+        {
+          "page": "cs-namm",
+          "label": "NAMM 2026 booth"
+        },
+        {
+          "page": "cs-se",
+          "label": "StudioLive SE"
+        }
+      ]
+    },
+    {
+      "heading": "Studio",
+      "links": [
+        {
+          "section": "about",
+          "label": "About"
+        },
+        {
+          "section": "faq",
+          "label": "FAQ"
+        },
+        {
+          "section": "contact",
+          "label": "Contact"
+        }
+      ]
+    },
+    {
+      "heading": "Elsewhere",
+      "links": [
+        {
+          "link": "email",
+          "label": "Email"
+        },
+        {
+          "link": "instagram",
+          "label": "Instagram"
+        },
+        {
+          "link": "linkedin",
+          "label": "LinkedIn"
+        },
+        {
+          "link": "latestFilm",
+          "label": "Latest film"
+        }
+      ]
+    }
+  ]
+}

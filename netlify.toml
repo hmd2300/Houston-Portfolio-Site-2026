@@ -1,5 +1,12 @@
+# The site is generated. `node build/build.mjs` reads /content and /src, checks
+# everything, and writes the finished pages to /dist, which is what goes live.
+# If the content has a mistake the build stops and the live site is untouched.
 [build]
-  publish = "."
+  command = "node build/build.mjs"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
 
 # Images are content-addressed by filename and never edited in place,
 # so they can be cached hard. The HTML must always revalidate.

@@ -1,0 +1,47 @@
+# Runs on every change, on GitHub's servers. Builds the site exactly the way
+# the host does, then runs the full set of browser checks against the result.
+name: Site checks
+
+on:
+  push:
+  workflow_dispatch:
+
+concurrency:
+  group: checks-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build and content rules
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: node build/build.mjs
+
+  browser:
+    name: Browser checks (${{ matrix.suite }})
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [site, audit, sync]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: tools/qa/package-lock.json
+      - run: node build/build.mjs
+      - run: npm ci
+        working-directory: tools/qa
+      - run: npx playwright install --with-deps chromium
+        working-directory: tools/qa
+      - run: node ${{ matrix.suite }}.js
+        working-directory: tools/qa
