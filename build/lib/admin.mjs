@@ -45,7 +45,7 @@ export function contentFiles(ROOT) {
 export function adminFiles(ROOT, { single = false, mode = 'site', media, content } = {}) {
   const src = f => fs.readFileSync(path.join(ROOT, 'admin/src', f), 'utf8'), has = p => fs.existsSync(path.join(ROOT, p));
   const build = process.env.COMMIT_REF || null, site = JSON.parse(fs.readFileSync(path.join(ROOT, 'content/site.json'), 'utf8')).url;
-  const data = JSON.stringify({ mode, build, siteUrl: site, repo: single ? null : { owner: REPO[0], name: REPO[1] }, content: content || toAdmin(contentFiles(ROOT), has), media: media || mediaIndex(ROOT) });
+  const data = JSON.stringify({ mode, build, siteUrl: site, repo: single ? null : { owner: REPO[0], name: REPO[1], base: process.env.CONTEXT === 'production' || !process.env.HEAD ? 'main' : process.env.HEAD }, content: content || toAdmin(contentFiles(ROOT), has), media: media || mediaIndex(ROOT) });
   const js = adapterScript(ROOT) + PARTS.map(src).join('\n'), css = src('styles.css');
   if (single) return { 'index.html': `<title>Site Admin Prototype</title>\n<meta name="claude:viewport-fit-sides" content="cover">\n<link rel="stylesheet" href="${FONTS}">\n<style>\n${css}\n</style>\n\n${TOP}\n\n<script>\nconst SAMPLE = ${data};\n${js}\n</script>\n` };
   return {

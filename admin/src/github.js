@@ -3,7 +3,10 @@
    of their own (admin-draft) so any device you sign in on picks them up, and publishes by opening a pull request,
    waiting for the site's own checks and a private preview build, and only then merging. Nothing reaches the site
    until every check has passed. The key you paste in stays on this device and is only ever sent to GitHub. */
-const REPO = SAMPLE.repo || {}, API = 'https://api.github.com', DRAFT = 'admin-draft', PUB = 'admin-publish-';
+/* The admin works against the branch its own copy was built from: main on the live site, the preview's branch on a preview.
+   So a publish from a preview lands on that preview only: nothing reaches the live site and no publish credit is used. */
+const REPO = SAMPLE.repo || {}, API = 'https://api.github.com', BASE = REPO.base || 'main', ONLINE = BASE === 'main';
+const DRAFT = ONLINE ? 'admin-draft' : `admin-draft--${BASE}`, PUB = ONLINE ? 'admin-publish-' : `admin-publish--${BASE}-`;
 const TOKEN_KEY = 'hd-admin-key', CONTENT = ['home', 'design', 'photo', 'video', 'navigation', 'pages', 'site', 'redirects'];
 const NEED_CHECKS = ['Build and content rules', 'Browser checks (site)', 'Browser checks (sync)'];
 let GH = { on: false, token: null, user: null, base: null, files: null, shas: null, draftSha: null, saving: false, dirty: false, saved: null, offline: false, stale: false };
@@ -51,7 +54,8 @@ async function connect(key, keep) {
   GH.user = (await gh('GET', '/user')).login; putKey(GH.token, keep); GH.on = true; }
 async function boot() {
   GH.loading = true; render();
-  const main = await getRef('main'), draftHead = await getRef(DRAFT); let remote = null;
+  const main = await getRef(BASE), draftHead = await getRef(DRAFT); let remote = null;
+  if (!main) throw new Error(`The branch ${BASE} is not on GitHub any more. Open the admin on the live site instead.`);
   if (draftHead) { try { remote = (await readJSON('draft.json', draftHead)).data; } catch (e) { remote = null; } }
   let local = null; try { local = JSON.parse(localStorage.getItem(KEY + '-gh') || 'null'); } catch (e) {}
   if (local && local.repo !== `${REPO.owner}/${REPO.name}`) local = null;
@@ -109,17 +113,17 @@ function savedLine() { const el = $('saved'); if (!el) return; const ago = GH.sa
 setInterval(savedLine, 30000);
 
 /* ---------- publishing ---------- */
-const STEP = { save: 'Saving your changes', up: n => `Uploading ${plural(n, 'image')}`, rules: 'Checking the content rules', preview: 'Building a private preview', layout: 'Checking layout at phone and desktop sizes', live: 'Publishing to houstondragna.com' };
+const STEP = { save: 'Saving your changes', up: n => `Uploading ${plural(n, 'image')}`, rules: 'Checking the content rules', preview: 'Building a private preview', layout: 'Checking layout at phone and desktop sizes', live: ONLINE ? 'Publishing to houstondragna.com' : 'Publishing to this preview' };
 const fixMsg = { 'Build and content rules': 'a content rule', 'Browser checks (site)': 'the layout check', 'Browser checks (sync)': 'the page check', preview: 'the preview build' };
 function headline(list) { const t = list.filter(c => !c.note).map(c => c.s ? `${c.s.label}, ${c.t.charAt(0).toLowerCase()}${c.t.slice(1)}` : c.t).map(s => s.replace(/\[\s*(skip|ci|no)\b[^\]]*\]/gi, '')); return t.length ? (t[0].length > 60 ? t[0].slice(0, 57).replace(/\s\S*$/, '') + '…' : t[0]) + (t.length > 1 ? ` (+${t.length - 1} more)` : '') : 'Admin changes'; }
 async function publishGH() {
   refresh(); if (S.pr.length) return showProblem(S.pr[0]);
-  const imgs = newImages(), steps = [STEP.save, ...(imgs.length ? [STEP.up(imgs.length)] : []), STEP.rules, STEP.preview, STEP.layout, STEP.live];
-  pub = { step: 0, running: true, failed: false, steps, kinds: ['save', ...(imgs.length ? ['up'] : []), 'rules', 'preview', 'layout', 'live'] };
+  const imgs = newImages(), kinds = ['save', ...(imgs.length ? ['up'] : []), 'rules', ...(ONLINE ? ['preview'] : []), 'layout', 'live'];
+  pub = { step: 0, running: true, failed: false, kinds, steps: kinds.map(k => k === 'up' ? STEP.up(imgs.length) : STEP[k]) };
   closeAll(true); render(); toast('Publishing. You can keep working.');
   try {
     clearTimeout(draftT); await saveDraft(); if (GH.stale) throw new Error('Your draft was changed on another device. Choose which one to keep, then publish again.');
-    const main = await getRef('main'), mainTree = (await gh('GET', `{repo}/git/commits/${main}`)).tree.sha;
+    const main = await getRef(BASE), mainTree = (await gh('GET', `{repo}/git/commits/${main}`)).tree.sha;
     const F = ADAPTER.toFiles(cur, GH.files, { has: hasImage }), out = ADAPTER.changed(F, GH.files);
     if (main !== GH.base) {                                    /* the site moved on since this draft began: only a clash on the same file stops us */
       const clash = []; for (const path of Object.keys(out)) { const n = path.slice(8, -5), now = await gh('GET', `{repo}/contents/${path}?ref=${main}`).catch(() => null); if (!now || now.sha !== GH.shas[n]) clash.push(path.slice(8)); }
@@ -134,7 +138,7 @@ async function publishGH() {
     const c = await gh('POST', '{repo}/git/commits', { message: `Admin: ${headline(list)}\n\n${body}`, tree: t.sha, parents: [main] });
     for (const old of await openPublishes()) { await gh('PATCH', `{repo}/pulls/${old.number}`, { state: 'closed' }).catch(() => {}); await dropRef(old.head.ref).catch(() => {}); }
     const branch = PUB + stamp(); await setRef(branch, c.sha);
-    const pr = await gh('POST', '{repo}/pulls', { title: `Admin: ${headline(list)}`, head: branch, base: 'main', body });
+    const pr = await gh('POST', '{repo}/pulls', { title: `Admin: ${headline(list)}`, head: branch, base: BASE, body });
     Object.assign(pub, { pr: pr.number, url: pr.html_url, head: c.sha, branch, step: pub.kinds.indexOf('rules'), done: list.map(x => x.t) });
     bar(); statusIfOpen(); await watch();
   } catch (e) { fail(e.message, e.clash ? 'clash' : null); } }
@@ -143,7 +147,7 @@ async function heroCrops(imgs) { for (const s of cur.home.slides) { const u = cu
   if (!u || !u.hero || !local || (s.phone == null ? 50 : s.phone) === (local.heroAt == null ? 50 : local.heroAt)) continue;
   const bmp = await createImageBitmap(local.files.full.blob), c = document.createElement('canvas'); c.width = bmp.width; c.height = bmp.height; c.getContext('2d').drawImage(bmp, 0, 0);
   const t = heroCrop(c, s.phone); local.files = { ...local.files, hero: { blob: await webp(t), w: t.width, h: t.height } }; local.heroAt = s.phone; delete u.files.hero; } }
-const openPublishes = async () => (await gh('GET', `{repo}/pulls?state=open&base=main&per_page=50`)).filter(p => p.head && p.head.ref.startsWith(PUB));
+const openPublishes = async () => (await gh('GET', `{repo}/pulls?state=open&base=${encodeURIComponent(BASE)}&per_page=50`)).filter(p => p.head && p.head.ref.startsWith(PUB));
 function statusIfOpen() { if ($('st-h')) statusSheet(); }
 function fail(msg, kind, link) { pub = { ...(pub || { steps: [], kinds: [] }), running: false, failed: true, msg, kind, link }; bar(); statusIfOpen(); toast('Not published. Tap the chip to see why.'); }
 async function watch() {
@@ -170,7 +174,7 @@ async function goLive() {
   const m = await gh('PUT', `{repo}/pulls/${pub.pr}/merge`, { merge_method: 'squash', sha: pub.head, commit_title: `Admin: ${headline((pub.done || []).map(t => ({ t })))}` });
   await dropRef(pub.branch).catch(() => {}); pub.merged = m.sha; bar(); statusIfOpen();
   /* the change is in; now wait until the live site has actually rebuilt with it */
-  const t0 = Date.now(), site = SAMPLE.siteUrl || '';
+  const t0 = Date.now(), site = ONLINE ? SAMPLE.siteUrl || '' : '';
   while (Date.now() - t0 < 12 * 60000) { await sleep(8000);
     try { const b = await (await fetch(`${site}/admin/build.json?t=${Date.now()}`, { cache: 'no-store' })).json(); if (b.build === m.sha) break; } catch (e) {} }
   const live = Date.now() - t0 < 12 * 60000;
@@ -178,12 +182,12 @@ async function goLive() {
   clearTimeout(draftT); GH.dirty = false; try { localStorage.removeItem(KEY + '-gh'); } catch (e) {} await dropRef(DRAFT).catch(() => {}); GH.draftSha = null;
   const keepView = view, keepEd = editing; editing = null; await boot(); view = keepView;
   pub = { ...pub, running: false, failed: false, step: pub.steps.length, slow: !live }; render(); if (keepEd && resolve(keepEd)) openEditor(keepEd);
-  statusIfOpen(); toast(live ? 'Live. Your changes are on the site.' : 'Published. The site is still updating and should catch up in a few minutes.');
+  statusIfOpen(); toast(live ? (ONLINE ? 'Live. Your changes are on the site.' : 'Done. This preview now shows your changes.') : 'Published. The site is still updating and should catch up in a few minutes.');
   setTimeout(() => { if (pub && !pub.running && !pub.failed) { pub = null; bar(); } }, 8000); }
 /* came back while a publish was still going (another tab, a reload, another device): pick it up */
 async function resume() { if (pub && pub.running) return; let open; try { open = await openPublishes(); } catch (e) { return; } if (!open.length) return;
-  const p = open[0], steps = [STEP.save, STEP.rules, STEP.preview, STEP.layout, STEP.live];
-  pub = { step: 1, running: true, failed: false, steps, kinds: ['save', 'rules', 'preview', 'layout', 'live'], pr: p.number, url: p.html_url, head: p.head.sha, branch: p.head.ref, done: (p.body || '').split('\n').filter(l => l.startsWith('- ')).map(l => l.slice(2)) };
+  const p = open[0], kinds = ['save', 'rules', ...(ONLINE ? ['preview'] : []), 'layout', 'live'];
+  pub = { step: 1, running: true, failed: false, kinds, steps: kinds.map(k => STEP[k]), pr: p.number, url: p.html_url, head: p.head.sha, branch: p.head.ref, done: (p.body || '').split('\n').filter(l => l.startsWith('- ')).map(l => l.slice(2)) };
   bar(); try { await watch(); } catch (e) { fail(e.message); } }
 async function abandon() { if (!pub || !pub.pr) { pub = null; return bar(); } await gh('PATCH', `{repo}/pulls/${pub.pr}`, { state: 'closed' }).catch(() => {}); await dropRef(pub.branch).catch(() => {}); pub = null; closeLayer(); toast('That attempt was closed. Your draft is still here.'); }
 
@@ -202,7 +206,8 @@ function signInHTML(err) { return `<div class="signin"><div class="sec-head"><h1
     <div class="posrow"><button class="btn primary" id="si-go" type="submit">Connect</button><button class="btn small line" type="button" id="si-look">Look around first</button></div></form></div>`; }
 async function trySignIn(key, keep) { const b = $('si-go'); if (b) { b.disabled = true; b.textContent = 'Checking'; }
   try { await connect(key, keep); toast(`Signed in as ${GH.user}`); await boot(); }
-  catch (e) { GH.token = null; GH.on = false; $('main').innerHTML = signInHTML(e.message); const k = $('si-key'); if (k) k.focus(); } }
+  catch (e) { const msg = e.status || e.offline || !GH.on ? e.message : `The key works, but the content on GitHub could not be opened (${e.message}). Ask Claude to look at it.`;
+    GH.token = null; GH.on = false; GH.loading = false; $('main').innerHTML = signInHTML(msg); const k = $('si-key'); if (k) k.focus(); } }
 function account() { sheet(layer, 'ac-h', GH.on ? GH.user : 'Not signed in', GH.on ? `<p class="fine">Signed in to GitHub. Edits are saved to a draft there, so any device you sign in on picks them up.</p>
     <div class="posrow"><button class="btn small line" id="ac-fresh">Start over from the live site</button><button class="btn small danger" id="ac-out">Sign out</button></div>
     <p class="fine">Start over throws away the draft on every device. Sign out removes the key from this device only.</p>`
@@ -222,4 +227,4 @@ document.addEventListener('click', e => { const b = e.target.closest('button'); 
 /* on opening: a key kept on this device signs straight in */
 if (LIVE && REPO.owner) { const k = getKey(); if (k) { GH.loading = true; GH.token = k;
   connect(k, (() => { try { return !!localStorage.getItem(TOKEN_KEY); } catch (e) { return false; } })()).then(boot)
-    .catch(e => { GH = { on: false, signErr: e.offline ? e.message : `${e.message} Paste a new key to sign in again.` }; if (!e.offline) putKey(null); render(); }); } }
+    .catch(e => { GH = { on: false, signErr: e.status === 401 ? `${e.message} Paste a new key to sign in again.` : e.message }; if (e.status === 401) putKey(null); render(); }); } }
