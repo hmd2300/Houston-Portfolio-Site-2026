@@ -29,7 +29,7 @@ const ALL = Object.fromEntries(C.all.map(p => [p.path, p.id])); const SUB = Obje
     ok(P.jobTitle === C.site.jobTitle, 'profile data carries the current title'); ok(!/specialising/.test(JSON.stringify(P)), 'profile data uses US spelling');
     const plain = C.home.faq.items.find(it => !it.html && !/\n/.test(it.answer)); const q = F.mainEntity.find(x => x.name === plain.question); const html = s.slice(s.indexOf('class="faq-list')).match(new RegExp(C.rx(C.html(plain.question)) + '[\\s\\S]*?<p[^>]*>([\\s\\S]*?)<\\/p>')); const strip = t => t.replace(/<[^>]+>/g, '').replace(/&amp;/g, '&').replace(/\s+/g, ' ').trim();
     ok(q && html && strip(q.acceptedAnswer.text) === strip(html[1]), 'FAQ answer matches between the page and its structured data'); }
-  ok(!/raw\.githubusercontent/.test(fs.readFileSync(path.join(REPO, 'netlify.toml'), 'utf8')), 'security policy no longer allows the unused image host');
+  ok(!/raw\.githubusercontent/.test(fs.readFileSync(path.join(ROOT, '_headers'), 'utf8')), 'security policy no longer allows the unused image host');
   ok(/November 2026/.test(fs.readFileSync(ROOT + '/privacy/index.html', 'utf8')) && /embedded players are loaded from YouTube/.test(fs.readFileSync(ROOT + '/privacy/index.html', 'utf8')), 'privacy page dated and describes YouTube players');
   ok(!/2026-08-07/.test(sm), 'sitemap dates refreshed');
   const red = fs.readFileSync(ROOT + '/_redirects', 'utf8'); { const rules = red.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#')).map(l => l.split(/\s+/)); const from = new Set(rules.map(x => x[0]));

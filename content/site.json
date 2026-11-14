@@ -1,15 +1,5 @@
 {
-  "url": "https://www.houstondragna.com",
   "name": "Houston Dragna",
-  "email": "houston.dragna@gmail.com",
-  "emailLink": "mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com",
-  "instagram": "https://instagram.com/thehoustondragna",
-  "instagramHandle": "@thehoustondragna",
-  "linkedin": "https://www.linkedin.com/in/houstondragna",
-  "latestFilm": "XpN54Uh0eEo",
-  "footerLine": "Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.",
-  "footerCta": "Start a project",
-  "shareImage": "/ASSETS/Social%20Share/Houston%20Dragna%202026%20Portfolio%20Social%20Share%20Image.jpg",
   "jobTitle": "Brand Designer, Photographer and Video Director",
   "bio": "Brand designer, photographer, and video director specializing in brand systems, campaign key art, and global product launch creative for music and pro audio.",
   "knowsAbout": [
@@ -22,6 +12,16 @@
     "Pro audio marketing",
     "Design systems"
   ],
+  "email": "houston.dragna@gmail.com",
+  "emailLink": "mailto:houston.dragna+site@gmail.com?subject=Inquiry%20via%20houstondragna.com",
+  "instagram": "https://instagram.com/thehoustondragna",
+  "instagramHandle": "@thehoustondragna",
+  "linkedin": "https://www.linkedin.com/in/houstondragna",
+  "latestFilm": "XpN54Uh0eEo",
+  "footerLine": "Brand design, photography, and film for music, audio, and the brands that sound like something. Eleven years in, still shipping launches.",
+  "footerCta": "Start a project",
+  "shareImage": "/ASSETS/Social Share/Houston Dragna 2026 Portfolio Social Share Image.jpg",
+  "url": "https://www.houstondragna.com",
   "locality": "Baton Rouge",
   "region": "LA",
   "country": "US"

@@ -5,8 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { THUMB, VIEW } from './html.mjs';
 
-const SECTIONS = ['about', 'contact', 'faq'];
-const CORE_PAGES = ['home', 'design', 'photo', 'video', 'case-studies'];
+import { CORE_PAGES, SECTIONS, LINKS } from './content.mjs';
 const RESERVED = ['/contact/', '/faq/', '/about/', '/privacy/', '/accessibility/', '/brand-standards/', '/assets/', '/ebay/', '/admin/'];
 const BLOCKS = ['sec', 'owned', 'stats', 'video', 'videos', 'bleed', 'people', 'reel', 'gallery', 'note', 'compare', 'duo', 'duocard', 'credits', 'boards', 'steps'];
 const YT = /^[A-Za-z0-9_-]{11}$/;
@@ -68,12 +67,11 @@ export function validate(c, ROOT) {
   /* ---------- navigation ---------- */
   const navLink = (where, l) => {
     text(`${where} label`, l.label);
-    if (l.page) { if (!ids.has(l.page)) err(where, `points to a page called "${l.page}", which does not exist.`); }
-    else if (l.section) { if (!SECTIONS.includes(l.section)) err(where, `points to a home section called "${l.section}". Choose about, contact, or faq.`); }
-    else if (!['email', 'instagram', 'linkedin', 'latestFilm'].includes(l.link)) err(where, 'is not a page, a home section, or a known link.');
+    if (!l.to) return err(where, 'has no destination.');
+    if (!ids.has(l.to) && !SECTIONS.includes(l.to) && !LINKS.includes(l.to)) err(where, `points to "${l.to}", which is not a page, a home section, or a known link.`);
   };
   if (!c.nav.menu.length) err('Menu', 'is empty.');
-  c.nav.menu.forEach((m, i) => { const w = `Menu item ${i + 1}`; navLink(w, m); if (m.link) err(w, 'the menu can hold pages and home sections only.'); });
+  c.nav.menu.forEach((m, i) => { const w = `Menu item ${i + 1}`; navLink(w, m); if (LINKS.includes(m.to)) err(w, 'the menu can hold pages and home sections only.'); });
   c.nav.footer.forEach((col, i) => { text(`Footer column ${i + 1} heading`, col.heading); col.links.forEach((l, k) => navLink(`Footer column ${i + 1}, link ${k + 1}`, l)); });
 
   /* ---------- site ---------- */
@@ -149,6 +147,7 @@ export function validate(c, ROOT) {
   /* ---------- redirects, and the promise that no published address ever dies ---------- */
   const live = new Set([...all.map(p => p.path), ...c.staticPages.map(p => p.path)]);
   for (const d of fs.readdirSync(path.join(ROOT, 'src/static'), { withFileTypes: true })) if (d.isDirectory()) live.add(`/${d.name}/`);
+  live.add('/admin/');                                    /* built from /admin, not copied from src/static */
   const from = new Map();
   c.redirects.forEach((r, i) => { const w = `Redirect ${i + 1}`;
     if (!/^\/[^\s]*$/.test(r.from || '') || !/^\/[^\s]*$/.test(r.to || '')) return err(w, 'both addresses should start with a slash and contain no spaces.');

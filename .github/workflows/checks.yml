@@ -21,6 +21,8 @@ jobs:
         with:
           node-version: 22
       - run: node build/build.mjs
+      # the admin must hand every content file back unchanged when nothing was edited
+      - run: node admin/test/adapter.test.mjs
 
   browser:
     name: Browser checks (${{ matrix.suite }})

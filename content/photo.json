@@ -1,142 +1,174 @@
 {
   "items": [
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Swamp%20Maternity%20photo.webp",
-      "alt": "Maternity portrait photographed in a Louisiana swamp at golden hour"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Swamp Maternity photo.webp",
+      "alt": "Maternity portrait photographed in a Louisiana swamp at golden hour",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Mamiya+RB67+Portra+400+June+2022-1.webp",
-      "alt": "Medium format film portrait shot on a Mamiya RB67 with Kodak Portra 400"
+      "alt": "Medium format film portrait shot on a Mamiya RB67 with Kodak Portra 400",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Quantum%20Brandon%20Ellis%202.webp",
-      "alt": "Brandon Ellis playing electric guitar in a dark studio lit with red accent light"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Quantum Brandon Ellis 2.webp",
+      "alt": "Brandon Ellis playing electric guitar in a dark studio lit with red accent light",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Joey%20Burcham%20PreSonus%20Studio%20One%20Pro%207.2%20Virtual%20Production%20LED%20Volume%20Wall.webp",
-      "alt": "Virtual production setup with Joey Burcham framed against a glowing LED volume wall"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Joey Burcham PreSonus Studio One Pro 7.2 Virtual Production LED Volume Wall.webp",
+      "alt": "Virtual production setup with Joey Burcham framed against a glowing LED volume wall",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender%20Studio%20A%20Brief%20Exploration%20Gregor%20Beyerle.webp",
-      "alt": "Producer Gregor Beyerle at a desk workstation for the Fender Studio series A Brief Exploration"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender Studio A Brief Exploration Gregor Beyerle.webp",
+      "alt": "Producer Gregor Beyerle at a desk workstation for the Fender Studio series A Brief Exploration",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/presonus-audioboxgo-lifestyle-03.webp",
-      "alt": "Musician recording with the PreSonus AudioBox GO in a compact home setup"
+      "alt": "Musician recording with the PreSonus AudioBox GO in a compact home setup",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/fender-studio-pro-nyc-lifestyle-9.webp",
-      "alt": "Session in progress at a New York studio for the Fender Studio Pro launch"
+      "alt": "Session in progress at a New York studio for the Fender Studio Pro launch",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Chad+Smith+Portrait+BW.webp",
-      "alt": "Black and white portrait of drummer Chad Smith seated at a recording console"
+      "alt": "Black and white portrait of drummer Chad Smith seated at a recording console",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Fender+Motion+Family+Lifestyle-3.webp",
-      "alt": "Producer using a Fender Motion controller alongside a laptop in a home studio"
+      "alt": "Producer using a Fender Motion controller alongside a laptop in a home studio",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Quantum%20ES%202%20Hero%20Produt%20Ecom%20Photo.webp",
-      "alt": "PreSonus Quantum ES 2 audio interface hero product photograph for e-commerce"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Quantum ES 2 Hero Produt Ecom Photo.webp",
+      "alt": "PreSonus Quantum ES 2 audio interface hero product photograph for e-commerce",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Josh%20Cumbee%20PreSonus%20A%20Brief%20Exploration%20Studio%20One%20Pro%207%20Image.webp",
-      "alt": "Josh Cumbee producing on a laptop and keyboard for the PreSonus Studio One Pro 7 series"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Josh Cumbee PreSonus A Brief Exploration Studio One Pro 7 Image.webp",
+      "alt": "Josh Cumbee producing on a laptop and keyboard for the PreSonus Studio One Pro 7 series",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Quantum%20Brandon%20Ellis%203.webp",
-      "alt": "Brandon Ellis performing in a recording studio for the PreSonus Quantum campaign"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Quantum Brandon Ellis 3.webp",
+      "alt": "Brandon Ellis performing in a recording studio for the PreSonus Quantum campaign",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Quantum%20Brandon%20Ellis%201.webp",
-      "alt": "Guitarist Brandon Ellis tracking guitar with a PreSonus Quantum interface"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Quantum Brandon Ellis 1.webp",
+      "alt": "Guitarist Brandon Ellis tracking guitar with a PreSonus Quantum interface",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Joey%20Burcham%20LED%20Wall%20Studio%20One%207.2.webp",
-      "alt": "Joey Burcham performing in front of an LED wall for the Studio One 7.2 campaign"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Joey Burcham LED Wall Studio One 7.2.webp",
+      "alt": "Joey Burcham performing in front of an LED wall for the Studio One 7.2 campaign",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Quantum%20Launch%20Mad%20Keys%20Lifestyle%20Image%202.webp",
-      "alt": "Producer Mad Keys at a keyboard rig in a colourful studio for the PreSonus Quantum launch"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Quantum Launch Mad Keys Lifestyle Image 2.webp",
+      "alt": "Producer Mad Keys at a keyboard rig in a colourful studio for the PreSonus Quantum launch",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Ps5%20Spec%20shot.webp",
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Ps5 Spec shot.webp",
       "alt": "PlayStation 5 console spec product shot lit with blue and magenta studio light",
       "spec": true
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/quantum_lt_lifestyle_3.webp",
-      "alt": "Fender Quantum LT audio interface in a working studio lifestyle setting"
+      "alt": "Fender Quantum LT audio interface in a working studio lifestyle setting",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/DJ%20Jazzy%20Jeff%20Soundstage%20Gradient%20image%20for%20Studio%20One%20Pro%207%20Launch.webp",
-      "alt": "DJ Jazzy Jeff performing on a soundstage lit with a purple and blue gradient for the Studio One Pro 7 launch"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/DJ Jazzy Jeff Soundstage Gradient image for Studio One Pro 7 Launch.webp",
+      "alt": "DJ Jazzy Jeff performing on a soundstage lit with a purple and blue gradient for the Studio One Pro 7 launch",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Roland%20Bennet%20Lifestyle%20Portrait.webp",
-      "alt": "Lifestyle portrait of musician Roland Bennet in natural light"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Roland Bennet Lifestyle Portrait.webp",
+      "alt": "Lifestyle portrait of musician Roland Bennet in natural light",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Quantum%20HD2%20Elevated%20Photo%20shutter%20drag%20hero%20image.webp",
-      "alt": "PreSonus Quantum HD2 interface shot with a shutter drag light trail effect"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Quantum HD2 Elevated Photo shutter drag hero image.webp",
+      "alt": "PreSonus Quantum HD2 interface shot with a shutter drag light trail effect",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Fender+Motion+Elevated-1-3000px.webp",
-      "alt": "Fender Motion 16 pad controller lit with coloured light streaks against a deep teal backdrop"
+      "alt": "Fender Motion 16 pad controller lit with coloured light streaks against a deep teal backdrop",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Fender+Motion+Elevated-3-3000px.webp",
-      "alt": "Elevated studio product shot of the Fender Motion controller with glowing multicolour pads"
+      "alt": "Elevated studio product shot of the Fender Motion controller with glowing multicolour pads",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender%20Studio%20App%20Launch%20Campaign%20Image%20Dre%20Dimura%201.webp",
-      "alt": "Guitarist Dre Dimura tracking guitar at home for the Fender Studio app launch campaign"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender Studio App Launch Campaign Image Dre Dimura 1.webp",
+      "alt": "Guitarist Dre Dimura tracking guitar at home for the Fender Studio app launch campaign",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender%20Studio%20App%20Launch%20Campaign%20Image%202.webp",
-      "alt": "Musician recording into the Fender Studio app in a colourful, plant-filled living room"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender Studio App Launch Campaign Image 2.webp",
+      "alt": "Musician recording into the Fender Studio app in a colourful, plant-filled living room",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Fender+Motion+Family+Lifestyle-10.webp",
-      "alt": "Fender Motion controller family arranged on a desk in a lifestyle studio setting"
+      "alt": "Fender Motion controller family arranged on a desk in a lifestyle studio setting",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Exposure+down-07676.webp",
-      "alt": "Moody low-key portrait of a musician lit by a single warm source in a dark room"
+      "alt": "Moody low-key portrait of a musician lit by a single warm source in a dark room",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Quantum%20Launch%20Mad%20Keys%20Lifestyle%20Image.webp",
-      "alt": "Mad Keys producing at a desk workstation lit in warm tones for the Quantum launch campaign"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Quantum Launch Mad Keys Lifestyle Image.webp",
+      "alt": "Mad Keys producing at a desk workstation lit in warm tones for the Quantum launch campaign",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/fsp-lifestyle-nashville-12.webp",
-      "alt": "Nashville studio session captured for the Fender Studio Pro launch campaign"
+      "alt": "Nashville studio session captured for the Fender Studio Pro launch campaign",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender%20Studio%20App%20Launch%20Campaign%20Image%20Alyssa%20Day.webp",
-      "alt": "Alyssa Day playing electric guitar on a sofa while recording with the Fender Studio app"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender Studio App Launch Campaign Image Alyssa Day.webp",
+      "alt": "Alyssa Day playing electric guitar on a sofa while recording with the Fender Studio app",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Lake%20Tahoe%20Sailboat%20airial%20photo.webp",
-      "alt": "Aerial photograph of a sailboat on the deep blue water of Lake Tahoe"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Lake Tahoe Sailboat airial photo.webp",
+      "alt": "Aerial photograph of a sailboat on the deep blue water of Lake Tahoe",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Nile%20Rodgers%20Lifestyle%20Image%20Power%20Station%20NYC.webp",
-      "alt": "Nile Rodgers with his guitar at the Power Station recording studio in New York City"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Nile Rodgers Lifestyle Image Power Station NYC.webp",
+      "alt": "Nile Rodgers with his guitar at the Power Station recording studio in New York City",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Liquid%20Death%20Spec%20Product%20Shot-Convicted%20Melon.webp",
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Liquid Death Spec Product Shot-Convicted Melon.webp",
       "alt": "Liquid Death Convicted Melon can spec product shot with dramatic studio lighting",
       "spec": true
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Alyssa%20Day%20PreSonus%20Studio%20One%20Pro%207.2%20Virtual%20Production%20LED%20Volume%20Wall.webp",
-      "alt": "Guitarist Alyssa Day playing in front of an LED volume wall during a virtual production shoot for PreSonus Studio One Pro 7.2"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Alyssa Day PreSonus Studio One Pro 7.2 Virtual Production LED Volume Wall.webp",
+      "alt": "Guitarist Alyssa Day playing in front of an LED volume wall during a virtual production shoot for PreSonus Studio One Pro 7.2",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Copy+of+fsp_lifestyle_joey_b_nashville_-5.webp",
-      "alt": "Engineer Joey Burcham working at a mixing desk in a warmly lit Nashville studio"
+      "alt": "Engineer Joey Burcham working at a mixing desk in a warmly lit Nashville studio",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Spindrift+Final-2.webp",
@@ -144,8 +176,9 @@
       "spec": true
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Josh%20Cumbee%20PreSonus%20A%20Brief%20Exploration%20Studio%20One%20Pro%207%20Image%202.webp",
-      "alt": "Producer Josh Cumbee at a keyboard workstation in a dark studio lit with coloured accents"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Josh Cumbee PreSonus A Brief Exploration Studio One Pro 7 Image 2.webp",
+      "alt": "Producer Josh Cumbee at a keyboard workstation in a dark studio lit with coloured accents",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/Spindrift+Final-1.webp",
@@ -154,11 +187,13 @@
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/quantum_lt_lifestyle_4-v2.webp",
-      "alt": "Fender Quantum LT audio interface on a studio desk in a working session"
+      "alt": "Fender Quantum LT audio interface on a studio desk in a working session",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Audiobox%20GO%20Launch%202.webp",
-      "alt": "Close detail of the PreSonus AudioBox GO interface controls in warm light"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Audiobox GO Launch 2.webp",
+      "alt": "Close detail of the PreSonus AudioBox GO interface controls in warm light",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/CFA+Sauce+HI+RES+Final-1.webp",
@@ -166,44 +201,54 @@
       "spec": true
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Audiobox%20GO%20Launch%201.webp",
-      "alt": "PreSonus AudioBox GO portable audio interface photographed on a desk with headphones"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Audiobox GO Launch 1.webp",
+      "alt": "PreSonus AudioBox GO portable audio interface photographed on a desk with headphones",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/StudioLive+SE+Family+Shot+on+White+6000x3375.webp",
-      "alt": "StudioLive Series III SE mixer family photographed on a clean white background"
+      "alt": "StudioLive Series III SE mixer family photographed on a clean white background",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Baseball%20lifestyle%20image.webp",
-      "alt": "Baseball player in a dark uniform photographed from behind on the field at dusk"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Baseball lifestyle image.webp",
+      "alt": "Baseball player in a dark uniform photographed from behind on the field at dusk",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Quantum%20eCom%20family%20photo.webp",
-      "alt": "PreSonus Quantum interface family lined up on white for e-commerce listings"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Quantum eCom family photo.webp",
+      "alt": "PreSonus Quantum interface family lined up on white for e-commerce listings",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/presonus-audioboxgo-lifestyle-04.webp",
-      "alt": "PreSonus AudioBox GO in use on a desk beside a laptop and guitar"
+      "alt": "PreSonus AudioBox GO in use on a desk beside a laptop and guitar",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/JST%20David%20Fine%20Art%20Portrait.webp",
-      "alt": "Fine art portrait of a bearded man in dramatic low-key lighting against a dark ground"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/JST David Fine Art Portrait.webp",
+      "alt": "Fine art portrait of a bearded man in dramatic low-key lighting against a dark ground",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender%20Studio%20App%20Launch%20Campaign%20Image%20Dre%20Dimura%20Alyssa%20Day%201.webp",
-      "alt": "Dre Dimura and Alyssa Day playing guitar together in a bright styled interior for the Fender Studio app launch"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender Studio App Launch Campaign Image Dre Dimura Alyssa Day 1.webp",
+      "alt": "Dre Dimura and Alyssa Day playing guitar together in a bright styled interior for the Fender Studio app launch",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus%20Quantum%20Launch%20Louis%20Michot%201.webp",
-      "alt": "Louisiana fiddler Louis Michot recording with a PreSonus Quantum interface"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/PreSonus Quantum Launch Louis Michot 1.webp",
+      "alt": "Louisiana fiddler Louis Michot recording with a PreSonus Quantum interface",
+      "spec": false
     },
     {
       "image": "/ASSETS/IMAGES/PAGES/Photo/StudioLive+SE+Elevated+Family+Shot+1+-+Full+Resolution.webp",
-      "alt": "PreSonus StudioLive Series III SE digital mixer family in an elevated studio arrangement"
+      "alt": "PreSonus StudioLive Series III SE digital mixer family in an elevated studio arrangement",
+      "spec": false
     },
     {
-      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender%20Studio%20App%20Launch%20Campaign%20Image%20Dre%20Dimura%202.webp",
-      "alt": "Dre Dimura seated with an electric guitar in a warm interior for the Fender Studio app campaign"
+      "image": "/ASSETS/IMAGES/PAGES/Photo/Fender Studio App Launch Campaign Image Dre Dimura 2.webp",
+      "alt": "Dre Dimura seated with an electric guitar in a warm interior for the Fender Studio app campaign",
+      "spec": false
     }
   ]
 }

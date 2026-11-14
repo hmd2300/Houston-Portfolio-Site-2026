@@ -1,35 +1,35 @@
 {
   "menu": [
     {
-      "page": "home",
+      "to": "home",
       "label": "Home"
     },
     {
-      "page": "design",
+      "to": "design",
       "label": "Design"
     },
     {
-      "page": "photo",
+      "to": "photo",
       "label": "Photo"
     },
     {
-      "page": "video",
+      "to": "video",
       "label": "Video"
     },
     {
-      "page": "case-studies",
+      "to": "case-studies",
       "label": "Case Studies"
     },
     {
-      "section": "about",
+      "to": "about",
       "label": "About"
     },
     {
-      "section": "contact",
+      "to": "contact",
       "label": "Contact"
     },
     {
-      "section": "faq",
+      "to": "faq",
       "label": "FAQ"
     }
   ],
@@ -38,19 +38,19 @@
       "heading": "Work",
       "links": [
         {
-          "page": "design",
+          "to": "design",
           "label": "Design"
         },
         {
-          "page": "photo",
+          "to": "photo",
           "label": "Photography"
         },
         {
-          "page": "video",
+          "to": "video",
           "label": "Film"
         },
         {
-          "page": "case-studies",
+          "to": "case-studies",
           "label": "Case studies"
         }
       ]
@@ -59,15 +59,15 @@
       "heading": "Selected work",
       "links": [
         {
-          "page": "cs-fender",
+          "to": "cs-fender",
           "label": "Fender Studio Pro"
         },
         {
-          "page": "cs-namm",
+          "to": "cs-namm",
           "label": "NAMM 2026 booth"
         },
         {
-          "page": "cs-se",
+          "to": "cs-se",
           "label": "StudioLive SE"
         }
       ]
@@ -76,15 +76,15 @@
       "heading": "Studio",
       "links": [
         {
-          "section": "about",
+          "to": "about",
           "label": "About"
         },
         {
-          "section": "faq",
+          "to": "faq",
           "label": "FAQ"
         },
         {
-          "section": "contact",
+          "to": "contact",
           "label": "Contact"
         }
       ]
@@ -93,19 +93,19 @@
       "heading": "Elsewhere",
       "links": [
         {
-          "link": "email",
+          "to": "email",
           "label": "Email"
         },
         {
-          "link": "instagram",
+          "to": "instagram",
           "label": "Instagram"
         },
         {
-          "link": "linkedin",
+          "to": "linkedin",
           "label": "LinkedIn"
         },
         {
-          "link": "latestFilm",
+          "to": "latestFilm",
           "label": "Latest film"
         }
       ]
