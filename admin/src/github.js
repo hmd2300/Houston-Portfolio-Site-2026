@@ -139,7 +139,7 @@ async function publishGH() {
     for (const old of await openPublishes()) { await gh('PATCH', `{repo}/pulls/${old.number}`, { state: 'closed' }).catch(() => {}); await dropRef(old.head.ref).catch(() => {}); }
     const branch = PUB + stamp(); await setRef(branch, c.sha);
     const pr = await gh('POST', '{repo}/pulls', { title: `Admin: ${headline(list)}`, head: branch, base: BASE, body });
-    Object.assign(pub, { pr: pr.number, url: pr.html_url, head: c.sha, branch, step: pub.kinds.indexOf('rules'), done: list.map(x => x.t) });
+    Object.assign(pub, { pr: pr.number, url: pr.html_url, head: c.sha, branch, step: pub.kinds.indexOf('rules'), title: `Admin: ${headline(list)}` });
     bar(); statusIfOpen(); await watch();
   } catch (e) { fail(e.message, e.clash ? 'clash' : null); } }
 /* a new hero slide gets its phone crop cut again if the framing was moved after it was added */
@@ -171,7 +171,7 @@ async function watch() {
     if (Date.now() - t0 > 25 * 60000) return fail('The checks are taking far longer than usual. Your draft is safe. Ask Claude to look at it.', 'slow', pub.url);
     await sleep(6000); } }
 async function goLive() {
-  const m = await gh('PUT', `{repo}/pulls/${pub.pr}/merge`, { merge_method: 'squash', sha: pub.head, commit_title: `Admin: ${headline((pub.done || []).map(t => ({ t })))}` });
+  const m = await gh('PUT', `{repo}/pulls/${pub.pr}/merge`, { merge_method: 'squash', sha: pub.head, ...(pub.title ? { commit_title: pub.title } : {}) });
   await dropRef(pub.branch).catch(() => {}); pub.merged = m.sha; bar(); statusIfOpen();
   /* the change is in; now wait until the live site has actually rebuilt with it */
   const t0 = Date.now(), site = ONLINE ? SAMPLE.siteUrl || '' : '';
@@ -187,7 +187,7 @@ async function goLive() {
 /* came back while a publish was still going (another tab, a reload, another device): pick it up */
 async function resume() { if (pub && pub.running) return; let open; try { open = await openPublishes(); } catch (e) { return; } if (!open.length) return;
   const p = open[0], kinds = ['save', 'rules', ...(ONLINE ? ['preview'] : []), 'layout', 'live'];
-  pub = { step: 1, running: true, failed: false, kinds, steps: kinds.map(k => STEP[k]), pr: p.number, url: p.html_url, head: p.head.sha, branch: p.head.ref, done: (p.body || '').split('\n').filter(l => l.startsWith('- ')).map(l => l.slice(2)) };
+  pub = { step: 1, running: true, failed: false, kinds, steps: kinds.map(k => STEP[k]), pr: p.number, url: p.html_url, head: p.head.sha, branch: p.head.ref, title: p.title };
   bar(); try { await watch(); } catch (e) { fail(e.message); } }
 async function abandon() { if (!pub || !pub.pr) { pub = null; return bar(); } await gh('PATCH', `{repo}/pulls/${pub.pr}`, { state: 'closed' }).catch(() => {}); await dropRef(pub.branch).catch(() => {}); pub = null; closeLayer(); toast('That attempt was closed. Your draft is still here.'); }
 
