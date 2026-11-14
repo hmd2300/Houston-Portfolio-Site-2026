@@ -7,12 +7,15 @@ const toText = (f, v) => f.type === 'paras' ? (v || []).join('\n\n') : f.type ==
 const fromText = (f, t) => f.type === 'paras' ? t.split(/\n\s*\n/).map(s => s.trim()).filter(Boolean) : f.type === 'list' ? t.split('\n').map(s => s.trim()).filter(Boolean) : t;
 function imgBox(f, v, path) { const t = { mode: 'replace', path, k: f.k };
   return `<div class="imgbox" ${drop(t)}>${v ? `<img class="${f.logo ? 'logo' : ''}" src="${thumb(v)}" alt=""><div class="meta"><strong>${esc(fileName(v))}</strong><span>${metaLine(v)}</span></div>` : `<div class="meta"><strong>No image yet</strong><span>${f.logo ? 'A logo file with a clear background' : 'JPG, PNG, or WebP'}</span></div>`}<button type="button" class="btn small line" data-pick="${esc(JSON.stringify(t))}">${v ? 'Replace' : 'Choose'}</button></div>`; }
-function focusBox(f, it, path, imgKey) { const v = it[f.k] == null ? 50 : it[f.k], x = it[f.k2] == null ? 50 : it[f.k2], src = full(it[imgKey]), id = fid(path, f.k), id2 = fid(path, f.k2);
+/* Wide screens show the slide cropped top and bottom; phones show a separate tall crop. A slide added here gets that crop
+   cut from the slider. Slides already on the site have a phone crop that was made by hand, so it is shown, not changed. */
+function focusBox(f, it, path, imgKey) { const im = it[imgKey], v = it[f.k] == null ? 50 : it[f.k], x = it[f.k2] == null ? 50 : it[f.k2], src = full(im), id = fid(path, f.k), id2 = fid(path, f.k2);
+  const own = !!(cur._up && cur._up[im] && cur._up[im].hero), hero = variantPaths(im, true).hero, tall = own || !LIVE || !hero ? `background-image:url('${src}');background-position:${x}% center` : `background-image:url('${encodeURI(hero)}'),url('${src}');background-position:center`;
   return `<div class="field wide" data-f="${id}"><div class="lab"><span class="l mono">${esc(f.label)}</span></div>
-    <div class="crops"><figure><div class="crop wide" style="background-image:url('${src}');background-position:center ${v}%"></div><figcaption class="mono">Wide screens</figcaption></figure><figure><div class="crop tall" style="background-image:url('${src}');background-position:${x}% center"></div><figcaption class="mono">Phones</figcaption></figure></div>
+    <div class="crops"><figure><div class="crop wide" style="background-image:url('${src}');background-position:center ${v}%"></div><figcaption class="mono">Wide screens</figcaption></figure><figure><div class="crop tall" style="${tall}"></div><figcaption class="mono">Phones</figcaption></figure></div>
     <div class="range mono"><label for="${id}">Wide: up or down</label><input type="range" id="${id}" min="0" max="100" step="1" value="${v}" data-path="${path}" data-k="${f.k}" data-axis="y"></div>
-    <div class="range mono"><label for="${id2}">Phones: left or right</label><input type="range" id="${id2}" min="0" max="100" step="1" value="${x}" data-path="${path}" data-k="${f.k2}" data-axis="x"></div>
-    <p class="hint">Wide screens crop the top and bottom. Phones get their own tall crop, cut from the same picture.</p></div>`; }
+    ${own || !LIVE ? `<div class="range mono"><label for="${id2}">Phones: left or right</label><input type="range" id="${id2}" min="0" max="100" step="1" value="${x}" data-path="${path}" data-k="${f.k2}" data-axis="x"></div>
+    <p class="hint">Wide screens crop the top and bottom. Phones get their own tall crop, cut from the same picture when you publish.</p>` : `<p class="hint">Wide screens crop the top and bottom. The phone crop for this slide was made by hand. Ask Claude to change it, or replace the image to set a new one here.</p>`}</div>`; }
 function fieldHTML(f, it, path, imgKey) {
   if (f.part) return '';
   if (f.type === 'focus') return focusBox(f, it, path, imgKey);
@@ -56,6 +59,9 @@ const grow = el => { el.style.height = 'auto'; el.style.height = el.scrollHeight
 const growAll = root => root.querySelectorAll('textarea').forEach(grow);
 
 function render() {
+  if (LIVE && REPO.owner && !GH.on && !GH.look) { $('switch-label').textContent = secOf(view).short || secOf(view).label;
+    $('main').innerHTML = GH.loading ? '<div class="signin"><p class="fine" role="status">Loading your content from GitHub</p></div>' : signInHTML(GH.signErr); bar(true); return; }
+  if (GH.loading) { $('main').innerHTML = '<div class="signin"><p class="fine" role="status">Loading your content from GitHub</p></div>'; return; }
   refresh(); let r = resolve(view); while (!r) { view = parentScreen(view) || 'home'; r = resolve(view); }
   const sec = secOf(view), up = parentScreen(view), title = r.trail[r.trail.length - 1], isItem = view.includes('#');
   $('switch-label').textContent = sec.short || sec.label;
@@ -66,7 +72,7 @@ function render() {
   const labelled = r.node.parts.filter(p => p.label);
   if (labelled.length > 3 && !sec.two) h += `<nav class="jump" aria-label="On this screen">${labelled.map(p => `<button data-jump="${gid(view + '/' + p.key)}">${p.label.replace(/ row$/, '')}</button>`).join('')}</nav>`;
   h += cardHTML(r.node.fields, r.data, view) + (sec.two && !isItem ? `<div class="twocol">${partsHTML(r.node, r.data, view)}</div>` : partsHTML(r.node, r.data, view));
-  h += `<p class="note-box">${LIVE ? 'This is your real content, read from the site. Publishing is not connected yet, so nothing you change here reaches the site.' : 'Prototype on a copy of your real content. Nothing here is connected to your site.'} <button id="reset">Start over with the original content</button></p>`;
+  h += `<p class="note-box">${GH.on ? 'Your edits are kept as a draft on GitHub until you publish. Nothing reaches the site before then.' : LIVE ? 'You are looking around. Edits stay on this device and cannot be published until you sign in.' : 'Prototype on a copy of your real content. Nothing here is connected to your site.'} <button id="reset">Undo every unpublished change</button></p>`;
   $('main').innerHTML = h; growAll($('main')); bar(true);
 }
 let saveT;
@@ -81,7 +87,8 @@ function bar(fresh) {
   const sk = secOf(view).key;
   $('rail').innerHTML = railHTML(by, bad, sk);
   document.querySelectorAll('#main .item').forEach(r => { const id = r.dataset.id, b = S.bad.has(id); r.classList.toggle('err', b); r.classList.toggle('changed', !b && S.changed.has(id)); });
-  clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(cur)); localStorage.setItem(KEY + '-view', view); } catch (e) {} }, 250);
+  if (GH.on) { if (!GH.loading) { const j = JSON.stringify(cur); if (j !== GH.lastJSON) { GH.lastJSON = j; draftChanged(); } } savedLine(); }
+  else { clearTimeout(saveT); saveT = setTimeout(() => { try { localStorage.setItem(KEY, JSON.stringify(cur)); localStorage.setItem(KEY + '-view', view); } catch (e) {} }, 250); savedLine(); }
 }
 const railHTML = (by, bad, sk) => SECTIONS.map(s => `${s.rule ? '<hr>' : ''}<button data-go="${s.key}" aria-current="${s.key === sk}">${s.label}${bad[s.key] ? `<span class="badge bad" aria-label="${bad[s.key]} to fix">${bad[s.key]}</span>` : by[s.key] ? `<span class="badge" aria-label="${plural(by[s.key], 'change')}">${by[s.key]}</span>` : ''}</button>`).join('');
 function go(path, keep) { scrollMem.set(view, scrollY); closeAll(true); view = path; render(); scrollTo(0, keep ? (scrollMem.get(path) || 0) : 0); }
@@ -180,7 +187,7 @@ $('main').addEventListener('click', e => { const t = e.target, b = t.closest('bu
   if (b.dataset.go) return go(b.dataset.go, true);
   if (b.dataset.jump) { const el = $(b.dataset.jump); return el && el.scrollIntoView({ behavior: matchMedia('(prefers-reduced-motion:reduce)').matches ? 'auto' : 'smooth', block: 'start' }); }
   if (shared(b)) return;
-  if (b.id === 'reset') { snap(); cur = clone(orig); closeAll(true); render(); return toast('Back to the original content', true); }
+  if (b.id === 'reset') { snap(); cur = clone(orig); closeAll(true); render(); return toast('Every unpublished change undone', true); }
   if (b.dataset.open !== undefined) { const p = b.closest('.item').dataset.path, def = resolve(p).def; return def.node ? go(p) : openEditor(p); } });
 layer.addEventListener('change', e => { if (e.target.id === 'ed-pos') moveTo((+e.target.value || 1) - 1); });
 document.addEventListener('change', e => { const el = e.target; if (el.tagName !== 'SELECT') return; if (el.dataset.chipsel !== undefined) { if (el.value) addChip(el.closest('.field').querySelector('.chips'), el.value); } else if (el.dataset.path) check(el); });

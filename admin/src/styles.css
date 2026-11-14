@@ -139,6 +139,11 @@ main{padding:18px var(--gr) 140px 22px;min-width:0}
 .sugs button.fresh{border-style:dashed;color:var(--dim)}
 .sugs button[aria-selected="true"]{background:var(--snow);color:var(--ink);border-color:var(--snow);border-style:solid}
 @media (hover:hover) and (pointer:fine){.sugs button[aria-selected="true"]::after{content:"Enter";margin-left:8px;font:700 9px/1 var(--mono);letter-spacing:.08em;text-transform:uppercase;opacity:.6}}
+.signin{max-width:620px;display:grid;gap:14px}
+.signin p{margin:0;max-width:62ch}
+.howto{margin:0;padding-left:1.3em;display:grid;gap:8px;color:var(--snow)}
+.howto a,.signin a{color:var(--chart)}
+.saved.warnline{color:var(--fuch)}
 .check{display:flex;align-items:center;gap:10px;min-height:44px;color:var(--snow)}
 .check input{width:20px;height:20px;accent-color:var(--chart);flex:none}
 .posrow{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
@@ -253,6 +258,7 @@ body.filedrag [data-drop].over{outline-style:solid;background:rgba(233,245,0,.22
   .btn.primary .short{display:none}
 }
 @media (max-width:899px){
+.top #acct{display:none}
   .shell{grid-template-columns:minmax(0,1fr)}.shell>.rail{display:none}.switch{display:inline-flex;margin-right:auto}.saved,.mark{display:none}.top{gap:8px}.top .btn.primary{padding:0 14px}
   main{padding-left:var(--gl)}
   .grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:6px}.grid.film,.grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}

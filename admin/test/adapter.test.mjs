@@ -21,7 +21,7 @@ ok('a changed address leaves a redirect and no chain', () => { const M = load();
   assert.deepEqual(F.redirects.redirects, [...F0.redirects.redirects, { from: '/photo/', to: '/photography/' }]); assert.equal(F.pages.pages.photo.path, '/photography/'); });
 ok('hero: new image, focus, and back to centre', () => { const M = load(); M.home.slides[0].focus = 30; M.home.slides[1].focus = 50; M.home.slides[2].image = '/ASSETS/IMAGES/PAGES/Home/new-slide.webp'; M.home.slides[2].phone = 80;
   const F = save(M).home.slides; assert.equal(F[0].focusY, '30%'); assert.equal(F[0].image, F0.home.slides[0].image); assert.ok(!('focusY' in F[1]));
-  assert.equal(F[2].image, '/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/new-slide.webp'); assert.equal(F[2].phoneX, 80); });
+  assert.equal(F[2].image, '/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/Home/new-slide.webp'); assert.ok(!('phoneX' in F[2])); });
 ok('FAQ: line breaks, the email button, a new question', () => { const M = load(), q = M.home.faq.items; assert.ok(M.home.faq.title.includes('\n')); assert.equal(q[q.length - 1].emailButton, true);
   q[q.length - 1].emailButton = false; q[0].emailButton = true; q.push({ question: 'New?', answer: 'Yes.', emailButton: false });
   const F = save(M).home.faq; assert.equal(F.title, F0.home.faq.title); assert.ok(!('emailButton' in F.items[F.items.length - 2])); assert.equal(F.items[0].emailButton, true); assert.deepEqual(F.items[F.items.length - 1], { question: 'New?', answer: 'Yes.' }); });

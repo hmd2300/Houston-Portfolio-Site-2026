@@ -16,6 +16,10 @@ const BLOBS = new Map();                                  /* full-size copies of
 const BLANK = 'data:image/svg+xml,' + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 4 3"/>');
 const thumb = p => (media(p) || {}).t || BLANK;
 const full = p => (BLOBS.get(p) || {}).url || thumb(p);
+/* where each size of an image lives on the site, worked out the same way the site's build does */
+function variantPaths(p, hero) { const m = String(p).match(/^\/ASSETS\/IMAGES\/PAGES\/(.+)\.(jpe?g|png|webp)$/i); if (!m) return {};
+  const v = { view: `/ASSETS/IMAGES/IMAGE-VARIANTS/VIEW/${m[1]}.webp`, thumb: `/ASSETS/IMAGES/IMAGE-VARIANTS/THUMBS/${m[1]}.webp` };
+  if (hero) v.hero = `/ASSETS/IMAGES/IMAGE-VARIANTS/HERO/${m[1].split('/').pop()}.webp`; return v; }
 const metaLine = p => { const m = media(p); return m ? `${m.w} × ${m.h} · ${size(m.kb * 1024)}${m.n > 1 ? ` in ${m.n} sizes` : ''}` : ''; };
 
 /* Does a page heading fit? Measured with the site's own type at the site's own sizes, not by counting letters. */
@@ -43,7 +47,7 @@ const ruleOf = (f, v) => RULES[f.type](v, f);
 let uid = 0, cur, S = { ch: [], pr: [], changed: new Set(), bad: new Map() };
 const itemNode = (def, it) => def.node ? def.node(it) : def.leaf;
 function tag(node, data) { for (const p of node.parts) { if (p.kind === 'group') tag(p, p.key[0] === '~' ? data : data[p.key]); else data[p.key].forEach(it => { if (!it._id) it._id = 'i' + (++uid); tag(itemNode(p, it), it); }); } return data; }
-const orig = tag(ROOT, clone(SAMPLE.content)); cur = clone(orig);
+let orig = tag(ROOT, clone(SAMPLE.content)); cur = clone(orig);
 const KEY = 'hd-admin-draft-4';
 try { const sv = JSON.parse(localStorage.getItem(KEY) || 'null'); if (sv && sv.home && sv.home.slides && sv.settings && sv.studies) { uid = 1e6; cur = tag(ROOT, sv); } } catch (e) { cur = clone(orig); }
 let view = 'home', editing = null, pub = null; const hist = [], scrollMem = new Map();

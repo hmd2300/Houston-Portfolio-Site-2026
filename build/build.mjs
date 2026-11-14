@@ -86,7 +86,7 @@ write('_redirects', redirects);
 /* ---------- admin settings and security headers ---------- */
 c.staticDirs = fs.readdirSync(path.join(ROOT, 'src/static'), { withFileTypes: true })
   .filter(d => d.isDirectory() && fs.existsSync(path.join(ROOT, 'src/static', d.name, 'index.html'))).map(d => `/${d.name}/`);
-for (const [name, text] of Object.entries(adminFiles(ROOT))) write('admin/' + name, text);
+for (const [name, text] of Object.entries(adminFiles(ROOT))) { fs.mkdirSync(path.dirname(path.join(DIST, 'admin', name)), { recursive: true }); fs.writeFileSync(path.join(DIST, 'admin', name), text); }
 write('_headers', headersFile(c, routes));
 
 /* ---------- files that ship as they are ---------- */

@@ -64,8 +64,11 @@ async function pump() { const me = imp; if (me.busy) return; me.busy = true; let
     try { r.out = await prepare(r.file, me.T.def); r.warn = warnings(r, me); r.path = uniquePath(me.T.def.folder || 'Uploads', slug(r.name), r.out.ext, me); r.status = 'ok'; } catch (e) { r.status = 'err'; r.msg = e && e.message || 'This file could not be read.'; }
     if (imp === me) updateRow(r); }
   me.busy = false; }
-function uniquePath(folder, base, ext, me) { const taken = new Set([...allImages(), ...me.rows.map(r => r.path).filter(Boolean)].map(p => p.toLowerCase())); let n = 1, p;
-  do { p = `/ASSETS/IMAGES/PAGES/${folder}/${base}${n > 1 ? '-' + n : ''}.${ext}`; n++; } while (taken.has(p.toLowerCase())); return p; }
+/* A new image never takes a name that was used before: files under /ASSETS are cached for a year, so a reused name would show
+   the old picture to returning visitors. Every size of the image is checked, not just the full one. */
+function uniquePath(folder, base, ext, me) { const taken = new Set([...allImages(), ...me.rows.map(r => r.path).filter(Boolean)].flatMap(p => [p, ...Object.values(variantPaths(p, true))]).map(p => p.toLowerCase())); let n = 1, p;
+  const root = me.T.def.share ? '/ASSETS/Social Share/' : `/ASSETS/IMAGES/PAGES/${folder}/`;
+  do { p = `${root}${base}${n > 1 ? '-' + n : ''}.${ext}`; n++; } while ([p, ...Object.values(variantPaths(p, true))].some(x => taken.has(x.toLowerCase()))); return p; }
 function warnings(r, me) { const o = r.out, d = me.T.def, w = [], need = d.minEdge != null ? d.minEdge : d.logo ? 0 : 1200, s = slug(r.name);
   if (Math.max(o.ow, o.oh) < need) w.push(`Small for this spot at ${o.ow} × ${o.oh}. It may look soft on large screens. ${need} or more on the long side is safer.`);
   if (d.hero && o.oh > o.ow) w.push('Tall image. This spot is wide, so the top and bottom will be cropped. You can set what stays in frame after adding it.');
@@ -79,8 +82,21 @@ function steps(src, w, h) { let sw = src.width, sh = src.height, s = src;       
   while (sw / 2 > w) { sw = Math.round(sw / 2); sh = Math.round(sh / 2); const c = document.createElement('canvas'); c.width = sw; c.height = sh; const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(s, 0, 0, sw, sh); s = c; }
   const c = document.createElement('canvas'); c.width = w; c.height = h; const x = c.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(s, 0, 0, w, h); return c; }
 /* Every size the site uses, made in one go. Grids load the small copy, full-screen views the middle one, the lightbox the
-   full one. Hero slides also get a tall crop for phones. The share image stays a JPG: some apps cannot read WebP previews. */
-const TALL = 0.462;
+   full one. Hero slides also get a tall crop for phones. The share image stays a JPG: some apps cannot read WebP previews.
+   Browsers that cannot write WebP themselves (Safari) use a small built-in encoder, so every device gives the same files. */
+const TALL = 0.462, WEBP_Q = .82;
+const WEBP_OPTS = { quality: 82, target_size: 0, target_PSNR: 0, method: 4, sns_strength: 50, filter_strength: 60, filter_sharpness: 0, filter_type: 1, partitions: 0, segments: 4, pass: 1, show_compressed: 0,
+  preprocessing: 0, autofilter: 0, partition_limit: 0, alpha_compression: 1, alpha_filtering: 1, alpha_quality: 100, lossless: 0, exact: 0, image_hint: 0, emulate_jpeg_size: 0, thread_level: 0, low_memory: 0, near_lossless: 100, use_delta_palette: 0, use_sharp_yuv: 0 };
+let encoder = null;
+const here = () => location.href.replace(/[?#].*$/, '').replace(/[^/]*$/, '');
+async function webp(c) {
+  const b = await blobOf(c, 'image/webp', WEBP_Q); if (b && b.type === 'image/webp') return b;
+  if (!encoder) encoder = import(here() + 'vendor/webp_enc.js').then(m => m.default({ noInitialRun: true, locateFile: f => here() + 'vendor/' + f })).catch(e => { encoder = null; throw e; });
+  let m; try { m = await encoder; } catch (e) { throw new Error('This browser could not make web images. Try again, or add this one from a computer.'); }
+  const d = c.getContext('2d').getImageData(0, 0, c.width, c.height), out = m.encode(d.data, c.width, c.height, WEBP_OPTS);
+  if (!out) throw new Error('This image could not be converted. Try exporting it again.'); return new Blob([out], { type: 'image/webp' }); }
+function heroCrop(c, x) { const w = c.width, h = c.height, ch = Math.min(h, 2338), k = ch / h, cw = Math.min(Math.round(w * k), Math.round(ch * TALL)), sw = cw / k, t = document.createElement('canvas'); t.width = cw; t.height = ch;
+  const g = t.getContext('2d'); g.imageSmoothingQuality = 'high'; g.drawImage(c, (w - sw) * (x == null ? 50 : x) / 100, 0, sw, h, 0, 0, cw, ch); return t; }
 async function prepare(file, def) {
   const nt = (file.type || '') + ' ' + file.name;
   if (!/^image\/(jpeg|png|webp|avif|heic|heif)$/i.test(file.type) && !/\.(jpe?g|png|webp|avif|heic|heif)$/i.test(file.name)) throw new Error(/svg|gif/i.test(nt) ? 'GIF and SVG files are not used for pictures here. Use JPG, PNG, or WebP.' : /pdf|psd|tiff?|raw|cr2|arw|nef|dng/i.test(nt) ? 'This is a working file, not a web image. Export a JPG and add that.' : 'This is not an image file. Use JPG, PNG, or WebP.');
@@ -88,20 +104,20 @@ async function prepare(file, def) {
   let src = null; try { src = await createImageBitmap(file, { imageOrientation: 'from-image' }); } catch (e) {
     src = await new Promise(res => { const im = new Image(), u = URL.createObjectURL(file); im.onload = () => { URL.revokeObjectURL(u); im.width = im.naturalWidth; im.height = im.naturalHeight; res(im); }; im.onerror = () => { URL.revokeObjectURL(u); res(null); }; im.src = u; }); }
   if (!src || !src.width) throw new Error(/hei[cf]/i.test(nt) ? 'This browser cannot open HEIC photos. Choose it from the phone photo library, which converts it, or export a JPG.' : 'This file could not be opened. It may be damaged. Export it again and retry.');
-  const ow = src.width, oh = src.height, long = Math.max(ow, oh), png = /png/i.test(nt), jpg = !!def.share;
+  const ow = src.width, oh = src.height, long = Math.max(ow, oh), jpg = !!def.share;
   const fitTo = edge => { const k = Math.min(1, edge / long); return [Math.max(1, Math.round(ow * k)), Math.max(1, Math.round(oh * k))]; };
-  const save = async c => { let b = jpg ? null : await blobOf(c, 'image/webp', .82), ext = 'webp'; if (!b || b.type !== 'image/webp') { const p = png && !jpg; b = p ? await blobOf(c, 'image/png') : await blobOf(c, 'image/jpeg', .86); ext = p ? 'png' : 'jpg'; }
-    if (!b) throw new Error('This device ran out of room while resizing. Try this one on its own.'); return { blob: b, ext }; };
+  const save = async c => { const b = jpg ? await blobOf(c, 'image/jpeg', .86) : await webp(c); if (!b) throw new Error('This device ran out of room while resizing. Try this one on its own.'); return b; };
   const [w, h] = fitTo(jpg ? 1920 : MAXEDGE);
   let small = null; if ((w < ow) && src.close) try { small = await createImageBitmap(src, { resizeWidth: w, resizeHeight: h, resizeQuality: 'high' }); if (small.width !== w || small.height !== h) { small.close(); small = null; } } catch (e) { small = null; }
-  const c = steps(small || src, w, h), main = await save(c), sizes = [{ label: jpg ? 'Share' : 'Full', w, h, bytes: main.blob.size }];
-  if (!jpg && !def.logo) for (const [label, edge] of [['Viewing', def.hero ? 2400 : 1800], ['Grid', 800]]) { if (edge >= Math.max(w, h)) continue; const [vw, vh] = fitTo(edge), v = await save(steps(c, vw, vh)); sizes.push({ label, w: vw, h: vh, bytes: v.blob.size }); }
-  if (def.hero) { const ch = Math.min(h, 2338), k = ch / h, cw = Math.min(Math.round(w * k), Math.round(ch * TALL)), t = document.createElement('canvas'); t.width = cw; t.height = ch;
-    const x = t.getContext('2d'); x.imageSmoothingQuality = 'high'; x.drawImage(c, (w - cw / k) / 2, 0, cw / k, h, 0, 0, cw, ch); const v = await save(t); sizes.push({ label: 'Phone crop', w: cw, h: ch, bytes: v.blob.size }); }
+  const c = steps(small || src, w, h), files = { full: { blob: await save(c), w, h } }, sizes = [{ label: jpg ? 'Share' : 'Full', w, h, bytes: files.full.blob.size }];
+  if (!jpg) for (const [kind, label, edge] of [['view', 'Viewing', def.hero ? 2400 : 1800], ['thumb', 'Grid', 800]]) {
+    if (edge >= Math.max(w, h)) { files[kind] = files.full; continue; }                 /* already small enough: the same file serves */
+    const [vw, vh] = fitTo(edge); files[kind] = { blob: await save(steps(c, vw, vh)), w: vw, h: vh }; sizes.push({ label, w: vw, h: vh, bytes: files[kind].blob.size }); }
+  if (def.hero) { const t = heroCrop(c, 50); files.hero = { blob: await save(t), w: t.width, h: t.height }; sizes.push({ label: 'Phone crop', w: t.width, h: t.height, bytes: files.hero.blob.size }); }
   const tk = Math.min(1, 360 / Math.max(w, h)), tc = steps(c, Math.max(1, Math.round(w * tk)), Math.max(1, Math.round(h * tk)));
-  let t = tc.toDataURL('image/webp', .7); if (!t.startsWith('data:image/webp')) t = png ? tc.toDataURL('image/png') : tc.toDataURL('image/jpeg', .75);
+  let t = tc.toDataURL('image/webp', .7); if (!t.startsWith('data:image/webp')) t = tc.toDataURL('image/jpeg', .75);
   if (src.close) src.close(); if (small) small.close();
-  return { blob: main.blob, ext: main.ext, w, h, ow, oh, sizes, bytes: sizes.reduce((a, s) => a + s.bytes, 0), obytes: file.size, t };
+  return { files, ext: jpg ? 'jpg' : 'webp', w, h, ow, oh, sizes, bytes: sizes.reduce((a, s) => a + s.bytes, 0), obytes: file.size, t };
 }
 
 /* ---------- putting them on the page ---------- */
@@ -109,7 +125,7 @@ function knownAlt(p) { let found = ''; (function look(o) { if (found || !o || ty
   if (o.image === p && o.alt) found = o.alt; else if (o.img === p && o.alt) found = o.alt; else if (o.hero === p && o.heroAlt) found = o.heroAlt; Object.values(o).forEach(look); })(cur); return found; }
 function commit(picks) {                                   /* picks: [{path, alt, out}] */
   const me = imp, T = me.T; if (!picks.length) return; snap(); cur._up = cur._up || {};
-  picks.forEach(p => { if (p.out) { cur._up[p.path] = { t: p.out.t, w: p.out.w, h: p.out.h, kb: Math.max(1, Math.round(p.out.bytes / 1024)), n: p.out.sizes.length }; BLOBS.set(p.path, { url: URL.createObjectURL(p.out.blob) }); } });
+  picks.forEach(p => { if (p.out) { cur._up[p.path] = { t: p.out.t, w: p.out.w, h: p.out.h, kb: Math.max(1, Math.round(p.out.bytes / 1024)), n: p.out.sizes.length, hero: !!p.out.files.hero, files: {} }; BLOBS.set(p.path, { url: URL.createObjectURL(p.out.files.full.blob), files: p.out.files }); } });
   if (me.single) { T.obj[me.t.k] = picks[0].path; closeTop(); const y = scrollY; render(); scrollTo(0, y); if (editing) { redrawEditor(); markEditing(); } return toast('Image replaced', true); }
   const def = T.def, ik = def.img || 'image', items = picks.slice(0, T.room).map(p => { const it = { ...clone(typeof def.blank === 'function' ? def.blank() : def.blank || {}), [ik]: p.path, _id: 'i' + (++uid), _new: 1 }; if (T.tf) it[T.tf.k] = (p.alt || '').trim(); tag(itemNode(def, it), it); return it; });
   if (me.place === 'start') T.list.unshift(...items); else T.list.push(...items);

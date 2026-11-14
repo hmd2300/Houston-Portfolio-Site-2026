@@ -27,7 +27,7 @@ export function toAdmin(F, has = () => true) {
   const row = k => ({ ...pick(h[k], ['eyebrow', 'title', 'more']), picks: keyed(h[k].picks, pic) });
   return {
     home: {
-      slides: keyed(h.slides, x => ({ image: origOf(x.image, has), focus: parseInt(x.focusY || '50', 10), phone: x.phoneX == null ? 50 : x.phoneX })),
+      slides: keyed(h.slides, x => ({ image: origOf(x.image, has), focus: parseInt(x.focusY || '50', 10), phone: 50 })),
       heroMeta: clone(h.heroMeta), design: row('design'), photo: row('photo'),
       video: { ...pick(h.video, ['eyebrow', 'title', 'more']), feature: clone(h.video.feature) },
       about: { ...pick(h.about, ['eyebrow', 'title', 'cta']), paragraphs: [...h.about.paragraphs], portrait: clone(h.about.portrait) },
@@ -60,8 +60,8 @@ export function toFiles(M, F0, { today = new Date().toISOString().slice(0, 10), 
 
   h.slides = relist(F0.home.slides, mh.slides, (o, m, src) => {
     if (!src || origOf(src.image, has) !== m.image) put(o, 'image', viewOf(m.image));
-    if (!(src && src.focusY && parseInt(src.focusY, 10) === m.focus)) opt(o, 'focusY', m.focus === 50 ? undefined : `${m.focus}%`, undefined);
-    opt(o, 'phoneX', m.phone === 50 || m.phone == null ? undefined : m.phone, undefined); });
+    if (!(src && src.focusY && parseInt(src.focusY, 10) === m.focus)) opt(o, 'focusY', m.focus === 50 ? undefined : `${m.focus}%`, undefined); });
+  /* the phone framing is not stored: it is baked into the slide's phone crop when a new slide is published */
   Object.assign(h.heroMeta, mh.heroMeta);
   for (const k of ['design', 'photo']) { Object.assign(h[k], pick(mh[k], ['eyebrow', 'title', 'more'])); h[k].picks = relist(F0.home[k].picks, mh[k].picks, pic); }
   Object.assign(h.video, pick(mh.video, ['eyebrow', 'title', 'more'])); Object.assign(h.video.feature, { youtube: ytId(mh.video.feature.youtube), alt: mh.video.feature.alt });
